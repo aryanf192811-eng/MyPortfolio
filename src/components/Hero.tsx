@@ -44,9 +44,9 @@ function DeveloperIllustration() {
       const normX = (e.clientX / window.innerWidth - 0.5) * 2
       const normY = (e.clientY / window.innerHeight - 0.5) * 2
 
-      // Head: rotate left-right (±14°) + small nod up-down (±4px)
+      // Head: rotate left-right (±14°) + small nod up-down (±8px)
       targetHead.current.rot = normX * 14
-      targetHead.current.ty  = normY * 4
+      targetHead.current.ty  = normY * 8
 
       // Pupils: track within SVG coordinate space
       if (!svgRef.current) return
@@ -137,12 +137,17 @@ function DeveloperIllustration() {
 
       {/* ─ ROTATING HEAD GROUP (pivot = neck base ~180,148) ─ */}
       <g transform={headRotate} style={{ transformOrigin: '180px 148px' }}>
+        {/* Neck (static relative to head rotation, drawn behind head, longer to prevent detachment) */}
+        <rect x="172" y="100" width="16" height="48" rx="4" stroke={stroke} strokeWidth="2" />
+
+        {/* ─ TRANSLATING HEAD GROUP (Nods up/down) ─ */}
         <g transform={headTranslate}>
-          {/* Head circle */}
-          <circle cx="180" cy="84" r="42" stroke={stroke} strokeWidth="2.5" />
+          {/* Head circle (filled with page background to hide the neck passing behind it) */}
+          <circle cx="180" cy="84" r="42" stroke={stroke} strokeWidth="2.5" fill="var(--bg)" />
           {/* Hair */}
           <path d="M140 74 Q140 44 180 42 Q220 44 220 74"
             stroke={stroke} strokeWidth="2.5" strokeLinecap="round" fill={dimBg} />
+
           {/* Eyebrows */}
           <path d="M161 67 Q168 63 175 67" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" />
           <path d="M185 67 Q192 63 199 67" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" />
@@ -161,8 +166,6 @@ function DeveloperIllustration() {
           <ellipse cx="154" cy="94" rx="7" ry="4" fill={stroke} fillOpacity="0.055" />
           <ellipse cx="206" cy="94" rx="7" ry="4" fill={stroke} fillOpacity="0.055" />
         </g>
-        {/* Neck */}
-        <rect x="172" y={126 + headState.ty} width="16" height={22 - headState.ty} rx="4" stroke={stroke} strokeWidth="2" />
       </g>
 
       {/* ─ STATIC BODY GROUP ─ */}
