@@ -1,17 +1,23 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
+
+# Environment
 .env
 .env.local
 .env.*.local
 
-# Build prompt / dev artifacts
-aryan-portfolio-build-prompt.md
-
-# Editor
+# Editor & OS
 .vscode
 .idea
 *.sw?
-
-# OS
 .DS_Store
 Thumbs.db
+
+# Dev artifacts
+aryan-portfolio-build-prompt.md
+CLAUDE.md
+DESIGN_BRIEF.md
+.claude
