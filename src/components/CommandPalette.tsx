@@ -158,28 +158,6 @@ export default function CommandPalette() {
 
   return (
     <>
-      {/* Keyboard hint — bottom-left, fades in after 3 s */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 0.6 }}
-        style={{
-          position: 'fixed', bottom: '1.75rem', left: '1.75rem', zIndex: 9990,
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '0.62rem',
-          color: 'var(--text-faint)', letterSpacing: '0.05em',
-          display: 'flex', alignItems: 'center', gap: '6px',
-          pointerEvents: 'none', userSelect: 'none',
-        }}
-      >
-        <kbd style={{
-          background: 'var(--surface)', border: '1px solid var(--border-2)',
-          borderRadius: '5px', padding: '2px 6px', fontSize: '0.6rem',
-          color: 'var(--text-faint)',
-        }}>
-          ⌘K
-        </kbd>
-        <span>command palette</span>
-      </motion.div>
 
       <AnimatePresence>
         {open && (
