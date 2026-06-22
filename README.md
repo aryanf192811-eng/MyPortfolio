@@ -66,6 +66,23 @@ src/
 
 ---
 
+## Documentation
+
+A complete reverse-engineering documentation system lives in [`/docs`](./docs/).
+
+| Document | Contents |
+|---|---|
+| [`docs/index.md`](./docs/index.md) | Master learning index — architecture summary, module list, recommended study order |
+| [`docs/module-01` … `module-15`](./docs/) | 15 deep-dive modules covering every layer of the codebase |
+| [`docs/runtime-traces.md`](./docs/runtime-traces.md) | 17 execution traces through real code paths |
+| [`docs/dependency-graphs.md`](./docs/dependency-graphs.md) | Mermaid diagrams: component tree, data flow, state machines, API sequence |
+| [`docs/senior-engineer-notes.md`](./docs/senior-engineer-notes.md) | 8 architectural decisions with rationale, tradeoffs, and alternatives |
+| [`docs/study-roadmap.md`](./docs/study-roadmap.md) | 3-week structured learning plan with 10 hands-on exercises |
+
+**Quick start for readers:** Open [`docs/index.md`](./docs/index.md) and follow the recommended study order for your experience level.
+
+---
+
 ## Getting Started
 
 ```bash
