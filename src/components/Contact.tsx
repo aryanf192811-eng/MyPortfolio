@@ -53,12 +53,21 @@ export default function Contact() {
     if (!formRef.current) return
     setStatus('sending')
 
+    // Extract form values once to avoid DOM race between parallel sends
+    const data = new FormData(formRef.current)
+    const params = {
+      from_name:  data.get('from_name')  as string,
+      from_email: data.get('from_email') as string,
+      title:      data.get('title')      as string,
+      message:    data.get('message')    as string,
+    }
+
     try {
       await Promise.all([
         // auto-reply → client
-        emailjs.sendForm(EMAILJS.SERVICE_ID, EMAILJS.TEMPLATE_ID, formRef.current),
+        emailjs.send(EMAILJS.SERVICE_ID, EMAILJS.TEMPLATE_ID, params),
         // notification → aryan
-        emailjs.sendForm(EMAILJS.SERVICE_ID, EMAILJS.NOTIFY_TEMPLATE_ID, formRef.current),
+        emailjs.send(EMAILJS.SERVICE_ID, EMAILJS.NOTIFY_TEMPLATE_ID, params),
       ])
       setStatus('success')
       setErrorMessage('')
