@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="footer-inner" style={{ maxWidth: '1100px', margin: '0 auto', padding: '1.1rem 2rem' }}>
         {/* Logo */}
         <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-          Aryan<span style={{ color: 'var(--text-faint)' }}>.</span>
+          Aryan
         </span>
 
         {/* Center */}

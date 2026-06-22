@@ -279,7 +279,7 @@ export default function Hero() {
           >
             Hello, I&apos;m{' '}
             <span style={{ WebkitTextStroke: '2px var(--text)', color: 'transparent' }}>
-              Aryan.
+              Aryan
             </span>
           </motion.h1>
 
