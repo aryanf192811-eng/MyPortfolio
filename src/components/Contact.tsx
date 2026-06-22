@@ -44,7 +44,6 @@ function CopyableLink({ href, icon, label, copyable }: { href: string; icon: Rea
 export default function Contact() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const formRef    = useRef<HTMLFormElement>(null)
-  const replyRef   = useRef<HTMLInputElement>(null)
   const inView = useInView(sectionRef, { once: true, margin: '-80px' })
   const [status, setStatus] = useState<Status>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -52,11 +51,6 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!formRef.current) return
-
-    // Mirror from_email into reply_to so Aryan can reply directly to sender
-    const emailInput = formRef.current.querySelector<HTMLInputElement>('input[name="from_email"]')
-    if (replyRef.current && emailInput) replyRef.current.value = emailInput.value
-
     setStatus('sending')
 
     try {
@@ -140,11 +134,7 @@ export default function Contact() {
                 disabled={status === 'sending'}
                 style={{ resize: 'none' }}
               />
-              {/* Hidden fields — EmailJS template must use {{to_email}} in "To Email" field
-                  and {{reply_to}} in "Reply To" field so Aryan can reply directly to sender */}
-              <input type="hidden" name="to_name"  value="Aryan" />
-              <input type="hidden" name="to_email"  value="aryanf192811@gmail.com" />
-              <input type="hidden" name="reply_to"  value="" ref={replyRef} />
+
 
               {/* Submit */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
