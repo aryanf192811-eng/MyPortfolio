@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // ─── B-Cart: ERP Schema Flow ──────────────────────────────────────────────
 export function BCartVisual() {
