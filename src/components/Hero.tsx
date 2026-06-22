@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import { Github, Mail, Linkedin, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
-import { RESUME_URL } from '../lib/emailConfig'
+import { RESUME_URL, RESUME_FILENAME } from '../lib/emailConfig'
 import HeroCanvas from './HeroCanvas'
 
 // ─── Greeting messages for laptop screen ─────────────────────────────
@@ -344,8 +344,7 @@ export default function Hero() {
 
             <a
               href={RESUME_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              download={RESUME_FILENAME}
               style={{
                 fontFamily: 'Sora, sans-serif', fontSize: '0.875rem', fontWeight: 600,
                 color: 'var(--text)', background: 'transparent',

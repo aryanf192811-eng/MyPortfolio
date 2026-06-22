@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sun, Moon, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
-import { RESUME_URL } from '../lib/emailConfig'
+import { RESUME_URL, RESUME_FILENAME } from '../lib/emailConfig'
 import NavLogo from './NavLogo'
 
 const NAV_LINKS = [
@@ -166,8 +166,7 @@ export default function Nav() {
               {/* Resume download — only in mobile menu */}
               <a
                 href={RESUME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                download={RESUME_FILENAME}
                 onClick={closeMenu}
                 style={{
                   fontFamily: 'Sora, sans-serif', fontSize: '0.9rem', fontWeight: 600,

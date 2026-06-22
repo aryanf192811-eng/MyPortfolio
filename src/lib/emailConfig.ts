@@ -13,5 +13,6 @@ export const EMAILJS = {
   PUBLIC_KEY:  'cR95UBD-JZtUbI8jy',
 } as const
 
-// Resume opens in new tab; user can Ctrl+P → Save as PDF
-export const RESUME_URL = '/resume.html'
+// Resume PDF — served from /public, downloads directly
+export const RESUME_URL      = '/aryan_resume.pdf'
+export const RESUME_FILENAME = 'Aryan_Resume.pdf'
