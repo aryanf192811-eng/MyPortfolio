@@ -1,1 +1,17 @@
 node_modules
+dist
+.env
+.env.local
+.env.*.local
+
+# Build prompt / dev artifacts
+aryan-portfolio-build-prompt.md
+
+# Editor
+.vscode
+.idea
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db

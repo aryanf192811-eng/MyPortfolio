@@ -4,6 +4,7 @@ import { TypeAnimation } from 'react-type-animation'
 import { Github, Mail, Linkedin, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 import { RESUME_URL } from '../lib/emailConfig'
+import HeroCanvas from './HeroCanvas'
 
 // ─── Greeting messages for laptop screen ─────────────────────────────
 const GREETINGS = [
@@ -20,7 +21,7 @@ function DeveloperIllustration() {
   const { isDark } = useTheme()
   const svgRef = useRef<SVGSVGElement>(null)
 
-  // Head + body movement
+  // Head movement – rot = left/right turn, ty = nod up/down
   const targetHead = useRef({ rot: 0, ty: 0 })
   const currentHead = useRef({ rot: 0, ty: 0 })
   const [headState, setHeadState] = useState({ rot: 0, ty: 0 })
@@ -44,9 +45,9 @@ function DeveloperIllustration() {
       const normX = (e.clientX / window.innerWidth - 0.5) * 2
       const normY = (e.clientY / window.innerHeight - 0.5) * 2
 
-      // Head: rotate left-right (±14°) + small nod up-down (±8px)
+      // Head turns on neck: chin pivot ±14° left/right, nod ±6px up/down
       targetHead.current.rot = normX * 14
-      targetHead.current.ty  = normY * 8
+      targetHead.current.ty  = normY * 6
 
       // Pupils: track within SVG coordinate space
       if (!svgRef.current) return
@@ -112,9 +113,8 @@ function DeveloperIllustration() {
   const greetText    = GREETINGS[greetIdx].text.slice(0, chars)
   const greetColor   = GREETINGS[greetIdx].color
 
-  // Head pivot: base of neck ~(180, 148)
-  const headRotate = `rotate(${headState.rot}, 180, 148)`
-  const headTranslate = `translate(0, ${headState.ty})`
+  // Head pivot: chin bottom of head circle (180, 126) — so head rotates naturally on neck
+  const headRotate = `rotate(${headState.rot}, 180, 126)`
 
   // Left pupil base: (168, 80), Right: (194, 80)
   const LP = { x: 168 + pupil.x, y: 80 + pupil.y }
@@ -135,14 +135,13 @@ function DeveloperIllustration() {
       <circle cx="180" cy="210" r="175" stroke={stroke} strokeWidth="0.4" strokeOpacity={glowOp} />
       <circle cx="180" cy="210" r="148" stroke={stroke} strokeWidth="0.4" strokeOpacity={Number(glowOp) * 0.65} />
 
-      {/* ─ ROTATING HEAD GROUP (pivot = neck base ~180,148) ─ */}
-      <g transform={headRotate} style={{ transformOrigin: '180px 148px' }}>
-        {/* Neck (static relative to head rotation, drawn behind head, longer to prevent detachment) */}
-        <rect x="172" y="100" width="16" height="48" rx="4" stroke={stroke} strokeWidth="2" />
+      {/* ─ STATIC NECK — drawn first (behind head), tall enough to bridge any nod gap ─ */}
+      <rect x="172" y="114" width="16" height="36" rx="4" stroke={stroke} strokeWidth="2" fill="var(--bg)" />
 
-        {/* ─ TRANSLATING HEAD GROUP (Nods up/down) ─ */}
-        <g transform={headTranslate}>
-          {/* Head circle (filled with page background to hide the neck passing behind it) */}
+      {/* ─ HEAD: outer group nods (translate), inner group turns on chin pivot ─ */}
+      <g transform={`translate(0, ${headState.ty})`}>
+        <g transform={headRotate}>
+          {/* Head circle — fill=var(--bg) hides neck top behind it */}
           <circle cx="180" cy="84" r="42" stroke={stroke} strokeWidth="2.5" fill="var(--bg)" />
           {/* Hair */}
           <path d="M140 74 Q140 44 180 42 Q220 44 220 74"
@@ -239,8 +238,9 @@ function DeveloperIllustration() {
 // ─── Hero Section ─────────────────────────────────────────────────────
 export default function Hero() {
   return (
-    <section id="about" style={{ borderBottom: '1px solid var(--border)' }}>
-      <div className="hero-grid">
+    <section id="about" style={{ borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+      <HeroCanvas />
+      <div className="hero-grid" style={{ position: 'relative', zIndex: 1 }}>
         {/* ── Left: text ── */}
         <motion.div
           initial={{ opacity: 0, x: -28 }}

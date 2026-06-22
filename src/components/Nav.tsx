@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sun, Moon, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 import { RESUME_URL } from '../lib/emailConfig'
+import NavLogo from './NavLogo'
 
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
@@ -16,9 +17,14 @@ export default function Nav() {
   const { isDark, toggle } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30)
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(max > 0 ? (window.scrollY / max) * 100 : 0)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -31,7 +37,7 @@ export default function Nav() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 51,
         background: scrolled ? 'var(--nav-bg)' : 'transparent',
         borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
@@ -44,13 +50,8 @@ export default function Nav() {
         height: '72px', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', position: 'relative',
       }}>
-        {/* Logo */}
-        <a
-          href="#about"
-          style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--text)', textDecoration: 'none', letterSpacing: '-0.03em' }}
-        >
-          Aryan<span style={{ color: 'var(--text-muted)' }}>.</span>
-        </a>
+        {/* Logo — interactive mini face */}
+        <NavLogo />
 
         {/* Desktop navigation — hidden on mobile via CSS */}
         <div className="nav-links-desktop">
@@ -182,6 +183,14 @@ export default function Nav() {
             </motion.div>
           )}
         </AnimatePresence>
+        {/* Scroll progress bar */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0,
+          height: '2px', background: 'var(--text)',
+          width: `${progress}%`, opacity: 0.55,
+          transition: 'width 0.08s linear',
+          borderRadius: '0 2px 2px 0',
+        }} />
       </nav>
     </motion.header>
   )

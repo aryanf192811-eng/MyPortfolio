@@ -1,12 +1,12 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Database, GitBranch, Server, Layers, Shield } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Database, GitBranch, Server, Layers, Shield, Trophy, Code2, BookOpen } from 'lucide-react'
 
 // ─── Data ─────────────────────────────────────────────────────────────
 const METRICS = [
-  { value: '2', label: 'Sprint Cycles' },
-  { value: '1st', label: 'Paid Engagement' },
-  { value: 'Solo', label: 'Client Management' },
+  { value: '2',    label: 'Sprint Cycles' },
+  { value: '1st',  label: 'Paid Engagement' },
+  { value: 'Solo', label: 'Client Pipeline' },
 ]
 
 const BULLETS = [
@@ -16,45 +16,263 @@ const BULLETS = [
 ]
 
 const ACHIEVEMENTS = [
-  { emoji: '🥇', label: 'Hackathon Finalist', detail: 'Odoo × Parul University 2026' },
-  { emoji: '💼', label: 'Paid Freelance', detail: 'SoundRich Hearing (Semester 2)' },
-  { emoji: '📜', label: 'Certifications', detail: 'HTML · CSS · JS · System Design' },
+  {
+    Icon: Trophy,   color: '#f59e0b',
+    label: 'Hackathon Finalist',
+    detail: 'Odoo × Parul University 2026',
+    bg: 'rgba(245,158,11,0.08)',
+  },
+  {
+    Icon: Code2,    color: '#22c55e',
+    label: 'Paid Freelance',
+    detail: 'SoundRich Hearing — Semester 2',
+    bg: 'rgba(34,197,94,0.08)',
+  },
+  {
+    Icon: BookOpen, color: '#a78bfa',
+    label: 'Certifications',
+    detail: 'HTML · CSS · JS · System Design',
+    bg: 'rgba(167,139,250,0.08)',
+  },
 ]
 
 const PRINCIPLES = [
   {
-    num: '01', Icon: Database, area: 'a',
+    num: '01', Icon: Database,
     title: 'Schema-First Development',
-    desc: 'Database and relationships designed before any API or UI work begins. Schema is the contract.',
+    desc: 'Database and relationships designed before any API or UI work begins. Schema is the contract — every endpoint, every form is a derivative of the data model.',
     accent: '#3b82f6',
+    tag: 'Data-Centric',
   },
   {
-    num: '02', Icon: GitBranch, area: 'b',
+    num: '02', Icon: GitBranch,
     title: 'Workflow-Driven Design',
-    desc: 'Business processes modelled as explicit, auditable state machines — nothing implicit.',
+    desc: 'Business processes modelled as explicit, auditable state machines. Nothing is left implicit — every transition has a trigger, a guard, and a resulting state.',
     accent: '#22c55e',
+    tag: 'State Machine',
   },
   {
-    num: '03', Icon: Server, area: 'c',
+    num: '03', Icon: Server,
     title: 'DB as Source of Truth',
-    desc: 'Business logic anchored in the data layer, not scattered across application code.',
+    desc: 'Business logic anchored in the data layer, not scattered across application code. The database enforces invariants that no amount of application-layer validation can match.',
     accent: '#a855f7',
+    tag: 'Architecture',
   },
   {
-    num: '04', Icon: Layers, area: 'd',
+    num: '04', Icon: Layers,
     title: 'Explicit State Transitions',
-    desc: 'No implicit state changes — every transition is intentional and leaves a record. State is never guessed; it is asserted, stored, and queryable.',
+    desc: 'No implicit state changes — every transition is intentional and leaves a record. State is never guessed; it is asserted, stored, and queryable at any point in time.',
     accent: '#f59e0b',
+    tag: 'Auditability',
   },
   {
-    num: '05', Icon: Shield, area: 'e',
+    num: '05', Icon: Shield,
     title: 'Auditability Over Convenience',
-    desc: 'Complete audit trails preferred; every change leaves a permanent, queryable record.',
+    desc: 'Complete audit trails preferred over shortcuts. Every change leaves a permanent, queryable record. The inconvenience of writing one more row protects you from debugging production forever.',
     accent: '#ef4444',
+    tag: 'Observability',
   },
 ]
 
-// ─── Component ────────────────────────────────────────────────────────
+// ─── Achievement Card ─────────────────────────────────────────────────
+function AchievementCard({ a, delay, inView }: { a: typeof ACHIEVEMENTS[0]; delay: number; inView: boolean }) {
+  const [hovered, setHovered] = useState(false)
+  const Icon = a.Icon
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 22 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? a.bg : 'var(--surface)',
+        border: `1.5px solid ${hovered ? a.color + '55' : 'var(--border)'}`,
+        borderTop: `3px solid ${a.color}`,
+        borderRadius: '16px',
+        padding: '2rem 1.5rem',
+        textAlign: 'center',
+        transform: hovered ? 'translateY(-10px)' : 'translateY(0)',
+        boxShadow: hovered ? `0 24px 48px ${a.color}22` : '0 0 0 transparent',
+        transition: 'all 0.28s cubic-bezier(0.22,1,0.36,1)',
+        cursor: 'default',
+        flex: '1 1 0',
+      }}
+    >
+      {/* Icon ring */}
+      <div style={{
+        width: '64px', height: '64px', borderRadius: '50%',
+        background: `${a.color}14`,
+        border: `2px solid ${hovered ? a.color + '66' : a.color + '28'}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        margin: '0 auto 1.25rem',
+        boxShadow: hovered ? `0 0 24px ${a.color}44` : 'none',
+        transition: 'all 0.28s',
+      }}>
+        <Icon size={26} style={{ color: a.color }} />
+      </div>
+      <p style={{
+        fontFamily: 'Sora, sans-serif', fontSize: '0.88rem',
+        fontWeight: 700, color: 'var(--text)', marginBottom: '0.4rem',
+        letterSpacing: '-0.01em',
+      }}>
+        {a.label}
+      </p>
+      <p style={{
+        fontFamily: 'Inter, sans-serif', fontSize: '0.75rem',
+        color: 'var(--text-muted)', lineHeight: 1.55,
+      }}>
+        {a.detail}
+      </p>
+    </motion.div>
+  )
+}
+
+// ─── Principles Selector ──────────────────────────────────────────────
+function PrinciplesPanel({ inView }: { inView: boolean }) {
+  const [active, setActive] = useState(0)
+  const p = PRINCIPLES[active]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: 0.42, duration: 0.5 }}
+      className="principles-selector"
+    >
+      {/* Left: selector list */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+        {PRINCIPLES.map((pr, i) => {
+          const isActive = i === active
+          const PrIcon = pr.Icon
+          return (
+            <button
+              key={pr.num}
+              onClick={() => setActive(i)}
+              style={{
+                background: isActive ? `${pr.accent}12` : 'transparent',
+                border: `1.5px solid ${isActive ? pr.accent + '55' : 'var(--border)'}`,
+                borderRadius: '10px',
+                padding: '0.75rem 1rem',
+                textAlign: 'left', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '0.65rem',
+                transition: 'all 0.2s ease',
+                outline: 'none',
+              }}
+              onMouseEnter={e => {
+                if (!isActive) (e.currentTarget as HTMLElement).style.borderColor = `${pr.accent}40`
+              }}
+              onMouseLeave={e => {
+                if (!isActive) (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'
+              }}
+            >
+              <div style={{
+                width: '28px', height: '28px', borderRadius: '7px', flexShrink: 0,
+                background: `${pr.accent}14`,
+                border: `1px solid ${pr.accent}28`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <PrIcon size={13} style={{ color: pr.accent }} />
+              </div>
+              <div>
+                <span style={{
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '0.58rem',
+                  color: pr.accent, display: 'block', marginBottom: '1px',
+                }}>
+                  {pr.num}
+                </span>
+                <span style={{
+                  fontFamily: 'Sora, sans-serif', fontSize: '0.75rem',
+                  fontWeight: isActive ? 700 : 500,
+                  color: isActive ? 'var(--text)' : 'var(--text-muted)',
+                  lineHeight: 1.2, display: 'block',
+                }}>
+                  {pr.title}
+                </span>
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Right: active principle panel */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, x: 18 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -12 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            background: 'var(--surface)',
+            border: `1.5px solid ${p.accent}40`,
+            borderLeft: `3px solid ${p.accent}`,
+            borderRadius: '16px',
+            padding: '1.75rem',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Ambient glow */}
+          <div style={{
+            position: 'absolute', top: '-30px', right: '-30px',
+            width: '160px', height: '160px', borderRadius: '50%',
+            background: `radial-gradient(circle, ${p.accent}18 0%, transparent 65%)`,
+            pointerEvents: 'none',
+          }} />
+
+          {/* Tag */}
+          <span style={{
+            fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem',
+            color: p.accent, background: `${p.accent}14`,
+            border: `1px solid ${p.accent}28`, borderRadius: '50px',
+            padding: '2px 9px', display: 'inline-block', marginBottom: '1.25rem',
+            letterSpacing: '0.06em',
+          }}>
+            {p.tag}
+          </span>
+
+          {/* Icon */}
+          <div style={{
+            width: '52px', height: '52px', borderRadius: '12px',
+            background: `${p.accent}14`, border: `1.5px solid ${p.accent}33`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '1rem', boxShadow: `0 0 20px ${p.accent}22`,
+          }}>
+            <p.Icon size={24} style={{ color: p.accent }} />
+          </div>
+
+          <h4 style={{
+            fontFamily: 'Sora, sans-serif', fontSize: '1rem',
+            fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.02em',
+            marginBottom: '0.75rem', lineHeight: 1.2,
+          }}>
+            {p.title}
+          </h4>
+          <p style={{
+            fontFamily: 'Inter, sans-serif', fontSize: '0.83rem',
+            color: 'var(--text-muted)', lineHeight: 1.72,
+          }}>
+            {p.desc}
+          </p>
+
+          {/* Principle number watermark */}
+          <span style={{
+            position: 'absolute', bottom: '1rem', right: '1.25rem',
+            fontFamily: 'Sora, sans-serif', fontSize: '3.5rem',
+            fontWeight: 800, letterSpacing: '-0.06em',
+            color: `${p.accent}0e`, pointerEvents: 'none', userSelect: 'none',
+            lineHeight: 1,
+          }}>
+            {p.num}
+          </span>
+        </motion.div>
+      </AnimatePresence>
+    </motion.div>
+  )
+}
+
+// ─── Main Component ────────────────────────────────────────────────────
 export default function Experience() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -62,14 +280,14 @@ export default function Experience() {
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
     animate: inView ? { opacity: 1, y: 0 } : {},
-    transition: { delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] },
   })
 
   return (
     <section id="experience" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="section-wrap" ref={ref}>
 
-        {/* ── Header ── */}
+        {/* Header */}
         <motion.div {...fadeUp(0)} style={{ marginBottom: '2.75rem' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem',
@@ -91,21 +309,30 @@ export default function Experience() {
         </motion.div>
 
         {/* ── Timeline Card — SoundRich ── */}
-        <motion.div {...fadeUp(0.12)} style={{ marginBottom: '3rem' }}>
+        <motion.div {...fadeUp(0.1)} style={{ marginBottom: '3.25rem' }}>
           <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'stretch' }}>
             {/* Timeline rail */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-              <div style={{
-                width: '12px', height: '12px', borderRadius: '50%',
-                background: 'var(--text)', flexShrink: 0, marginTop: '4px',
-              }} />
-              <div style={{ width: '1.5px', flex: 1, background: 'var(--border-2)', marginTop: '6px', minHeight: '40px' }} />
+              <motion.div
+                animate={inView ? { scale: [0, 1.3, 1], opacity: [0, 1, 1] } : {}}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                style={{ width: '13px', height: '13px', borderRadius: '50%', background: '#22c55e', flexShrink: 0, marginTop: '4px', boxShadow: '0 0 10px #22c55e55' }}
+              />
+              <motion.div
+                initial={{ scaleY: 0 }}
+                animate={inView ? { scaleY: 1 } : {}}
+                transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}
+                style={{ width: '1.5px', flex: 1, background: 'linear-gradient(to bottom, #22c55e66, var(--border-2))', marginTop: '6px', minHeight: '40px', transformOrigin: 'top' }}
+              />
             </div>
 
-            {/* Card content */}
+            {/* Card */}
             <div style={{
-              flex: 1, background: 'var(--surface)',
-              border: '1.5px solid var(--border)', borderRadius: '16px', overflow: 'hidden',
+              flex: 1,
+              background: 'var(--surface)',
+              border: '1.5px solid var(--border)',
+              borderRadius: '16px',
+              overflow: 'hidden',
             }}>
               {/* Card header */}
               <div style={{
@@ -113,13 +340,11 @@ export default function Experience() {
                 borderBottom: '1px solid var(--border)',
                 display: 'flex', flexWrap: 'wrap', gap: '0.75rem',
                 justifyContent: 'space-between', alignItems: 'flex-start',
+                background: 'rgba(34,197,94,0.03)',
               }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.3rem' }}>
-                    <h3 style={{
-                      fontFamily: 'Sora, sans-serif', fontSize: '1.05rem',
-                      fontWeight: 700, color: 'var(--text)',
-                    }}>
+                    <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.05rem', fontWeight: 700, color: 'var(--text)' }}>
                       Full-Stack Web Consultant
                     </h3>
                     <span style={{
@@ -131,43 +356,27 @@ export default function Experience() {
                       Freelance
                     </span>
                   </div>
-                  <p style={{
-                    fontFamily: 'Inter, sans-serif', fontSize: '0.82rem',
-                    color: 'var(--text-muted)',
-                  }}>
+                  <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                     SoundRich Hearing Clinic · Delhi NCR
                   </p>
                 </div>
-                <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem',
-                  color: 'var(--text-faint)', whiteSpace: 'nowrap', paddingTop: '3px',
-                }}>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--text-faint)', whiteSpace: 'nowrap', paddingTop: '3px' }}>
                   Mar 2026 – May 2026
                 </span>
               </div>
 
               {/* Metric chips */}
-              <div style={{
-                padding: '1rem 1.75rem',
-                borderBottom: '1px solid var(--border)',
-                display: 'flex', flexWrap: 'wrap', gap: '0.65rem',
-              }}>
+              <div style={{ padding: '1rem 1.75rem', borderBottom: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: '0.65rem' }}>
                 {METRICS.map(m => (
                   <div key={m.label} style={{
                     background: 'var(--surface-2)', border: '1.5px solid var(--border-2)',
                     borderRadius: '10px', padding: '0.6rem 1.1rem',
                     display: 'flex', flexDirection: 'column', gap: '2px',
                   }}>
-                    <span style={{
-                      fontFamily: 'Sora, sans-serif', fontSize: '1.1rem',
-                      fontWeight: 800, letterSpacing: '-0.04em', color: 'var(--text)',
-                    }}>
+                    <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.05rem', fontWeight: 800, letterSpacing: '-0.04em', color: 'var(--text)' }}>
                       {m.value}
                     </span>
-                    <span style={{
-                      fontFamily: 'Inter, sans-serif', fontSize: '0.68rem',
-                      color: 'var(--text-faint)', whiteSpace: 'nowrap',
-                    }}>
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.67rem', color: 'var(--text-faint)', whiteSpace: 'nowrap' }}>
                       {m.label}
                     </span>
                   </div>
@@ -177,138 +386,50 @@ export default function Experience() {
               {/* Bullets */}
               <div style={{ padding: '0.5rem 0' }}>
                 {BULLETS.map((b, i) => (
-                  <div key={i} style={{
-                    padding: '0.8rem 1.75rem',
-                    display: 'flex', gap: '0.85rem', alignItems: 'flex-start',
-                    borderBottom: i < BULLETS.length - 1 ? '1px solid var(--border)' : 'none',
-                  }}>
-                    <span style={{
-                      width: '5px', height: '5px', borderRadius: '50%',
-                      background: 'var(--text-faint)', flexShrink: 0, marginTop: '7px',
-                    }} />
-                    <p style={{
-                      fontFamily: 'Inter, sans-serif', fontSize: '0.875rem',
-                      color: 'var(--text-muted)', lineHeight: 1.65,
-                    }}>
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.35 + i * 0.1, duration: 0.4 }}
+                    style={{
+                      padding: '0.8rem 1.75rem',
+                      display: 'flex', gap: '0.85rem', alignItems: 'flex-start',
+                      borderBottom: i < BULLETS.length - 1 ? '1px solid var(--border)' : 'none',
+                    }}
+                  >
+                    <span style={{ color: '#22c55e', flexShrink: 0, marginTop: '5px', fontSize: '0.6rem' }}>▸</span>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.65 }}>
                       {b}
                     </p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* ── Achievements ── */}
-        <motion.div {...fadeUp(0.25)} style={{ marginBottom: '3.5rem' }}>
-          <p style={{
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem',
-            color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase',
-            marginBottom: '1rem',
-          }}>
+        {/* ── Achievements — 3 featured cards ── */}
+        <motion.div {...fadeUp(0.22)} style={{ marginBottom: '3.25rem' }}>
+          <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.1rem' }}>
             Highlights &amp; Awards
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.875rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             {ACHIEVEMENTS.map((a, i) => (
-              <motion.div
-                key={a.label}
-                initial={{ opacity: 0, y: 14 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.3 + i * 0.07, duration: 0.4 }}
-                style={{
-                  background: 'var(--surface)', border: '1.5px solid var(--border)',
-                  borderRadius: '12px', padding: '1rem 1.25rem',
-                  display: 'flex', gap: '0.85rem', alignItems: 'flex-start',
-                  flex: '1 1 220px',
-                }}
-              >
-                <span style={{ fontSize: '1.3rem', flexShrink: 0, lineHeight: 1 }}>{a.emoji}</span>
-                <div>
-                  <p style={{
-                    fontFamily: 'Sora, sans-serif', fontSize: '0.82rem',
-                    fontWeight: 600, color: 'var(--text)', marginBottom: '0.2rem',
-                  }}>
-                    {a.label}
-                  </p>
-                  <p style={{
-                    fontFamily: 'Inter, sans-serif', fontSize: '0.77rem',
-                    color: 'var(--text-muted)', lineHeight: 1.5,
-                  }}>
-                    {a.detail}
-                  </p>
-                </div>
-              </motion.div>
+              <AchievementCard key={a.label} a={a} delay={0.3 + i * 0.08} inView={inView} />
             ))}
           </div>
         </motion.div>
 
-        {/* ── Engineering Principles Bento ── */}
-        <motion.div {...fadeUp(0.38)}>
-          <p style={{
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem',
-            color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase',
-            marginBottom: '1rem',
-          }}>
+        {/* ── Engineering Principles — interactive selector ── */}
+        <div>
+          <motion.p
+            {...fadeUp(0.38)}
+            style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.1rem' }}
+          >
             Engineering Principles
-          </p>
-          <div className="principles-bento">
-            {PRINCIPLES.map((p, i) => {
-              const Icon = p.Icon
-              return (
-                <motion.div
-                  key={p.num}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.42 + i * 0.08, duration: 0.45 }}
-                  style={{
-                    gridArea: p.area,
-                    background: 'var(--surface)',
-                    border: '1.5px solid var(--border)',
-                    borderTop: `3px solid ${p.accent}`,
-                    borderRadius: '14px', padding: '1.5rem 1.5rem 1.4rem',
-                    display: 'flex', flexDirection: 'column', gap: '0.75rem',
-                    transition: 'transform 0.22s, box-shadow 0.22s',
-                    cursor: 'default',
-                  }}
-                  whileHover={{ y: -4, boxShadow: `0 12px 32px ${p.accent}1a` }}
-                >
-                  {/* Top row: number + icon */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <span style={{
-                      fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem',
-                      color: p.accent, letterSpacing: '0.06em', fontWeight: 500,
-                    }}>
-                      {p.num}
-                    </span>
-                    <div style={{
-                      width: '32px', height: '32px', borderRadius: '8px',
-                      background: `${p.accent}14`, border: `1px solid ${p.accent}28`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      color: p.accent, flexShrink: 0,
-                    }}>
-                      <Icon size={16} />
-                    </div>
-                  </div>
-                  {/* Title */}
-                  <h4 style={{
-                    fontFamily: 'Sora, sans-serif', fontSize: '0.92rem',
-                    fontWeight: 700, color: 'var(--text)', lineHeight: 1.25,
-                    letterSpacing: '-0.01em',
-                  }}>
-                    {p.title}
-                  </h4>
-                  {/* Desc */}
-                  <p style={{
-                    fontFamily: 'Inter, sans-serif', fontSize: '0.82rem',
-                    color: 'var(--text-muted)', lineHeight: 1.65,
-                  }}>
-                    {p.desc}
-                  </p>
-                </motion.div>
-              )
-            })}
-          </div>
-        </motion.div>
+          </motion.p>
+          <PrinciplesPanel inView={inView} />
+        </div>
 
       </div>
     </section>

@@ -42,7 +42,12 @@ html.light {
 
 /* ─── Reset ─────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 20px; /* 125% of 16px default — scales all rem/em units */
+  cursor: none; /* custom cursor replaces default */
+}
 
 body {
   background: var(--bg);
@@ -53,6 +58,9 @@ body {
   overflow-x: hidden;
   transition: background 0.25s ease, color 0.25s ease;
 }
+
+/* Hide default cursor on all interactive elements */
+a, button, [role="button"] { cursor: none; }
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -115,20 +123,26 @@ body {
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: center;
-  min-height: calc(100vh - 72px);
-  padding: 6rem 2rem 4rem;
-  max-width: 1100px;
+  min-height: 100vh;
+  padding: 5rem clamp(1.25rem, 4vw, 5rem) 3.5rem;
+  max-width: 1440px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
     min-height: unset;
-    padding: 5rem 1.25rem 3rem;
+    padding: 5.5rem 1.25rem 3rem;
+    text-align: center;
   }
+}
+@media (max-width: 480px) {
+  .hero-grid { padding: 4.5rem 1rem 2.5rem; gap: 2rem; }
 }
 
 .skills-core-grid {
@@ -136,8 +150,9 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 0.875rem;
 }
-@media (max-width: 900px) { .skills-core-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 480px) { .skills-core-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 960px) { .skills-core-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 640px) { .skills-core-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 400px) { .skills-core-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .stats-grid {
   display: grid;
@@ -147,35 +162,38 @@ body {
   border-radius: 14px;
   overflow: hidden;
 }
-@media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .project-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3.5rem;
+  gap: 3rem;
   align-items: center;
-  margin-bottom: 5rem;
+  margin-bottom: 4.5rem;
 }
-@media (max-width: 768px) {
-  .project-row { grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3.5rem; }
+@media (max-width: 860px) {
+  .project-row { grid-template-columns: 1fr; gap: 1.75rem; margin-bottom: 3rem; }
   .project-visual-reversed { order: -1; }
 }
 
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  gap: 4rem;
   align-items: start;
 }
-@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
 /* ─── Section Wrapper ────────────────────────────────────────────── */
 .section-wrap {
-  max-width: 1100px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 5.5rem 2rem;
+  padding: 4rem clamp(1.25rem, 4vw, 5rem);
+  width: 100%;
+  box-sizing: border-box;
 }
-@media (max-width: 600px) { .section-wrap { padding: 4rem 1.25rem; } }
+@media (max-width: 640px) { .section-wrap { padding: 3rem 1rem; } }
+@media (max-width: 400px) { .section-wrap { padding: 2.5rem 0.875rem; } }
 
 /* ─── Nav ────────────────────────────────────────────────────────── */
 .nav-links-desktop {
@@ -205,24 +223,16 @@ body {
 .mobile-controls { display: none; gap: 0.5rem; align-items: center; }
 @media (max-width: 768px) { .mobile-controls { display: flex; } }
 
-/* ─── Principles Bento ───────────────────────────────────────────── */
-.principles-bento {
+/* ─── Principles Interactive Selector ───────────────────────────── */
+.principles-selector {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-areas: "a b c" "d d e";
+  grid-template-columns: 1fr 1.85fr;
   gap: 1rem;
+  /* Critical: overflow guard so right panel never breaks layout */
+  overflow: hidden;
 }
-@media (max-width: 700px) {
-  .principles-bento {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "a b" "c d" "e e";
-  }
-}
-@media (max-width: 460px) {
-  .principles-bento {
-    grid-template-columns: 1fr;
-    grid-template-areas: "a" "b" "c" "d" "e";
-  }
+@media (max-width: 900px) {
+  .principles-selector { grid-template-columns: 1fr; }
 }
 
 /* ─── Skill detail table ─────────────────────────────────────────── */
@@ -234,7 +244,7 @@ body {
   padding: 0.875rem 0;
   border-bottom: 1px solid var(--border);
 }
-@media (max-width: 550px) {
+@media (max-width: 640px) {
   .skill-group-row { grid-template-columns: 1fr; gap: 0.5rem; }
 }
 

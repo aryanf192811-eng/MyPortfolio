@@ -1,19 +1,21 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Server, Zap, Layers, Database, FileCode, Terminal, GitBranch, Globe, Cloud, Code2 } from 'lucide-react'
+import { getTechColor } from '../lib/techColors'
+import { TechIcon } from './TechIcon'
 
-// Top 10 skill cards (icon + hover invert)
+// Top 10 skill cards with brand accent colors
 const CORE_SKILLS = [
-  { name: 'Node.js', Icon: Server },
-  { name: 'FastAPI', Icon: Zap },
-  { name: 'PostgreSQL', Icon: Database },
-  { name: 'React 19', Icon: Layers },
-  { name: 'TypeScript', Icon: FileCode },
-  { name: 'Python', Icon: Terminal },
-  { name: 'REST APIs', Icon: Globe },
-  { name: 'Git', Icon: GitBranch },
-  { name: 'Supabase', Icon: Cloud },
-  { name: 'Express', Icon: Code2 },
+  { name: 'Node.js',    Icon: Server,    color: '#68a063' },
+  { name: 'FastAPI',    Icon: Zap,       color: '#009688' },
+  { name: 'PostgreSQL', Icon: Database,  color: '#336791' },
+  { name: 'React 19',   Icon: Layers,    color: '#61dafb' },
+  { name: 'TypeScript', Icon: FileCode,  color: '#3178c6' },
+  { name: 'Python',     Icon: Terminal,  color: '#3776ab' },
+  { name: 'REST APIs',  Icon: Globe,     color: '#3b82f6' },
+  { name: 'Git',        Icon: GitBranch, color: '#f05032' },
+  { name: 'Supabase',   Icon: Cloud,     color: '#3ecf8e' },
+  { name: 'Express',    Icon: Code2,     color: '#888888' },
 ]
 
 // Full categorized stack from README
@@ -110,9 +112,24 @@ export default function Skills() {
           animate={inView ? 'visible' : 'hidden'}
           style={{ marginBottom: '3rem' }}
         >
-          {CORE_SKILLS.map(({ name, Icon }) => (
-            <motion.div key={name} className="skill-card" variants={cardV}>
-              <Icon size={26} className="skill-icon" />
+          {CORE_SKILLS.map(({ name, Icon, color }) => (
+            <motion.div
+              key={name}
+              className="skill-card"
+              variants={cardV}
+              style={{ borderTop: `2.5px solid ${color}22` }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderTopColor = color
+                el.style.boxShadow = `0 8px 24px ${color}22`
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement
+                el.style.borderTopColor = `${color}22`
+                el.style.boxShadow = ''
+              }}
+            >
+              <Icon size={26} className="skill-icon" style={{ color }} />
               <span className="skill-name">{name}</span>
             </motion.div>
           ))}
@@ -147,9 +164,31 @@ export default function Skills() {
                 {group.label}
               </span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                {group.tags.map(t => (
-                  <span key={t} className="tech-tag">{t}</span>
-                ))}
+                {group.tags.map(t => {
+                  const c = getTechColor(t)
+                  return (
+                    <span
+                      key={t}
+                      className="tech-tag"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', borderColor: `${c}28`, color: `${c}cc` }}
+                      onMouseEnter={e => {
+                        const el = e.currentTarget as HTMLElement
+                        el.style.borderColor = `${c}88`
+                        el.style.color = c
+                        el.style.background = `${c}10`
+                      }}
+                      onMouseLeave={e => {
+                        const el = e.currentTarget as HTMLElement
+                        el.style.borderColor = `${c}28`
+                        el.style.color = `${c}cc`
+                        el.style.background = ''
+                      }}
+                    >
+                      <TechIcon name={t} />
+                      {t}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           ))}

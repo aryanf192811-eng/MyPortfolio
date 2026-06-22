@@ -8,9 +8,9 @@
  * 5. Replace the placeholder strings below with your real IDs.
  */
 export const EMAILJS = {
-  SERVICE_ID: 'YOUR_SERVICE_ID',
-  TEMPLATE_ID: 'YOUR_TEMPLATE_ID',
-  PUBLIC_KEY: 'YOUR_PUBLIC_KEY',
+  SERVICE_ID:  'service_psr3ozk',
+  TEMPLATE_ID: 'template_2ww8rzu',
+  PUBLIC_KEY:  'cR95UBD-JZtUbI8jy',
 } as const
 
 // Resume opens in new tab; user can Ctrl+P → Save as PDF

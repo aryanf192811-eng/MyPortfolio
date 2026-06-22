@@ -1,36 +1,82 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Mail, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, Github, Linkedin, Send, CheckCircle, AlertCircle, Copy } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import { EMAILJS } from '../lib/emailConfig'
 
+emailjs.init({ publicKey: EMAILJS.PUBLIC_KEY })
+
 type Status = 'idle' | 'sending' | 'success' | 'error'
+
+function CopyableLink({ href, icon, label, copyable }: { href: string; icon: React.ReactNode; label: string; copyable: boolean }) {
+  const [copied, setCopied] = useState(false)
+  const copy = (e: React.MouseEvent) => {
+    if (!copyable) return
+    e.preventDefault()
+    navigator.clipboard.writeText(label).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+  return (
+    <a
+      href={href}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel="noopener noreferrer"
+      onClick={copyable ? copy : undefined}
+      title={copyable ? 'Click to copy' : undefined}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: '10px',
+        fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', fontWeight: 500,
+        color: copied ? '#22c55e' : 'var(--text-muted)', textDecoration: 'none',
+        transition: 'color 0.18s', cursor: copyable ? 'none' : 'none',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = copied ? '#22c55e' : 'var(--text)' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = copied ? '#22c55e' : 'var(--text-muted)' }}
+    >
+      <span style={{ color: copied ? '#22c55e' : 'var(--text-faint)', flexShrink: 0 }}>{icon}</span>
+      {copied ? 'Copied!' : label}
+      {copyable && <Copy size={11} style={{ opacity: 0.4, marginLeft: '2px' }} />}
+    </a>
+  )
+}
 
 export default function Contact() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef    = useRef<HTMLFormElement>(null)
+  const replyRef   = useRef<HTMLInputElement>(null)
   const inView = useInView(sectionRef, { once: true, margin: '-80px' })
   const [status, setStatus] = useState<Status>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!formRef.current) return
+
+    // Mirror from_email into reply_to so Aryan can reply directly to sender
+    const emailInput = formRef.current.querySelector<HTMLInputElement>('input[name="from_email"]')
+    if (replyRef.current && emailInput) replyRef.current.value = emailInput.value
+
     setStatus('sending')
 
     try {
       await emailjs.sendForm(
         EMAILJS.SERVICE_ID,
         EMAILJS.TEMPLATE_ID,
-        formRef.current,
-        { publicKey: EMAILJS.PUBLIC_KEY },
+        formRef.current
       )
       setStatus('success')
+      setErrorMessage('')
       formRef.current.reset()
       setTimeout(() => setStatus('idle'), 5000)
-    } catch (err) {
+    } catch (err: any) {
       console.error('[EmailJS]', err)
       setStatus('error')
-      setTimeout(() => setStatus('idle'), 5000)
+      setErrorMessage(err?.text || err?.message || 'Unknown error occurred')
+      setTimeout(() => {
+        setStatus('idle')
+        setErrorMessage('')
+      }, 5000)
     }
   }
 
@@ -86,8 +132,11 @@ export default function Contact() {
                 disabled={status === 'sending'}
                 style={{ resize: 'none' }}
               />
-              {/* Hidden field for email template */}
-              <input type="hidden" name="to_name" value="Aryan" />
+              {/* Hidden fields — EmailJS template must use {{to_email}} in "To Email" field
+                  and {{reply_to}} in "Reply To" field so Aryan can reply directly to sender */}
+              <input type="hidden" name="to_name"  value="Aryan" />
+              <input type="hidden" name="to_email"  value="aryanf192811@gmail.com" />
+              <input type="hidden" name="reply_to"  value="" ref={replyRef} />
 
               {/* Submit */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
@@ -106,12 +155,12 @@ export default function Contact() {
                   onMouseEnter={e => {
                     if (status === 'idle') {
                       (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'
-                      ;(e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)'
+                        ; (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)'
                     }
                   }}
                   onMouseLeave={e => {
                     (e.currentTarget as HTMLButtonElement).style.opacity = '1'
-                    ;(e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'
+                      ; (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'
                   }}
                 >
                   <Send size={14} />
@@ -134,17 +183,12 @@ export default function Contact() {
                     animate={{ opacity: 1, x: 0 }}
                     style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: '#ef4444' }}
                   >
-                    <AlertCircle size={15} /> Failed — try email directly.
+                    <AlertCircle size={15} /> Failed: {errorMessage}
                   </motion.span>
                 )}
               </div>
 
-              {/* EmailJS setup note (visible during dev / before keys are filled in) */}
-              {EMAILJS.SERVICE_ID === 'YOUR_SERVICE_ID' && (
-                <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: 'var(--text-faint)', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '6px', padding: '8px 12px', lineHeight: 1.6 }}>
-                  ⚠ EmailJS keys not set. See <code>src/lib/emailConfig.ts</code> for setup instructions.
-                </p>
-              )}
+
             </form>
           </motion.div>
 
@@ -178,27 +222,11 @@ export default function Contact() {
             {/* Contact links */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '2rem' }}>
               {[
-                { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={15} />, label: 'aryanf192811@gmail.com' },
-                { href: 'https://github.com/aryanf192811-eng', icon: <Github size={15} />, label: 'github.com/aryanf192811-eng' },
-                { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={15} />, label: 'linkedin.com/in/ganpati-kumar' },
-              ].map(({ href, icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '10px',
-                    fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', fontWeight: 500,
-                    color: 'var(--text-muted)', textDecoration: 'none',
-                    transition: 'color 0.18s',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-muted)' }}
-                >
-                  <span style={{ color: 'var(--text-faint)', flexShrink: 0 }}>{icon}</span>
-                  {label}
-                </a>
+                { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={15} />, label: 'aryanf192811@gmail.com', copyable: true },
+                { href: 'https://github.com/aryanf192811-eng', icon: <Github size={15} />, label: 'github.com/aryanf192811-eng', copyable: false },
+                { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={15} />, label: 'linkedin.com/in/ganpati-kumar', copyable: false },
+              ].map(({ href, icon, label, copyable }) => (
+                <CopyableLink key={label} href={href} icon={icon} label={label} copyable={copyable} />
               ))}
             </div>
 

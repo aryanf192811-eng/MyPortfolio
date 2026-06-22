@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
 import { getTechColor } from '../lib/techColors'
+import { BCartVisual, ExamForgeVisual, TraveloopVisual } from './ProjectVisuals'
 
 interface ProjectLink {
   label: string
@@ -81,66 +82,58 @@ const PROJECTS: Project[] = [
   },
 ]
 
+const VISUAL_MAP: Record<string, React.ReactNode> = {
+  'B-Cart':    <BCartVisual />,
+  'ExamForge': <ExamForgeVisual />,
+  'Traveloop': <TraveloopVisual />,
+}
+
 function ProjectVisual({ project }: { project: Project }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const nx = ((e.clientX - r.left) / r.width - 0.5) * 2
+    const ny = ((e.clientY - r.top) / r.height - 0.5) * 2
+    setTilt({ x: ny * -10, y: nx * 10 })
+  }
+
   return (
     <div
+      ref={cardRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
       style={{
         background: 'var(--surface)',
-        border: '1.5px solid var(--border)',
+        border: `1.5px solid ${project.accent}30`,
         borderRadius: '18px',
         aspectRatio: '4/3',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         position: 'relative',
         overflow: 'hidden',
+        transform: `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: 'transform 0.12s ease, box-shadow 0.2s',
+        boxShadow: tilt.x !== 0 ? `0 20px 50px ${project.accent}22` : 'none',
+        cursor: 'default',
       }}
     >
-      {/* Grid pattern */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `linear-gradient(${project.accent}10 1px, transparent 1px), linear-gradient(90deg, ${project.accent}10 1px, transparent 1px)`,
-        backgroundSize: '30px 30px',
-      }} />
-      {/* Radial glow */}
-      <div style={{
-        position: 'absolute',
-        width: '180px', height: '180px', borderRadius: '50%',
-        background: `radial-gradient(circle, ${project.accent}1a 0%, transparent 70%)`,
-      }} />
-      {/* Letter mark */}
-      <span style={{
-        fontFamily: 'Sora, sans-serif', fontSize: '4.5rem', fontWeight: 800,
-        letterSpacing: '-0.08em', color: 'transparent',
-        WebkitTextStroke: `2.5px ${project.accent}`,
-        position: 'relative', zIndex: 1, opacity: 0.75,
-        userSelect: 'none',
-      }}>
-        {project.letter}
-      </span>
-      {/* Stack chips bottom */}
-      <div style={{ position: 'absolute', bottom: '1.1rem', left: '1.1rem', right: '1.1rem', display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-        {project.stack.slice(0, 5).map(t => (
-          <span key={t} style={{
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '0.58rem',
-            color: project.accent,
-            background: `${project.accent}14`,
-            border: `1px solid ${project.accent}28`,
-            borderRadius: '4px', padding: '2px 7px',
-          }}>
-            {t}
+      {VISUAL_MAP[project.title] ?? (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+          <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '4rem', fontWeight: 800, color: 'transparent', WebkitTextStroke: `2px ${project.accent}`, opacity: 0.6 }}>
+            {project.letter}
           </span>
-        ))}
-      </div>
-      {/* Badge */}
+        </div>
+      )}
+      {/* Badge overlay */}
       {project.badge && (
         <div style={{
-          position: 'absolute', top: '1rem', right: '1rem',
-          fontFamily: 'Sora, sans-serif', fontSize: '0.62rem', fontWeight: 700,
-          color: project.accent,
-          background: `${project.accent}18`,
-          border: `1px solid ${project.accent}30`,
-          borderRadius: '50px', padding: '4px 10px',
+          position: 'absolute', top: '0.85rem', right: '0.85rem',
+          fontFamily: 'Sora, sans-serif', fontSize: '0.58rem', fontWeight: 700,
+          color: project.accent, background: `${project.accent}18`,
+          border: `1px solid ${project.accent}30`, borderRadius: '50px', padding: '3px 9px',
+          zIndex: 10,
         }}>
           {project.badge}
         </div>
