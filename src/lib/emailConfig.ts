@@ -8,9 +8,10 @@
  * 5. Replace the placeholder strings below with your real IDs.
  */
 export const EMAILJS = {
-  SERVICE_ID:  'service_psr3ozk',
-  TEMPLATE_ID: 'template_2ww8rzu',
-  PUBLIC_KEY:  'cR95UBD-JZtUbI8jy',
+  SERVICE_ID:          'service_psr3ozk',
+  TEMPLATE_ID:         'template_2ww8rzu',    // auto-reply → client
+  NOTIFY_TEMPLATE_ID:  'template_qcz84mn',    // notification → aryan
+  PUBLIC_KEY:          'cR95UBD-JZtUbI8jy',
 } as const
 
 // Resume PDF — served from /public, downloads directly

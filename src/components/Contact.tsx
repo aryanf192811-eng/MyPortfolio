@@ -54,11 +54,12 @@ export default function Contact() {
     setStatus('sending')
 
     try {
-      await emailjs.sendForm(
-        EMAILJS.SERVICE_ID,
-        EMAILJS.TEMPLATE_ID,
-        formRef.current
-      )
+      await Promise.all([
+        // auto-reply → client
+        emailjs.sendForm(EMAILJS.SERVICE_ID, EMAILJS.TEMPLATE_ID, formRef.current),
+        // notification → aryan
+        emailjs.sendForm(EMAILJS.SERVICE_ID, EMAILJS.NOTIFY_TEMPLATE_ID, formRef.current),
+      ])
       setStatus('success')
       setErrorMessage('')
       formRef.current.reset()
