@@ -231,7 +231,7 @@ export function TraveloopVisual() {
     { x: 170, y: 130, name: 'Jaipur',    emoji: '🏯',  ex: 170, ey: 115, tx: 186, ty: 138, anchor: 'start' },
     { x: 220, y: 230, name: 'Mumbai',    emoji: '🌊',  ex: 220, ey: 215, tx: 238, ty: 238, anchor: 'start' },
     { x: 80,  y: 270, name: 'Goa',       emoji: '🌴',  ex: 80,  ey: 255, tx: 62,  ty: 278, anchor: 'end'   },
-  ]
+  ] as const
 
   const routePath = `M 58 90 C 100 80, 140 100, 170 130 C 195 150, 220 190, 220 230 C 215 250, 150 265, 80 270`
 
