@@ -227,10 +227,10 @@ export function TraveloopVisual() {
   }, [])
 
   const cities = [
-    { x: 58,  y: 90,  name: 'Delhi NCR', emoji: '🏙️', lx: -14, ly: -16, anchor: 'end'   },
-    { x: 170, y: 130, name: 'Jaipur',    emoji: '🏯',  lx:  14, ly: -16, anchor: 'start' },
-    { x: 220, y: 230, name: 'Mumbai',    emoji: '🌊',  lx:  16, ly:   4, anchor: 'start' },
-    { x: 80,  y: 270, name: 'Goa',       emoji: '🌴',  lx: -14, ly:   4, anchor: 'end'   },
+    { x: 58,  y: 90,  name: 'Delhi NCR', emoji: '🏙️', ex: 58,  ey: 75,  tx: 42,  ty: 104, anchor: 'end'   },
+    { x: 170, y: 130, name: 'Jaipur',    emoji: '🏯',  ex: 170, ey: 115, tx: 186, ty: 138, anchor: 'start' },
+    { x: 220, y: 230, name: 'Mumbai',    emoji: '🌊',  ex: 220, ey: 215, tx: 238, ty: 238, anchor: 'start' },
+    { x: 80,  y: 270, name: 'Goa',       emoji: '🌴',  ex: 80,  ey: 255, tx: 62,  ty: 278, anchor: 'end'   },
   ]
 
   const routePath = `M 58 90 C 100 80, 140 100, 170 130 C 195 150, 220 190, 220 230 C 215 250, 150 265, 80 270`
@@ -291,21 +291,20 @@ export function TraveloopVisual() {
             <circle cx={c.x} cy={c.y} r="18" fill="url(#cityGlow)" />
             <circle cx={c.x} cy={c.y} r="7" fill={`${accent}20`} stroke={accent} strokeWidth="1.5" />
             <circle cx={c.x} cy={c.y} r="3" fill={accent} />
-            {/* Emoji — offset opposite to label so they don't clash */}
-            <text x={c.x - c.lx * 0.4} y={c.y - 12} textAnchor="middle" fontSize="11">{c.emoji}</text>
-            {/* City name — always visible, fanned outward per city */}
-            <motion.text
-              x={c.x + c.lx}
-              y={c.y + c.ly}
-              textAnchor={c.anchor as 'start' | 'end' | 'middle'}
+            {/* Emoji above dot */}
+            <text x={c.ex} y={c.ey} textAnchor="middle" fontSize="11">{c.emoji}</text>
+            {/* City name — always visible, positioned away from dot */}
+            <text
+              x={c.tx}
+              y={c.ty}
+              textAnchor={c.anchor}
               fontFamily="monospace"
-              fontSize="7"
+              fontSize="8"
               fill={accent}
-              animate={{ opacity: hovered ? 1 : 0.7 }}
-              transition={{ duration: 0.3 }}
+              fillOpacity="0.9"
             >
               {c.name}
-            </motion.text>
+            </text>
           </motion.g>
         ))}
 
