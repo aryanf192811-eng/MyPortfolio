@@ -123,6 +123,14 @@ export default function Contact() {
                 required
                 disabled={status === 'sending'}
               />
+              <input
+                className="contact-input"
+                type="text"
+                name="title"
+                placeholder="Subject"
+                required
+                disabled={status === 'sending'}
+              />
               <textarea
                 className="contact-input"
                 name="message"
