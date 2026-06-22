@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 // ─── B-Cart: ERP Schema Flow ──────────────────────────────────────────────
 export function BCartVisual() {
@@ -227,10 +227,10 @@ export function TraveloopVisual() {
   }, [])
 
   const cities = [
-    { x: 58,  y: 90,  name: 'Delhi NCR',  emoji: '🏙️' },
-    { x: 170, y: 130, name: 'Jaipur',     emoji: '🏯' },
-    { x: 220, y: 230, name: 'Mumbai',     emoji: '🌊' },
-    { x: 80,  y: 270, name: 'Goa',        emoji: '🌴' },
+    { x: 58,  y: 90,  name: 'Delhi NCR', emoji: '🏙️', lx: -14, ly: -16, anchor: 'end'   },
+    { x: 170, y: 130, name: 'Jaipur',    emoji: '🏯',  lx:  14, ly: -16, anchor: 'start' },
+    { x: 220, y: 230, name: 'Mumbai',    emoji: '🌊',  lx:  16, ly:   4, anchor: 'start' },
+    { x: 80,  y: 270, name: 'Goa',       emoji: '🌴',  lx: -14, ly:   4, anchor: 'end'   },
   ]
 
   const routePath = `M 58 90 C 100 80, 140 100, 170 130 C 195 150, 220 190, 220 230 C 215 250, 150 265, 80 270`
@@ -291,17 +291,21 @@ export function TraveloopVisual() {
             <circle cx={c.x} cy={c.y} r="18" fill="url(#cityGlow)" />
             <circle cx={c.x} cy={c.y} r="7" fill={`${accent}20`} stroke={accent} strokeWidth="1.5" />
             <circle cx={c.x} cy={c.y} r="3" fill={accent} />
-            <text x={c.x} y={c.y - 14} textAnchor="middle" fontSize="11">{c.emoji}</text>
-            <AnimatePresence>
-              {hovered && (
-                <motion.text x={c.x} y={c.y + 20} textAnchor="middle"
-                  fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.85"
-                  initial={{ opacity: 0, y: c.y + 15 }} animate={{ opacity: 0.85, y: c.y + 20 }} exit={{ opacity: 0 }}
-                  transition={{ delay: i * 0.1 }}>
-                  {c.name}
-                </motion.text>
-              )}
-            </AnimatePresence>
+            {/* Emoji — offset opposite to label so they don't clash */}
+            <text x={c.x - c.lx * 0.4} y={c.y - 12} textAnchor="middle" fontSize="11">{c.emoji}</text>
+            {/* City name — always visible, fanned outward per city */}
+            <motion.text
+              x={c.x + c.lx}
+              y={c.y + c.ly}
+              textAnchor={c.anchor as 'start' | 'end' | 'middle'}
+              fontFamily="monospace"
+              fontSize="7"
+              fill={accent}
+              animate={{ opacity: hovered ? 1 : 0.7 }}
+              transition={{ duration: 0.3 }}
+            >
+              {c.name}
+            </motion.text>
           </motion.g>
         ))}
 
