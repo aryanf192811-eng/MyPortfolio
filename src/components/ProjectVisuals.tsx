@@ -328,3 +328,455 @@ export function TraveloopVisual() {
     </div>
   )
 }
+
+// ─── NEET Notes: PWA Offline Chemistry Notes ─────────────────────────────
+export function NeetNotesVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#a78bfa'
+
+  const chapters = [
+    { label: 'Atomic Structure',  icon: '⚛', y: 80  },
+    { label: 'Chemical Bonding',  icon: '🔗', y: 122 },
+    { label: 'Thermodynamics',    icon: '🌡', y: 164 },
+    { label: 'Electrochemistry',  icon: '⚡', y: 206 },
+    { label: 'Organic Chemistry', icon: '🧪', y: 248 },
+  ]
+  const completions = [68, 82, 54, 71, 90]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="nnGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+            <path d="M18 0H0V18" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+          <radialGradient id="nnGlow" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.12" />
+            <stop offset="100%" stopColor={accent} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="278" height="360" fill="url(#nnGrid)" />
+        <rect width="278" height="360" fill="url(#nnGlow)" />
+
+        {/* PWA badge */}
+        <rect x="84" y="18" width="110" height="26" rx="13" fill={`${accent}20`} stroke={`${accent}55`} strokeWidth="1.2" />
+        <text x="139" y="35" textAnchor="middle" fontFamily="monospace" fontSize="8" fill={accent} opacity="0.9">📱 PWA · Offline First</text>
+
+        {/* Chapter rows with animated progress */}
+        {chapters.map((ch, i) => (
+          <motion.g key={ch.label}
+            animate={hovered ? { x: [0, 3, 0] } : { x: 0 }}
+            transition={{ duration: 0.9, delay: i * 0.1, repeat: hovered ? Infinity : 0, repeatDelay: 0.5 }}
+          >
+            <rect x="30" y={ch.y} width="218" height="28" rx="6"
+              fill={`${accent}0d`} stroke={`${accent}28`} strokeWidth="1" />
+            <text x="50" y={ch.y + 17} fontFamily="monospace" fontSize="10">{ch.icon}</text>
+            <text x="68" y={ch.y + 17} fontFamily="monospace" fontSize="7.5" fill="var(--text)" opacity="0.6">{ch.label}</text>
+            <rect x="184" y={ch.y + 9} width="48" height="7" rx="3.5" fill={`${accent}18`} />
+            <motion.rect x="184" y={ch.y + 9} height="7" rx="3.5" fill={accent} opacity="0.75"
+              animate={{ width: hovered ? (completions[i] / 100) * 48 : 4 }}
+              transition={{ duration: 0.7, delay: i * 0.12 }} />
+          </motion.g>
+        ))}
+
+        {/* Footer info */}
+        <rect x="30" y="293" width="218" height="40" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="139" y="309" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.8">NEET Physical Chemistry</text>
+        <text x="139" y="322" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">Class 11 &amp; 12 · service-worker cache</text>
+        <text x="139" y="334" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.5">manifest.json · HTML · CSS · JS</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── Soundrich: Premium Hearing Clinic Frontend ───────────────────────────
+export function SoundrichVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#06b6d4'
+
+  const bars = [0.45, 0.72, 0.55, 0.88, 0.62, 0.78, 0.50, 0.70, 0.58, 0.82]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="srGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+          <linearGradient id="srWave" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.8" />
+            <stop offset="100%" stopColor={accent} stopOpacity="0.15" />
+          </linearGradient>
+        </defs>
+        <rect width="278" height="360" fill="url(#srGrid)" />
+
+        {/* Brand header */}
+        <text x="139" y="38" textAnchor="middle" fontFamily="monospace" fontSize="9.5" fill={accent} opacity="0.9">🎧 Soundrich Hearing</text>
+        <text x="139" y="52" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">Client Demo · Premium Frontend</text>
+
+        {/* Soundwave visualizer bars */}
+        {bars.map((h, i) => {
+          const bh = h * 72
+          const bx = 24 + i * 23
+          return (
+            <motion.rect key={i}
+              x={bx} y={105 - bh / 2}
+              width="15" height={bh} rx="7.5"
+              fill="url(#srWave)" stroke={`${accent}44`} strokeWidth="0.5"
+              animate={hovered ? { scaleY: [1, 1 + h * 0.45, 1], opacity: [0.55, 1, 0.55] } : { scaleY: 1, opacity: 0.45 }}
+              transition={{ duration: 0.65 + i * 0.06, repeat: hovered ? Infinity : 0, delay: i * 0.07 }}
+              style={{ transformOrigin: `${bx + 7.5}px 105px` }}
+            />
+          )
+        })}
+
+        {/* Clinic location cards */}
+        {[
+          { city: 'Mumbai', rating: '4.9★', x: 28  },
+          { city: 'Pune',   rating: '4.8★', x: 148 },
+        ].map((clinic) => (
+          <motion.g key={clinic.city}
+            animate={hovered ? { y: [0, -3, 0] } : { y: 0 }}
+            transition={{ duration: 1.6, repeat: hovered ? Infinity : 0 }}
+          >
+            <rect x={clinic.x} y="190" width="102" height="52" rx="8"
+              fill={`${accent}12`} stroke={`${accent}44`} strokeWidth="1.2" />
+            <text x={clinic.x + 51} y="208" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent} opacity="0.9">🏥 {clinic.city}</text>
+            <text x={clinic.x + 51} y="221" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.45">Hearing Clinic</text>
+            <text x={clinic.x + 51} y="234" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent} opacity="0.85">{clinic.rating}</text>
+          </motion.g>
+        ))}
+
+        {/* WhatsApp CTA */}
+        <rect x="60" y="260" width="158" height="26" rx="13" fill="#25d36620" stroke="#25d36655" strokeWidth="1.2" />
+        <text x="139" y="277" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill="#25d366" opacity="0.9">💬 WhatsApp · Book Now</text>
+
+        {/* Tech footer */}
+        <rect x="28" y="300" width="222" height="38" rx="6" fill={`${accent}08`} stroke={`${accent}20`} strokeWidth="1" />
+        <text x="139" y="316" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.8">Liquid Morphism · Skeleton Loaders</text>
+        <text x="139" y="329" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.35">HTML · CSS · JS · soundrichearing.com</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── HRMS: HR Management Dashboard ────────────────────────────────────────
+export function HRMSVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#f472b6'
+
+  const stats = [
+    { label: 'Employees', val: '248', icon: '👤' },
+    { label: 'On Leave',  val: '12',  icon: '🏖' },
+    { label: 'Depts',     val: '8',   icon: '🏢' },
+  ]
+  const barHeights = [65, 82, 48, 91, 73, 56]
+  const months     = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="hrGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+            <path d="M18 0H0V18" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#hrGrid)" />
+
+        {/* Title bar */}
+        <rect x="20" y="15" width="238" height="28" rx="6" fill={`${accent}15`} stroke={`${accent}44`} strokeWidth="1" />
+        <text x="139" y="33" textAnchor="middle" fontFamily="monospace" fontSize="8.5" fill={accent} opacity="0.9">HR Management System</text>
+
+        {/* Stat cards */}
+        {stats.map((s, i) => (
+          <motion.g key={s.label}
+            animate={hovered ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+            transition={{ duration: 1.2, delay: i * 0.2, repeat: hovered ? Infinity : 0 }}
+            style={{ transformOrigin: `${56 + i * 80}px 78px` }}
+          >
+            <rect x={16 + i * 80} y="55" width="72" height="56" rx="8"
+              fill={`${accent}10`} stroke={`${accent}33`} strokeWidth="1.1" />
+            <text x={52 + i * 80} y="76" textAnchor="middle" fontSize="13">{s.icon}</text>
+            <text x={52 + i * 80} y="92" textAnchor="middle" fontFamily="monospace" fontSize="11" fill={accent} opacity="0.9">{s.val}</text>
+            <text x={52 + i * 80} y="104" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.4">{s.label}</text>
+          </motion.g>
+        ))}
+
+        {/* Chart label */}
+        <text x="20" y="138" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.65">Attendance Trend</text>
+
+        {/* Bar chart */}
+        {barHeights.map((h, i) => (
+          <g key={i}>
+            <rect x={20 + i * 40} y={230 - h} width="26" height={h} rx="4"
+              fill={`${accent}14`} stroke={`${accent}28`} strokeWidth="0.8" />
+            <motion.rect x={20 + i * 40} width="26" rx="4"
+              fill={accent} opacity={0.2}
+              animate={{ height: hovered ? h : h * 0.5, y: hovered ? 230 - h : 230 - h * 0.5, opacity: hovered ? 0.6 : 0.2 }}
+              transition={{ duration: 0.65, delay: i * 0.08 }} />
+            <text x={33 + i * 40} y="244" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.35">{months[i]}</text>
+          </g>
+        ))}
+
+        {/* Figma credit footer */}
+        <rect x="20" y="262" width="238" height="46" rx="6" fill={`${accent}08`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="139" y="279" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent} opacity="0.85">🎨 Figma Design → Code</text>
+        <text x="139" y="292" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">TypeScript · Vite · Tailwind CSS</text>
+        <text x="139" y="304" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.5">Deployed · Vercel</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── GateTrack: GATE CSE 2028 Study Tracker ──────────────────────────────
+export function GateTrackVisual() {
+  const [hovered, setHovered] = useState(false)
+  const [tick, setTick] = useState(0)
+  const accent = '#34d399'
+
+  useEffect(() => {
+    if (!hovered) return
+    const t = setInterval(() => setTick(n => n + 1), 700)
+    return () => clearInterval(t)
+  }, [hovered])
+
+  // Suppress unused variable warning from tick while keeping the effect
+  void tick
+
+  const subjects = [
+    { label: 'Data Structures',   pct: 78, color: '#34d399' },
+    { label: 'Algorithms',        pct: 65, color: '#60a5fa' },
+    { label: 'OS Concepts',       pct: 52, color: '#f59e0b' },
+    { label: 'Computer Networks', pct: 41, color: '#a78bfa' },
+    { label: 'DBMS',              pct: 87, color: '#f472b6' },
+  ]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="gtGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#gtGrid)" />
+
+        {/* Header */}
+        <text x="139" y="30" textAnchor="middle" fontFamily="monospace" fontSize="9" fill={accent} opacity="0.9">📊 GATE CSE 2028 Tracker</text>
+
+        {/* Subject progress bars */}
+        {subjects.map((s, i) => {
+          const barW  = 150
+          const filled = (s.pct / 100) * barW
+          return (
+            <g key={s.label}>
+              <text x="30" y={60 + i * 40} fontFamily="monospace" fontSize="7" fill="var(--text)" opacity="0.55">{s.label}</text>
+              <text x="248" y={60 + i * 40} textAnchor="end" fontFamily="monospace" fontSize="7" fill={s.color} opacity="0.9">{s.pct}%</text>
+              <rect x="30" y={65 + i * 40} width={barW} height="9" rx="4.5" fill={`${s.color}18`} />
+              <motion.rect x="30" y={65 + i * 40} height="9" rx="4.5" fill={s.color} opacity="0.72"
+                animate={{ width: hovered ? filled : filled * 0.5 }}
+                transition={{ duration: 0.7, delay: i * 0.1 }} />
+            </g>
+          )
+        })}
+
+        {/* Pulsing sync indicator */}
+        <rect x="28" y="252" width="222" height="28" rx="6" fill={`${accent}0d`} stroke={`${accent}22`} strokeWidth="1" />
+        <motion.circle cx="48" cy="266" r="5" fill={accent} opacity="0.8"
+          animate={hovered ? { r: [5, 7, 5], opacity: [0.8, 0.3, 0.8] } : {}}
+          transition={{ duration: 1.1, repeat: Infinity }}
+        />
+        <text x="63" y="262" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.85">Supabase · Real-time Sync</text>
+        <text x="63" y="274" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.4">Cross-device · PWA · Offline</text>
+
+        {/* MathJax formula */}
+        <motion.g
+          animate={hovered ? { opacity: [0.4, 0.9, 0.4] } : { opacity: 0.4 }}
+          transition={{ duration: 1.8, repeat: Infinity }}
+        >
+          <rect x="28" y="295" width="222" height="24" rx="5" fill={`${accent}0a`} stroke={`${accent}1a`} strokeWidth="1" />
+          <text x="139" y="311" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent}>T(n) = aT(n/b) + f(n) · MathJax</text>
+        </motion.g>
+
+        {/* Footer */}
+        <text x="139" y="340" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.35">Python · JS · Supabase · MathJax</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── Full-Stack Learning Hub: Interactive Curriculum ───────────────────────
+export function FullStackVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#ef4444'
+
+  const phases = [
+    { num: 0, label: 'How the Web Works', nodes: 1 },
+    { num: 1, label: 'HTML Foundations',  nodes: 1 },
+    { num: 2, label: 'CSS & Design',      nodes: 5 },
+    { num: 3, label: 'JS Core Deep Dive', nodes: 3 },
+    { num: 4, label: 'V8 Engine & GC',    nodes: 5 },
+    { num: 5, label: 'Git & Tooling',     nodes: 1 },
+    { num: 6, label: 'TypeScript Mastery',nodes: 2 },
+  ]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="fsGrid" width="22" height="22" patternUnits="userSpaceOnUse">
+            <path d="M22 0H0V22" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#fsGrid)" />
+
+        {/* Dashboard Frame */}
+        <rect x="20" y="20" width="238" height="260" rx="8" fill={`${accent}08`} stroke={`${accent}33`} strokeWidth="1.2" />
+        <rect x="20" y="20" width="238" height="24" fill={`${accent}15`} stroke={`${accent}33`} strokeWidth="1.2" />
+        <circle cx="34" cy="32" r="3" fill="#ff5f56" />
+        <circle cx="44" cy="32" r="3" fill="#ffbd2e" />
+        <circle cx="54" cy="32" r="3" fill="#27c93f" />
+        <text x="139" y="35" textAnchor="middle" fontFamily="monospace" fontSize="8" fill={accent} opacity="0.9">fs-dashboard.html</text>
+
+        {/* Curriculum nodes */}
+        {phases.map((p, i) => (
+          <motion.g key={p.num}
+            animate={hovered ? { x: [0, 4, 0] } : {}}
+            transition={{ duration: 1.2, delay: i * 0.15, repeat: hovered ? Infinity : 0 }}
+          >
+            <rect x="35" y={55 + i * 30} width="208" height="22" rx="4" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+            <text x="45" y={69 + i * 30} fontFamily="monospace" fontSize="8" fill={accent}>P{p.num}</text>
+            <text x="65" y={69 + i * 30} fontFamily="monospace" fontSize="7" fill="var(--text)" opacity="0.8">{p.label}</text>
+            
+            {/* Dots representing notes */}
+            {Array.from({ length: p.nodes }).map((_, j) => (
+              <circle key={j} cx={230 - j * 10} cy={66 + i * 30} r="2.5" fill={accent} opacity="0.6" />
+            ))}
+          </motion.g>
+        ))}
+
+        {/* Anti-theft script active badge */}
+        <rect x="45" y="266" width="188" height="26" rx="6" fill="#1f2937" stroke={`${accent}44`} strokeWidth="1" />
+        <motion.circle cx="60" cy="279" r="4" fill="#ef4444"
+          animate={hovered ? { opacity: [1, 0.2, 1] } : { opacity: 1 }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        <text x="72" y="282" fontFamily="monospace" fontSize="6.5" fill="#ef4444" opacity="0.9">Anti-Theft Block Active</text>
+        <text x="220" y="282" textAnchor="end" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.5">wire-hub.js</text>
+
+        {/* Footer info */}
+        <text x="139" y="315" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.8">45+ Standalone Glassmorphic Notes</text>
+        <text x="139" y="328" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">HTML · CSS · JS · Vercel Rewrites</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── C++ Mastery: DSA & Logic Building ────────────────────────────────────
+export function CPPVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#00599C' // C++ blue
+
+  const nodes = [
+    { id: 1, x: 139, y: 70 },
+    { id: 2, x: 80,  y: 130 },
+    { id: 3, x: 198, y: 130 },
+    { id: 4, x: 50,  y: 200 },
+    { id: 5, x: 110, y: 200 },
+    { id: 6, x: 168, y: 200 },
+    { id: 7, x: 228, y: 200 },
+  ]
+  const edges = [
+    [1, 2], [1, 3],
+    [2, 4], [2, 5],
+    [3, 6], [3, 7]
+  ]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="cppGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}1a`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#cppGrid)" />
+
+        <text x="139" y="35" textAnchor="middle" fontFamily="monospace" fontSize="9" fill={accent} opacity="0.9">C++ · Theory + DSA</text>
+
+        {/* Tree Edges */}
+        {edges.map(([u, v], i) => {
+          const n1 = nodes.find(n => n.id === u)!
+          const n2 = nodes.find(n => n.id === v)!
+          return (
+            <motion.line
+              key={i} x1={n1.x} y1={n1.y} x2={n2.x} y2={n2.y}
+              stroke={`${accent}44`} strokeWidth="1.5"
+              animate={hovered ? { stroke: [ `${accent}44`, `${accent}aa`, `${accent}44` ] } : {}}
+              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+            />
+          )
+        })}
+
+        {/* Floating packet dots on edges */}
+        {hovered && edges.map(([u, v], i) => {
+          const n1 = nodes.find(n => n.id === u)!
+          const n2 = nodes.find(n => n.id === v)!
+          return (
+            <motion.circle
+              key={`dot${i}`}
+              r="2.5" fill="#eab308" opacity="0.9"
+              animate={{ x: [n1.x, n2.x], y: [n1.y, n2.y], opacity: [0, 1, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+            />
+          )
+        })}
+
+        {/* Tree Nodes */}
+        {nodes.map(n => (
+          <motion.g key={n.id}
+            animate={hovered ? { scale: [1, 1.2, 1] } : {}}
+            transition={{ duration: 1.5, repeat: Infinity, delay: n.id * 0.1 }}
+            style={{ transformOrigin: `${n.x}px ${n.y}px` }}
+          >
+            <circle cx={n.x} cy={n.y} r="12" fill="var(--surface)" stroke={accent} strokeWidth="2" />
+            <text x={n.x} y={n.y + 3} textAnchor="middle" fontFamily="monospace" fontSize="8" fill="var(--text)">{n.id}</text>
+          </motion.g>
+        ))}
+
+        {/* Code block */}
+        <rect x="28" y="240" width="222" height="45" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="38" y="255" fontFamily="monospace" fontSize="6.5" fill="#eab308">std::vector&lt;int&gt; nums = {'{1, 2, 3}'};</text>
+        <text x="38" y="267" fontFamily="monospace" fontSize="6.5" fill={accent}>std::sort(nums.begin(), nums.end());</text>
+        <text x="38" y="279" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.6">// O(N log N) logic building</text>
+
+        <text x="139" y="315" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.8">LeetCode Approaches · System Design</text>
+        <text x="139" y="328" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">Pointers · Memory · OOPs</text>
+      </svg>
+    </div>
+  )
+}

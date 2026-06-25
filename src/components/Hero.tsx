@@ -279,7 +279,7 @@ export default function Hero() {
           >
             Hello, I&apos;m{' '}
             <span style={{ WebkitTextStroke: '2px var(--text)', color: 'transparent' }}>
-              Aryan
+              Ganpati
             </span>
           </motion.h1>
 
@@ -292,7 +292,7 @@ export default function Hero() {
               fontFamily: 'Sora, sans-serif',
               fontSize: 'clamp(1.15rem, 2.8vw, 1.75rem)',
               fontWeight: 600, color: 'var(--text-muted)',
-              marginBottom: '1.2rem', minHeight: '2.4em', lineHeight: 1.3,
+              minHeight: '2.4em', lineHeight: 1.3,
             }}
           >
             <TypeAnimation

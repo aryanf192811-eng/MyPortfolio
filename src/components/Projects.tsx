@@ -2,7 +2,11 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
 import { getTechColor } from '../lib/techColors'
-import { BCartVisual, ExamForgeVisual, TraveloopVisual } from './ProjectVisuals'
+import {
+  BCartVisual, ExamForgeVisual, TraveloopVisual,
+  NeetNotesVisual, SoundrichVisual, HRMSVisual, GateTrackVisual,
+  FullStackVisual, CPPVisual,
+} from './ProjectVisuals'
 
 interface ProjectLink {
   label: string
@@ -79,6 +83,97 @@ const PROJECTS: Project[] = [
     accent: '#f59e0b',
     letter: 'TL',
     badge: 'Hackathon Finalist',
+  },
+]
+
+interface MiniProject {
+  title: string
+  tagline: string
+  description: string
+  stack: string[]
+  links: { label: string; href: string }[]
+  accent: string
+  visual: React.ReactNode
+}
+
+const MINI_PROJECTS: MiniProject[] = [
+  {
+    title: 'NEET Notes',
+    tagline: 'Offline-first PWA · Physical Chemistry Notes',
+    description:
+      'A Progressive Web App that bundles curated Physical Chemistry notes for NEET (Class 11 & 12) with offline access via service worker. Installable on mobile with a full manifest, zero backend.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'PWA', 'Service Worker'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/neet-notes' },
+      { label: 'Live', href: 'https://neet-notes-vert.vercel.app/' }
+    ],
+    accent: '#a78bfa',
+    visual: <NeetNotesVisual />,
+  },
+  {
+    title: 'Soundrich Hearing',
+    tagline: 'Client Demo · Premium Hearing Clinic Frontend',
+    description:
+      'High-fidelity frontend demo built for Soundrich Hearing — a real hearing care clinic. Features liquid morphism UI, skeleton loaders, animated soundwave visualizer, clinic location cards, and a WhatsApp booking CTA.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/soundrichhearingdemo' },
+      { label: 'Live', href: 'https://soundrichhearingdemo.vercel.app/' }
+    ],
+    accent: '#06b6d4',
+    visual: <SoundrichVisual />,
+  },
+  {
+    title: 'HRMS',
+    tagline: 'HR Management System · Figma-to-Code',
+    description:
+      'A pixel-perfect, fully functional HR Management System UI translated directly from a professional Figma design. Tracks employees, departments, and attendance with animated stat cards and bar charts.',
+    stack: ['TypeScript', 'Vite', 'Tailwind CSS'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/HRMS' },
+      { label: 'Live', href: 'https://hrms69.vercel.app/dashboard' }
+    ],
+    accent: '#f472b6',
+    visual: <HRMSVisual />,
+  },
+  {
+    title: 'GateTrack',
+    tagline: 'GATE CSE 2028 · Study Progress Tracker PWA',
+    description:
+      'A cross-device study tracker built for GATE CSE 2028 preparation. Real-time sync across devices via Supabase, offline-capable PWA, MathJax-rendered formulas, and per-subject progress bars.',
+    stack: ['Python', 'JavaScript', 'Supabase', 'MathJax', 'PWA'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/gatetrack' },
+      { label: 'Live', href: 'https://gatetrack-529tmpovh-aryans-projects-540bef68.vercel.app/' }
+    ],
+    accent: '#34d399',
+    visual: <GateTrackVisual />,
+  },
+  {
+    title: 'Full-Stack Hub',
+    tagline: 'Glassmorphic Curriculum & Notes Platform',
+    description:
+      'A personal, premium study system documenting full-stack engineering across 6 phases. Features a unified glassmorphic design system, persistent dark mode, bookmarking, and custom dev-tooling to build 45+ standalone notes.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/full-stack' },
+      { label: 'Live', href: 'https://full-stack-five-jade.vercel.app/' }
+    ],
+    accent: '#ef4444',
+    visual: <FullStackVisual />,
+  },
+  {
+    title: 'C++ Mastery',
+    tagline: 'Theory, DSA & Logic Building Vault',
+    description:
+      'A comprehensive repository covering C++ fundamentals to advanced Data Structures and Algorithms. Focuses on logic building, memory management, OOPs, and LeetCode problem-solving approaches.',
+    stack: ['C++'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/CPP' },
+      { label: 'Live', href: 'https://cpp-tau.vercel.app/' }
+    ],
+    accent: '#00599C',
+    visual: <CPPVisual />,
   },
 ]
 
@@ -247,9 +342,134 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   )
 }
 
+function MiniProjectCard({ project, index }: { project: MiniProject; index: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const nx = ((e.clientX - r.left) / r.width - 0.5) * 2
+    const ny = ((e.clientY - r.top) / r.height - 0.5) * 2
+    setTilt({ x: ny * -6, y: nx * 6 })
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        background: 'var(--surface)',
+        border: `1.5px solid ${project.accent}28`,
+        borderRadius: '18px',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'border-color 0.2s, box-shadow 0.2s',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = `${project.accent}66`
+        e.currentTarget.style.boxShadow = `0 12px 40px ${project.accent}18`
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = `${project.accent}28`
+        e.currentTarget.style.boxShadow = 'none'
+        setTilt({ x: 0, y: 0 })
+      }}
+    >
+      {/* SVG visual panel — interactive on hover, with tilt */}
+      <div
+        ref={cardRef}
+        onMouseMove={onMouseMove}
+        onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+        style={{
+          background: 'var(--surface)',
+          borderBottom: `1px solid ${project.accent}20`,
+          aspectRatio: '16/9',
+          position: 'relative',
+          overflow: 'hidden',
+          transform: `perspective(700px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: 'transform 0.12s ease',
+        }}
+      >
+        {project.visual}
+      </div>
+
+      {/* Text body */}
+      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', flexGrow: 1 }}>
+        {/* Title + tagline */}
+        <div>
+          <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text)', margin: '0 0 0.2rem' }}>
+            {project.title}
+          </h3>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.76rem', color: project.accent, fontStyle: 'italic', margin: 0, opacity: 0.85 }}>
+            {project.tagline}
+          </p>
+        </div>
+
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.65, margin: 0, flexGrow: 1 }}>
+          {project.description}
+        </p>
+
+        {/* Tech stack */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+          {project.stack.map(t => {
+            const color = getTechColor(t)
+            return (
+              <span key={t} style={{
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', fontWeight: 500,
+                color, background: `${color}14`, border: `1px solid ${color}30`,
+                borderRadius: '5px', padding: '2px 8px', whiteSpace: 'nowrap',
+              }}>
+                {t}
+              </span>
+            )
+          })}
+        </div>
+
+        {/* Links */}
+        <div style={{ display: 'flex', gap: '0.5rem', paddingTop: '0.25rem' }}>
+          {project.links.map(link => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '5px',
+                fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 600,
+                color: 'var(--text)', background: 'var(--surface)',
+                border: `1.5px solid ${project.accent}44`, borderRadius: '50px',
+                padding: '5px 14px', textDecoration: 'none',
+                transition: 'border-color 0.18s, background 0.18s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = project.accent
+                e.currentTarget.style.background = `${project.accent}12`
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = `${project.accent}44`
+                e.currentTarget.style.background = 'var(--surface)'
+              }}
+            >
+              {link.label === 'GitHub' ? <Github size={13} /> : <ExternalLink size={13} />} {link.label} {link.label === 'GitHub' && <ExternalLink size={10} style={{ opacity: 0.6 }} />}
+            </a>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Projects() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const [activeTab, setActiveTab] = useState<'major' | 'mini'>('major')
 
   return (
     <section id="projects" style={{ borderBottom: '1px solid var(--border)' }}>
@@ -259,19 +479,72 @@ export default function Projects() {
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ marginBottom: '4rem' }}
+          style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}
         >
-          <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--text-faint)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.55rem' }}>
-            what I&apos;ve shipped
-          </p>
-          <h2 style={{ fontFamily: 'Sora, sans-serif', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-            My{' '}<span style={{ WebkitTextStroke: '2px var(--text)', color: 'transparent' }}>Projects</span>
-          </h2>
+          <div>
+            <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--text-faint)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.55rem' }}>
+              what I&apos;ve shipped
+            </p>
+            <h2 style={{ fontFamily: 'Sora, sans-serif', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)' }}>
+              My{' '}<span style={{ WebkitTextStroke: '2px var(--text)', color: 'transparent' }}>Projects</span>
+            </h2>
+          </div>
+
+          {/* Toggle */}
+          <div style={{ display: 'flex', background: 'var(--surface)', border: '1px solid var(--border-2)', borderRadius: '50px', padding: '0.3rem' }}>
+            <button
+              onClick={() => setActiveTab('major')}
+              style={{
+                background: activeTab === 'major' ? 'var(--text)' : 'transparent',
+                color: activeTab === 'major' ? 'var(--bg)' : 'var(--text-muted)',
+                border: 'none', borderRadius: '50px', padding: '0.4rem 1.2rem',
+                fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+              }}
+            >
+              Major
+            </button>
+            <button
+              onClick={() => setActiveTab('mini')}
+              style={{
+                background: activeTab === 'mini' ? 'var(--text)' : 'transparent',
+                color: activeTab === 'mini' ? 'var(--bg)' : 'var(--text-muted)',
+                border: 'none', borderRadius: '50px', padding: '0.4rem 1.2rem',
+                fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+              }}
+            >
+              Mini
+            </button>
+          </div>
         </motion.div>
 
-        {PROJECTS.map((project, i) => (
-          <ProjectCard key={project.title} project={project} index={i} />
-        ))}
+        {activeTab === 'major' ? (
+          <motion.div
+            key="major"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {PROJECTS.map((project, i) => (
+              <ProjectCard key={project.title} project={project} index={i} />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="mini"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}
+          >
+            {MINI_PROJECTS.map((project, i) => (
+              <MiniProjectCard key={project.title} project={project} index={i} />
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   )

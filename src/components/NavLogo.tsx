@@ -98,7 +98,7 @@ export default function NavLogo() {
         )}
       </svg>
       <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, letterSpacing: '-0.03em' }}>
-        Aryan
+        Ganpati
       </span>
     </a>
   )

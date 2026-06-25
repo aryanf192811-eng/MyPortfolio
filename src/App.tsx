@@ -13,9 +13,9 @@ import CommandPalette from './components/CommandPalette'
 
 function DynamicTitle() {
   useEffect(() => {
-    const original = 'Aryan — Backend Engineer'
+    const original = 'Ganpati — Backend Engineer'
     document.title = original
-    const onBlur  = () => { document.title = '👋 Come back — Aryan misses you!' }
+    const onBlur  = () => { document.title = '👋 Come back — Ganpati misses you!' }
     const onFocus = () => { document.title = original }
     window.addEventListener('blur', onBlur)
     window.addEventListener('focus', onFocus)

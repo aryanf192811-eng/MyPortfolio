@@ -6,12 +6,12 @@ export default function Footer() {
       <div className="footer-inner" style={{ maxWidth: '1100px', margin: '0 auto', padding: '1.1rem 2rem' }}>
         {/* Logo */}
         <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-          Aryan
+          Ganpati
         </span>
 
         {/* Center */}
         <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: 'var(--text-faint)', textAlign: 'center' }}>
-          Designed &amp; built by Aryan · {new Date().getFullYear()}
+          Designed &amp; built by Ganpati · {new Date().getFullYear()}
         </p>
 
         {/* Socials */}

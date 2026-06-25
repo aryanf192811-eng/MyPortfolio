@@ -10,10 +10,10 @@
 export const EMAILJS = {
   SERVICE_ID:          'service_psr3ozk',
   TEMPLATE_ID:         'template_2ww8rzu',    // auto-reply → client
-  NOTIFY_TEMPLATE_ID:  'template_qcz84mn',    // notification → aryan
+  NOTIFY_TEMPLATE_ID:  'template_qcz84mn',    // notification → ganpati
   PUBLIC_KEY:          'cR95UBD-JZtUbI8jy',
 } as const
 
 // Resume PDF — served from /public, downloads directly
 export const RESUME_URL      = '/aryan_resume.pdf'
-export const RESUME_FILENAME = 'Aryan_Resume.pdf'
+export const RESUME_FILENAME = 'Ganpati_Resume.pdf'
