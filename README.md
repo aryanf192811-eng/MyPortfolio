@@ -1,4 +1,4 @@
-# Aryan — Backend Engineer Portfolio
+# Ganpati — Backend Engineer Portfolio
 
 A personal portfolio built to reflect how I actually think about software: schema-first, state-machine-driven, and fully auditable. Every design decision here is justified by the content, not decoration.
 
@@ -26,6 +26,7 @@ A personal portfolio built to reflect how I actually think about software: schem
 - **Three.js particle network** — mouse-reactive node graph rendered on WebGL canvas, hero-section-only
 - **Interactive NavLogo** — mini SVG face in the navbar: blinks autonomously, pupils follow cursor
 - **Project banners** — per-project interactive SVG scenes (B-Cart schema flow, ExamForge dual-DB sync, Traveloop animated route map) with 3D card tilt on hover
+- **Mini-Projects Toggle** — dynamic switch between major and 6 interactive mini-projects (Full-Stack Hub, C++ Mastery, NEET Notes, etc.)
 - **Experience section** — animated timeline card, glowing achievement cards, click-to-switch engineering principles panel with crossfade
 - **Custom cursor** — dual ring+dot, theme-aware (no `mix-blend-mode` hacks)
 - **Full keyboard navigation** — press `1`–`5` to jump between sections
