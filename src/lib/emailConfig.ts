@@ -15,5 +15,5 @@ export const EMAILJS = {
 } as const
 
 // Resume PDF — served from /public, downloads directly
-export const RESUME_URL      = '/aryan_resume.pdf'
+export const RESUME_URL      = '/Ganpati_Resume.pdf'
 export const RESUME_FILENAME = 'Ganpati_Resume.pdf'
