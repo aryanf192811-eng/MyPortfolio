@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
 import { getTechColor } from '../lib/techColors'
 import {
-  BCartVisual, ExamForgeVisual, TraveloopVisual,
+  BCartVisual, ExamForgeVisual, TraveloopVisual, LatentVisual,
   NeetNotesVisual, SoundrichVisual, HRMSVisual, GateTrackVisual,
   FullStackVisual, CPPVisual,
 } from './ProjectVisuals'
@@ -28,6 +28,25 @@ interface Project {
 }
 
 const PROJECTS: Project[] = [
+  {
+    title: 'Latent',
+    tagline: 'The Next-Generation Campus Social Network',
+    description:
+      'A high-performance, full-stack digital environment designed exclusively for university students. It bridges the gap between academics, social interaction, and campus utility by providing a unified platform.',
+    impact: [
+      'Global UI state handled via Zustand; asynchronous server state managed by React Query',
+      'Strictly partitioned, loosely-coupled client-server architecture using Node.js and Express',
+      'Stateless JWT-based auth, bcrypt hashing, and robust connection pooling with PostgreSQL',
+      'Engineered with a stunning glassmorphic aesthetic (Lumina Theme) using Tailwind and Framer Motion',
+    ],
+    stack: ['React 19', 'Node.js', 'Express', 'PostgreSQL', 'Zustand', 'React Query', 'Tailwind CSS', 'Framer Motion'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/latent', icon: <Github size={14} /> },
+      { label: 'Demo', href: 'https://drive.google.com/file/d/1ch8jEU1LbNl-YH6gKiY0ZaU6G7j_l7yL/view?usp=sharing', icon: <ExternalLink size={14} /> },
+    ],
+    accent: '#8b5cf6',
+    letter: 'LA',
+  },
   {
     title: 'B-Cart',
     tagline: 'Manufacturing ERP — Order-to-Stock Workflow Engine',
@@ -178,6 +197,7 @@ const MINI_PROJECTS: MiniProject[] = [
 ]
 
 const VISUAL_MAP: Record<string, React.ReactNode> = {
+  'Latent':    <LatentVisual />,
   'B-Cart':    <BCartVisual />,
   'ExamForge': <ExamForgeVisual />,
   'Traveloop': <TraveloopVisual />,

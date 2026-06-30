@@ -780,3 +780,99 @@ export function CPPVisual() {
     </div>
   )
 }
+
+// ─── Latent: Campus Social Network ──────────────────────────────────────────
+export function LatentVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#8b5cf6'
+
+  const nodes = [
+    { id: 'center', x: 139, y: 180, r: 24, icon: '🎓', label: 'Student' },
+    { id: 'feed',   x: 60,  y: 100, r: 16, icon: '📰', label: 'Feed' },
+    { id: 'events', x: 218, y: 100, r: 16, icon: '📅', label: 'Events' },
+    { id: 'market', x: 60,  y: 260, r: 16, icon: '🛒', label: 'Market' },
+    { id: 'groups', x: 218, y: 260, r: 16, icon: '📚', label: 'Groups' },
+  ]
+
+  const links = [
+    { x1: 139, y1: 180, x2: 60,  y2: 100 },
+    { x1: 139, y1: 180, x2: 218, y2: 100 },
+    { x1: 139, y1: 180, x2: 60,  y2: 260 },
+    { x1: 139, y1: 180, x2: 218, y2: 260 },
+  ]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="ltgrid" width="22" height="22" patternUnits="userSpaceOnUse">
+            <path d="M22 0H0V22" fill="none" stroke={`${accent}12`} strokeWidth="0.5" />
+          </pattern>
+          <radialGradient id="ltGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.25" />
+            <stop offset="100%" stopColor={accent} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="278" height="360" fill="url(#ltgrid)" />
+        <circle cx="139" cy="180" r="100" fill="url(#ltGlow)" />
+
+        {/* Connections */}
+        {links.map((l, i) => (
+          <motion.line
+            key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+            stroke={`${accent}44`} strokeWidth="1.5" strokeDasharray="4 4"
+            animate={hovered ? { strokeDashoffset: [0, -16] } : {}}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          />
+        ))}
+
+        {/* Packets */}
+        {hovered && links.map((l, i) => (
+          <motion.circle
+            key={`dot${i}`} r="3" fill={accent}
+            animate={{ x: [l.x1, l.x2], y: [l.y1, l.y2], opacity: [0, 1, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
+        {hovered && links.map((l, i) => (
+          <motion.circle
+            key={`dot-rev${i}`} r="3" fill="var(--text)" opacity="0.8"
+            animate={{ x: [l.x2, l.x1], y: [l.y2, l.y1], opacity: [0, 1, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 + 0.75 }}
+          />
+        ))}
+
+        {/* Nodes */}
+        {nodes.map((n, i) => (
+          <motion.g key={n.id}
+            animate={hovered ? { y: [0, -4, 0] } : {}}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+          >
+            <circle cx={n.x} cy={n.y} r={n.r} fill={`${accent}15`} stroke={`${accent}55`} strokeWidth="1.5" />
+            <text x={n.x} y={n.y + 4} textAnchor="middle" fontSize={n.r === 24 ? "18" : "12"}>{n.icon}</text>
+            <rect x={n.x - 24} y={n.y + n.r + 6} width="48" height="14" rx="4" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+            <text x={n.x} y={n.y + n.r + 15} textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.8">{n.label}</text>
+          </motion.g>
+        ))}
+
+        {/* Glassmorphic card overlay */}
+        <motion.g
+          animate={hovered ? { y: [0, -2, 0] } : {}}
+          transition={{ duration: 2.5, repeat: Infinity }}
+        >
+          <rect x="28" y="28" width="222" height="42" rx="8" fill={`${accent}15`} stroke={`${accent}44`} strokeWidth="1.2" />
+          <text x="139" y="46" textAnchor="middle" fontFamily="monospace" fontSize="8" fill={accent} opacity="0.9">Lumina Campus Theme</text>
+          <text x="139" y="59" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.5">Glassmorphism · Tailwind · Framer Motion</text>
+        </motion.g>
+
+        {/* Bottom stats */}
+        <rect x="30" y="308" width="218" height="24" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="139" y="324" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.8">React 19 · Node.js · Postgres · Zustand</text>
+      </svg>
+    </div>
+  )
+}
