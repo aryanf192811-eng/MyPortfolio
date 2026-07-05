@@ -232,7 +232,7 @@ export default function Contact() {
               {[
                 { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={15} />, label: 'aryanf192811@gmail.com', copyable: true },
                 { href: 'https://github.com/aryanf192811-eng', icon: <Github size={15} />, label: 'github.com/aryanf192811-eng', copyable: false },
-                { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={15} />, label: 'linkedin.com/in/ganpati-kumar', copyable: false },
+                { href: 'https://www.linkedin.com/in/ganpati-kumar-sde/', icon: <Linkedin size={15} />, label: 'linkedin.com/in/ganpati-kumar', copyable: false },
               ].map(({ href, icon, label, copyable }) => (
                 <CopyableLink key={label} href={href} icon={icon} label={label} copyable={copyable} />
               ))}
@@ -243,7 +243,7 @@ export default function Contact() {
               {[
                 { href: 'https://github.com/aryanf192811-eng', icon: <Github size={17} />, label: 'GitHub' },
                 { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={17} />, label: 'Email' },
-                { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={17} />, label: 'LinkedIn' },
+                { href: 'https://www.linkedin.com/in/ganpati-kumar-sde/', icon: <Linkedin size={17} />, label: 'LinkedIn' },
               ].map(({ href, icon, label }) => (
                 <a
                   key={label}

@@ -369,7 +369,7 @@ export default function Hero() {
             {[
               { href: 'https://github.com/aryanf192811-eng', icon: <Github size={17} />, label: 'GitHub' },
               { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={17} />, label: 'Email' },
-              { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={17} />, label: 'LinkedIn' },
+              { href: 'https://www.linkedin.com/in/ganpati-kumar-sde/', icon: <Linkedin size={17} />, label: 'LinkedIn' },
             ].map(({ href, icon, label }) => (
               <a
                 key={label}

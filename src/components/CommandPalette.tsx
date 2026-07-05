@@ -69,7 +69,7 @@ const COMMANDS: Command[] = [
     id: 'act-linkedin', group: 'Actions', label: 'Open LinkedIn',
     description: 'linkedin.com/in/ganpati-kumar',
     icon: <Linkedin size={14} />,
-    action: () => window.open('https://www.linkedin.com/in/ganpati-kumar-686a88358/', '_blank'),
+    action: () => window.open('https://www.linkedin.com/in/ganpati-kumar-sde/', '_blank'),
     keywords: 'connect profile network',
   },
   {

@@ -1,9 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { vitePrerenderPlugin } from 'vite-prerender-plugin'
+import { fileURLToPath } from 'node:url'
+import { resolve, dirname } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  plugins: [tailwindcss(), react()],
+  plugins: [
+    tailwindcss(),
+    react(),
+    vitePrerenderPlugin({
+      renderTarget: '#root',
+      prerenderScript: resolve(__dirname, 'src/prerender.tsx'),
+    }),
+  ],
   build: {
     chunkSizeWarningLimit: 800,
     rollupOptions: {

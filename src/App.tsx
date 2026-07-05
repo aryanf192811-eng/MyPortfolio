@@ -13,7 +13,7 @@ import CommandPalette from './components/CommandPalette'
 
 function DynamicTitle() {
   useEffect(() => {
-    const original = 'Ganpati — Backend Engineer'
+    const original = 'Ganpati Kumar — Backend Engineer'
     document.title = original
     const onBlur  = () => { document.title = '👋 Come back — Ganpati misses you!' }
     const onFocus = () => { document.title = original }

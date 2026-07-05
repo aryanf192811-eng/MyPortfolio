@@ -19,7 +19,7 @@ export default function Footer() {
           {[
             { href: 'https://github.com/aryanf192811-eng', icon: <Github size={16} />, label: 'GitHub' },
             { href: 'mailto:aryanf192811@gmail.com', icon: <Mail size={16} />, label: 'Email' },
-            { href: 'https://www.linkedin.com/in/ganpati-kumar-686a88358/', icon: <Linkedin size={16} />, label: 'LinkedIn' },
+            { href: 'https://www.linkedin.com/in/ganpati-kumar-sde/', icon: <Linkedin size={16} />, label: 'LinkedIn' },
           ].map(({ href, icon, label }) => (
             <a
               key={label}
