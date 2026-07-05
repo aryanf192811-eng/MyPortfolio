@@ -15,6 +15,13 @@ export default defineConfig({
       renderTarget: '#root',
       prerenderScript: resolve(__dirname, 'src/prerender.tsx'),
     }),
+    {
+      name: 'force-close-on-build',
+      apply: 'build',
+      closeBundle() {
+        setTimeout(() => process.exit(0), 500)
+      }
+    }
   ],
   build: {
     chunkSizeWarningLimit: 800,
