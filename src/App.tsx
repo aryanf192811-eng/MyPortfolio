@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
+import { Analytics } from '@vercel/analytics/react'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Skills from './components/Skills'
@@ -43,6 +44,7 @@ export default function App() {
       </main>
       <Footer />
       <ScrollToTop />
+      <Analytics />
     </ThemeProvider>
   )
 }
