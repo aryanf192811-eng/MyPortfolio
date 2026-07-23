@@ -876,3 +876,241 @@ export function LatentVisual() {
     </div>
   )
 }
+
+// ─── LEVO: Smart Transport Operations Platform ───────────────────────────────
+export function LEVOVisual() {
+  const [hovered, setHovered] = useState(false)
+  const [tick, setTick] = useState(0)
+  const accent = '#f97316'
+
+  useEffect(() => {
+    if (!hovered) return
+    const t = setInterval(() => setTick(n => n + 1), 700)
+    return () => clearInterval(t)
+  }, [hovered])
+
+  void tick
+
+  const vehicles = [
+    { id: 'Van-01', status: 'ON_TRIP',   color: '#22c55e' },
+    { id: 'Van-02', status: 'AVAILABLE', color: '#3b82f6' },
+    { id: 'Van-03', status: 'IN_SHOP',   color: '#ef4444' },
+    { id: 'Van-04', status: 'AVAILABLE', color: '#3b82f6' },
+  ]
+
+  const kpis = [
+    { label: 'Fleet', val: '24', icon: '🚛', cx: 55 },
+    { label: 'Active', val: '8',  icon: '🟢', cx: 139 },
+    { label: 'In Shop', val: '3', icon: '🔧', cx: 223 },
+  ]
+
+  const states = ['DRAFT', 'DISPATCHED', 'COMPLETE']
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="levoGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+          <marker id="levoArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0 0 L6 3 L0 6 Z" fill={`${accent}88`} />
+          </marker>
+        </defs>
+        <rect width="278" height="360" fill="url(#levoGrid)" />
+
+        {/* Header bar */}
+        <rect x="20" y="14" width="238" height="26" rx="6" fill={`${accent}18`} stroke={`${accent}44`} strokeWidth="1.2" />
+        <text x="139" y="31" textAnchor="middle" fontFamily="monospace" fontSize="8.5" fill={accent} opacity="0.9">🚛 LEVO · Fleet Operations</text>
+
+        {/* KPI Cards */}
+        {kpis.map((k, i) => (
+          <motion.g key={k.label}
+            animate={hovered ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+            transition={{ duration: 1.4, repeat: hovered ? Infinity : 0, delay: i * 0.2 }}
+            style={{ transformOrigin: `${k.cx}px 64px` }}
+          >
+            <rect x={k.cx - 36} y="49" width="72" height="44" rx="7"
+              fill={`${accent}0e`} stroke={`${accent}28`} strokeWidth="1.1" />
+            <text x={k.cx} y="67" textAnchor="middle" fontSize="12">{k.icon}</text>
+            <text x={k.cx} y="79" textAnchor="middle" fontFamily="monospace" fontSize="11" fill={accent} opacity="0.9">{k.val}</text>
+            <text x={k.cx} y="88" textAnchor="middle" fontFamily="monospace" fontSize="5.5" fill="var(--text)" opacity="0.4">{k.label}</text>
+          </motion.g>
+        ))}
+
+        {/* Vehicle status table */}
+        <text x="30" y="111" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.65">VEHICLE STATUS</text>
+        {vehicles.map((v, i) => (
+          <motion.g key={v.id}
+            animate={hovered ? { x: [0, 3, 0] } : { x: 0 }}
+            transition={{ duration: 0.9, delay: i * 0.12, repeat: hovered ? Infinity : 0, repeatDelay: 0.5 }}
+          >
+            <rect x="30" y={116 + i * 32} width="218" height="24" rx="5"
+              fill={`${accent}07`} stroke={`${accent}1a`} strokeWidth="1" />
+            <text x="44" y={131 + i * 32} fontFamily="monospace" fontSize="7.5" fill="var(--text)" opacity="0.6">{v.id}</text>
+            <motion.circle cx="130" cy={128 + i * 32} r="4.5" fill={v.color} opacity="0.85"
+              animate={hovered && v.status === 'ON_TRIP' ? { r: [4.5, 6, 4.5], opacity: [0.85, 0.4, 0.85] } : {}}
+              transition={{ duration: 1.1, repeat: Infinity }}
+            />
+            <text x="140" y={132 + i * 32} fontFamily="monospace" fontSize="6.5" fill={v.color} opacity="0.9">{v.status}</text>
+          </motion.g>
+        ))}
+
+        {/* Trip state machine */}
+        <text x="30" y="250" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.65">TRIP LIFECYCLE STATE MACHINE</text>
+        {states.map((state, i) => (
+          <g key={state}>
+            <rect x={28 + i * 80} y="257" width="68" height="20" rx="5"
+              fill={i === 1 ? `${accent}22` : `${accent}0a`}
+              stroke={i === 1 ? `${accent}55` : `${accent}22`}
+              strokeWidth="1" />
+            <text x={62 + i * 80} y="270" textAnchor="middle" fontFamily="monospace" fontSize="6"
+              fill={i === 1 ? accent : 'var(--text)'} opacity={i === 1 ? 0.9 : 0.45}>
+              {state}
+            </text>
+            {i < 2 && (
+              <motion.line
+                x1={97 + i * 80} y1={267} x2={108 + i * 80} y2={267}
+                stroke={`${accent}66`} strokeWidth="1.5"
+                markerEnd="url(#levoArrow)"
+                animate={hovered ? { strokeOpacity: [0.35, 1, 0.35] } : { strokeOpacity: 0.35 }}
+                transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.3 }}
+              />
+            )}
+          </g>
+        ))}
+
+        {/* AI + Weather footer badge */}
+        <motion.g
+          animate={hovered ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.65 }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <rect x="28" y="293" width="222" height="52" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+          <text x="139" y="309" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.85">🌦️ Grok AI · Weather Risk Assessment</text>
+          <text x="139" y="322" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">node-cron · Hourly active-trip reassessment</text>
+          <text x="139" y="333" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.6">RBAC · 4 Roles · 40+ REST Endpoints</text>
+          <text x="139" y="343" textAnchor="middle" fontFamily="monospace" fontSize="5.8" fill="var(--text)" opacity="0.3">Prisma · Zustand · TanStack Query · PDFKit</text>
+        </motion.g>
+      </svg>
+    </div>
+  )
+}
+
+// ─── Recall: Civic Journalism & Public Incident Archive ───────────────────────
+export function RecallVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#dc2626'
+
+  const nodes = [
+    { id: 'center', x: 139, y: 148, r: 17, label: '#041', sub: 'Incident', primary: true },
+    { id: 'b', x: 78,  y: 95,  r: 10, label: 'Cause A', primary: false },
+    { id: 'c', x: 200, y: 95,  r: 10, label: 'Cause B', primary: false },
+    { id: 'd', x: 65,  y: 195, r: 10, label: 'Effect A', primary: false },
+    { id: 'e', x: 213, y: 195, r: 10, label: 'Effect B', primary: false },
+    { id: 'f', x: 139, y: 228, r: 8,  label: 'Legal', primary: false },
+  ]
+
+  const edges = [
+    { x1: 139, y1: 148, x2: 78,  y2: 95  },
+    { x1: 139, y1: 148, x2: 200, y2: 95  },
+    { x1: 139, y1: 148, x2: 65,  y2: 195 },
+    { x1: 139, y1: 148, x2: 213, y2: 195 },
+    { x1: 139, y1: 148, x2: 139, y2: 228 },
+  ]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="rcGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+            <path d="M18 0H0V18" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+          <radialGradient id="rcGlow" cx="50%" cy="42%" r="55%">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.13" />
+            <stop offset="100%" stopColor={accent} stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="278" height="360" fill="url(#rcGrid)" />
+        <rect width="278" height="360" fill="url(#rcGlow)" />
+
+        {/* Newspaper masthead */}
+        <rect x="20" y="12" width="238" height="36" rx="0" fill="none" stroke={`${accent}33`} strokeWidth="1" />
+        <line x1="20" y1="20" x2="258" y2="20" stroke={`${accent}22`} strokeWidth="0.5" />
+        <text x="139" y="16" textAnchor="middle" fontFamily="monospace" fontSize="5.5" fill="var(--text)" opacity="0.3" letterSpacing="0.12em">THE RECORD THAT CANNOT BE ERASED</text>
+        <text x="139" y="38" textAnchor="middle" fontFamily="serif" fontSize="18" fill={accent} opacity="0.95" fontWeight="700">RECALL</text>
+
+        {/* Causality graph label */}
+        <text x="139" y="68" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.5">D3.js · Causality Force Graph</text>
+
+        {/* Causality edges */}
+        {edges.map((e, i) => (
+          <motion.line key={i}
+            x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+            stroke={`${accent}44`} strokeWidth="1.3" strokeDasharray="4 3"
+            animate={hovered ? { strokeOpacity: [0.3, 0.9, 0.3], strokeDashoffset: [0, -14] } : { strokeOpacity: 0.3 }}
+            transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.2, ease: 'linear' }}
+          />
+        ))}
+
+        {/* Animated data packets */}
+        {hovered && edges.map((e, i) => (
+          <motion.circle key={`p${i}`} r="2.5" fill={accent} opacity="0.9"
+            animate={{ x: [e.x1, e.x2], y: [e.y1, e.y2], opacity: [0, 0.9, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.25 }}
+          />
+        ))}
+
+        {/* Causality nodes */}
+        {nodes.map((n, i) => (
+          <motion.g key={n.id}
+            animate={hovered ? { y: [0, -4, 0] } : {}}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+          >
+            <circle cx={n.x} cy={n.y} r={n.r + 7} fill={`${accent}07`} />
+            <circle cx={n.x} cy={n.y} r={n.r}
+              fill={n.primary ? `${accent}22` : `${accent}0e`}
+              stroke={n.primary ? accent : `${accent}55`}
+              strokeWidth={n.primary ? 1.8 : 1.1} />
+            {n.primary && (
+              <text x={n.x} y={n.y + 1} textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.9">{n.sub}</text>
+            )}
+            <text x={n.x} y={n.primary ? n.y + 12 : n.y + 4} textAnchor="middle" fontFamily="monospace"
+              fontSize={n.primary ? '5.5' : '6'}
+              fill={n.primary ? accent : 'var(--text)'} opacity={n.primary ? 0.75 : 0.55}>
+              {n.label}
+            </text>
+          </motion.g>
+        ))}
+
+        {/* Verified status tags */}
+        {[
+          { label: '✅ Verified', x: 40,  color: '#22c55e' },
+          { label: '📋 Reported', x: 118, color: '#f59e0b' },
+          { label: '⚠️ Disputed', x: 198, color: '#ef4444' },
+        ].map(tag => (
+          <g key={tag.label}>
+            <rect x={tag.x - 30} y="252" width="68" height="16" rx="4"
+              fill={`${tag.color}12`} stroke={`${tag.color}33`} strokeWidth="0.8" />
+            <text x={tag.x + 4} y="263" textAnchor="middle" fontFamily="monospace" fontSize="5.8" fill={tag.color} opacity="0.8">{tag.label}</text>
+          </g>
+        ))}
+
+        {/* Tech footer */}
+        <rect x="28" y="280" width="222" height="62" rx="6" fill={`${accent}08`} stroke={`${accent}1e`} strokeWidth="1" />
+        <text x="139" y="296" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent} opacity="0.85">📰 Civic Journalism Archive</text>
+        <line x1="45" y1="303" x2="233" y2="303" stroke={`${accent}18`} strokeWidth="0.5" />
+        <text x="139" y="314" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">React 18 · D3.js · TypeScript · Vite</text>
+        <text x="139" y="325" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.6">PostgreSQL · Prisma · Sanity.io · Redis</text>
+        <text x="139" y="336" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.3">Meilisearch · Cloudinary · AWS S3 · Vercel</text>
+      </svg>
+    </div>
+  )
+}

@@ -12,6 +12,7 @@ export const TECH_COLORS: Record<string, string> = {
   'SQLAlchemy':      '#d71f00',
   'Raw SQL':         '#64748b',
   'React 19':        '#61dafb',
+  'React 18':        '#61dafb',
   'React':           '#61dafb',
   'TypeScript':      '#3178c6',
   'Vite':            '#646cff',
@@ -35,6 +36,17 @@ export const TECH_COLORS: Record<string, string> = {
   'Recharts':        '#22d3ee',
   'Multer':          '#4ade80',
   'Bcrypt':          '#94a3b8',
+  'Prisma':          '#2d3748',
+  'TanStack Query':  '#ff4154',
+  'React Query':     '#ff4154',
+  'node-cron':       '#68a063',
+  'D3.js':           '#f9a03c',
+  'Sanity.io':       '#f03e2f',
+  'Meilisearch':     '#cc5de8',
+  'Redis':           '#dc382c',
+  'MathJax':         '#7f858b',
+  'PWA':             '#5a0fc8',
+  'Service Worker':  '#5a0fc8',
 }
 
 export function getTechColor(name: string): string {

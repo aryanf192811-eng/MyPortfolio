@@ -5,7 +5,7 @@ import { getTechColor } from '../lib/techColors'
 import {
   BCartVisual, ExamForgeVisual, TraveloopVisual, LatentVisual,
   NeetNotesVisual, SoundrichVisual, HRMSVisual, GateTrackVisual,
-  FullStackVisual, CPPVisual,
+  FullStackVisual, CPPVisual, LEVOVisual, RecallVisual,
 } from './ProjectVisuals'
 
 interface ProjectLink {
@@ -46,6 +46,24 @@ const PROJECTS: Project[] = [
     ],
     accent: '#8b5cf6',
     letter: 'LA',
+  },
+  {
+    title: 'LEVO',
+    tagline: 'Smart Transport Operations Platform — Production-Grade Fleet & Logistics',
+    description:
+      'Production-grade fleet, driver, and logistics operations management built for scale. A 9-rule atomic dispatch engine prevents race conditions at trip creation, AI-powered Grok weather risk assessment monitors every active trip hourly, and auto-maintenance events fire atomically on trip completion.',
+    impact: [
+      '40+ REST endpoints across 9 Express routers — Prisma ORM with 11 PostgreSQL models & 6 enums',
+      'Atomic prisma.$transaction enforces 9 strict business rules — zero race-condition dispatches',
+      'RBAC across 4 roles (Fleet Manager, Dispatcher, Safety Officer, Financial Analyst) on every route',
+      'Grok xAI + OpenWeather integration — node-cron hourly reassessment of live active trips',
+    ],
+    stack: ['Node.js', 'Express', 'TypeScript', 'Prisma', 'PostgreSQL', 'React 18', 'Zustand', 'TanStack Query', 'Tailwind CSS', 'Recharts', 'node-cron', 'PDFKit'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/LEVO', icon: <Github size={14} /> },
+    ],
+    accent: '#f97316',
+    letter: 'LV',
   },
   {
     title: 'B-Cart',
@@ -116,6 +134,18 @@ interface MiniProject {
 }
 
 const MINI_PROJECTS: MiniProject[] = [
+  {
+    title: 'Recall',
+    tagline: 'Civic Journalism Platform · Permanent Public Incident Archive',
+    description:
+      'A cinematic interactive journalism platform combining the permanence of a legal archive with documentary storytelling. Features a D3.js causality force graph mapping every incident to its causes and consequences, scrollytelling editions, verified contributor tiers, and annotated legal documents — built for lawyers, journalists, and citizens.',
+    stack: ['React 18', 'TypeScript', 'D3.js', 'Tailwind CSS', 'Vite', 'PostgreSQL', 'Prisma', 'Sanity.io'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/Recall' },
+    ],
+    accent: '#dc2626',
+    visual: <RecallVisual />,
+  },
   {
     title: 'NEET Notes',
     tagline: 'Offline-first PWA · Physical Chemistry Notes',
@@ -198,6 +228,7 @@ const MINI_PROJECTS: MiniProject[] = [
 
 const VISUAL_MAP: Record<string, React.ReactNode> = {
   'Latent':    <LatentVisual />,
+  'LEVO':      <LEVOVisual />,
   'B-Cart':    <BCartVisual />,
   'ExamForge': <ExamForgeVisual />,
   'Traveloop': <TraveloopVisual />,
