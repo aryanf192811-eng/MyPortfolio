@@ -883,119 +883,222 @@ export function LEVOVisual() {
   const [tick, setTick] = useState(0)
   const accent = '#f97316'
 
+  // Always-running ticker so trucks move even without hover
   useEffect(() => {
-    if (!hovered) return
-    const t = setInterval(() => setTick(n => n + 1), 700)
+    const t = setInterval(() => setTick(n => n + 1), 35)
     return () => clearInterval(t)
-  }, [hovered])
+  }, [])
 
-  void tick
-
-  const vehicles = [
-    { id: 'Van-01', status: 'ON_TRIP',   color: '#22c55e' },
-    { id: 'Van-02', status: 'AVAILABLE', color: '#3b82f6' },
-    { id: 'Van-03', status: 'IN_SHOP',   color: '#ef4444' },
-    { id: 'Van-04', status: 'AVAILABLE', color: '#3b82f6' },
+  const XL = 62   // left terminus x
+  const XR = 228  // right terminus x
+  const ROUTES = [
+    { y: 108, from: 'Mumbai', to: 'Delhi',   color: '#22c55e', speed: 0.0055, phase: 0    },
+    { y: 148, from: 'Pune',   to: 'Chennai', color: '#f97316', speed: 0.0038, phase: 0.38 },
+    { y: 188, from: 'Delhi',  to: 'Kolkata', color: '#60a5fa', speed: 0.0070, phase: 0.72 },
   ]
+
+  // Two trucks per route (lead + ghost with 0.5 phase offset)
+  const trucks = ROUTES.flatMap((r, ri) =>
+    [0, 0.5].map((extra, ti) => {
+      const p = (tick * r.speed + r.phase + extra) % 1
+      const x = XL + (XR - XL) * p
+      const fadeEdge = Math.min(p / 0.06, 1) * Math.min((1 - p) / 0.06, 1)
+      return { x, y: r.y, color: r.color, opacity: fadeEdge * (ti === 0 ? 0.95 : 0.38), size: ti === 0 ? 5.5 : 3.5, key: `r${ri}t${ti}` }
+    })
+  )
 
   const kpis = [
-    { label: 'Fleet', val: '24', icon: '🚛', cx: 55 },
-    { label: 'Active', val: '8',  icon: '🟢', cx: 139 },
-    { label: 'In Shop', val: '3', icon: '🔧', cx: 223 },
+    { label: 'Fleet',   val: '24',   color: accent,    x: 18  },
+    { label: 'Active',  val: '8',    color: '#22c55e', x: 89  },
+    { label: 'In Shop', val: '3',    color: '#ef4444', x: 160 },
+    { label: 'Routes',  val: '40+',  color: '#60a5fa', x: 220 },
   ]
-
-  const states = ['DRAFT', 'DISPATCHED', 'COMPLETE']
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default', perspective: '900px' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
-        <defs>
-          <pattern id="levoGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
-          </pattern>
-          <marker id="levoArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M0 0 L6 3 L0 6 Z" fill={`${accent}88`} />
-          </marker>
-        </defs>
-        <rect width="278" height="360" fill="url(#levoGrid)" />
+      {/* 3D perspective tilt wrapper */}
+      <motion.div
+        style={{ width: '100%', height: '100%', transformStyle: 'preserve-3d' }}
+        animate={hovered
+          ? { rotateX: 9, rotateY: -6, scale: 1.035 }
+          : { rotateX: 0, rotateY: 0,  scale: 1 }
+        }
+        transition={{ type: 'spring', stiffness: 160, damping: 20 }}
+      >
+        <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+          <defs>
+            <pattern id="lg2" width="22" height="22" patternUnits="userSpaceOnUse">
+              <path d="M22 0H0V22" fill="none" stroke={`${accent}0d`} strokeWidth="0.5" />
+            </pattern>
+            <radialGradient id="lhubGlow" cx="18%" cy="41%" r="38%">
+              <stop offset="0%" stopColor={accent} stopOpacity="0.22" />
+              <stop offset="100%" stopColor={accent} stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="lcenterGlow" cx="50%" cy="100%" r="60%">
+              <stop offset="0%" stopColor={accent} stopOpacity="0.08" />
+              <stop offset="100%" stopColor={accent} stopOpacity="0" />
+            </radialGradient>
+            <marker id="la3" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+              <path d="M0 0 L5 2.5 L0 5 Z" fill={`${accent}99`} />
+            </marker>
+          </defs>
 
-        {/* Header bar */}
-        <rect x="20" y="14" width="238" height="26" rx="6" fill={`${accent}18`} stroke={`${accent}44`} strokeWidth="1.2" />
-        <text x="139" y="31" textAnchor="middle" fontFamily="monospace" fontSize="8.5" fill={accent} opacity="0.9">🚛 LEVO · Fleet Operations</text>
+          {/* Base fill + grid */}
+          <rect width="278" height="360" fill="var(--surface)" />
+          <rect width="278" height="360" fill="url(#lg2)" />
+          <rect width="278" height="360" fill="url(#lcenterGlow)" />
+          {/* Hub glow patch */}
+          <rect width="278" height="220" fill="url(#lhubGlow)" />
 
-        {/* KPI Cards */}
-        {kpis.map((k, i) => (
-          <motion.g key={k.label}
-            animate={hovered ? { scale: [1, 1.06, 1] } : { scale: 1 }}
-            transition={{ duration: 1.4, repeat: hovered ? Infinity : 0, delay: i * 0.2 }}
-            style={{ transformOrigin: `${k.cx}px 64px` }}
-          >
-            <rect x={k.cx - 36} y="49" width="72" height="44" rx="7"
-              fill={`${accent}0e`} stroke={`${accent}28`} strokeWidth="1.1" />
-            <text x={k.cx} y="67" textAnchor="middle" fontSize="12">{k.icon}</text>
-            <text x={k.cx} y="79" textAnchor="middle" fontFamily="monospace" fontSize="11" fill={accent} opacity="0.9">{k.val}</text>
-            <text x={k.cx} y="88" textAnchor="middle" fontFamily="monospace" fontSize="5.5" fill="var(--text)" opacity="0.4">{k.label}</text>
-          </motion.g>
-        ))}
+          {/* ── HEADER ── */}
+          <rect x="16" y="12" width="246" height="25" rx="6"
+            fill={`${accent}16`} stroke={`${accent}38`} strokeWidth="1.2" />
+          <text x="26" y="28" fontFamily="monospace" fontSize="8.5" fill={accent} opacity="0.92">🚛 LEVO · MISSION CONTROL</text>
+          {/* Live pulse dot */}
+          <motion.circle cx="246" cy="24.5" r="4" fill="#22c55e"
+            animate={{ opacity: [1, 0.15, 1], r: [4, 5.5, 4] }}
+            transition={{ duration: 1.3, repeat: Infinity }}
+          />
+          <text x="254" y="28" fontFamily="monospace" fontSize="6" fill="#22c55e" opacity="0.75">LIVE</text>
 
-        {/* Vehicle status table */}
-        <text x="30" y="111" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.65">VEHICLE STATUS</text>
-        {vehicles.map((v, i) => (
-          <motion.g key={v.id}
-            animate={hovered ? { x: [0, 3, 0] } : { x: 0 }}
-            transition={{ duration: 0.9, delay: i * 0.12, repeat: hovered ? Infinity : 0, repeatDelay: 0.5 }}
-          >
-            <rect x="30" y={116 + i * 32} width="218" height="24" rx="5"
-              fill={`${accent}07`} stroke={`${accent}1a`} strokeWidth="1" />
-            <text x="44" y={131 + i * 32} fontFamily="monospace" fontSize="7.5" fill="var(--text)" opacity="0.6">{v.id}</text>
-            <motion.circle cx="130" cy={128 + i * 32} r="4.5" fill={v.color} opacity="0.85"
-              animate={hovered && v.status === 'ON_TRIP' ? { r: [4.5, 6, 4.5], opacity: [0.85, 0.4, 0.85] } : {}}
-              transition={{ duration: 1.1, repeat: Infinity }}
+          {/* ── DISPATCH HUB ── */}
+          {/* Radiating rings on hover */}
+          {hovered && [0, 1, 2].map(i => (
+            <motion.circle key={i} cx="43" cy="148" r="1" fill="none"
+              stroke={`${accent}55`} strokeWidth="0.8"
+              animate={{ r: [8, 38], opacity: [0.6, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: i * 0.73, ease: 'easeOut' }}
             />
-            <text x="140" y={132 + i * 32} fontFamily="monospace" fontSize="6.5" fill={v.color} opacity="0.9">{v.status}</text>
-          </motion.g>
-        ))}
+          ))}
+          {/* Hub body */}
+          <motion.circle cx="43" cy="148" r="14"
+            fill={`${accent}1a`} stroke={`${accent}55`} strokeWidth="1.5"
+            animate={hovered ? { r: [14, 16, 14] } : {}}
+            transition={{ duration: 1.8, repeat: Infinity }}
+          />
+          <text x="43" y="152" textAnchor="middle" fontSize="13">🏢</text>
+          <text x="43" y="166" textAnchor="middle" fontFamily="monospace" fontSize="5" fill={accent} opacity="0.6">HUB</text>
 
-        {/* Trip state machine */}
-        <text x="30" y="250" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.65">TRIP LIFECYCLE STATE MACHINE</text>
-        {states.map((state, i) => (
-          <g key={state}>
-            <rect x={28 + i * 80} y="257" width="68" height="20" rx="5"
-              fill={i === 1 ? `${accent}22` : `${accent}0a`}
-              stroke={i === 1 ? `${accent}55` : `${accent}22`}
-              strokeWidth="1" />
-            <text x={62 + i * 80} y="270" textAnchor="middle" fontFamily="monospace" fontSize="6"
-              fill={i === 1 ? accent : 'var(--text)'} opacity={i === 1 ? 0.9 : 0.45}>
-              {state}
-            </text>
-            {i < 2 && (
-              <motion.line
-                x1={97 + i * 80} y1={267} x2={108 + i * 80} y2={267}
-                stroke={`${accent}66`} strokeWidth="1.5"
-                markerEnd="url(#levoArrow)"
-                animate={hovered ? { strokeOpacity: [0.35, 1, 0.35] } : { strokeOpacity: 0.35 }}
-                transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.3 }}
+          {/* ── ROUTES ── */}
+          {ROUTES.map((r, i) => (
+            <g key={i}>
+              {/* Road shadow / track */}
+              <line x1={XL} y1={r.y} x2={XR} y2={r.y}
+                stroke={`${r.color}18`} strokeWidth="6" strokeLinecap="round" />
+              {/* Animated dashed track */}
+              <motion.line x1={XL} y1={r.y} x2={XR} y2={r.y}
+                stroke={hovered ? `${r.color}70` : `${r.color}3a`}
+                strokeWidth="1.5" strokeDasharray="7 5"
+                animate={{ strokeDashoffset: [0, -24] }}
+                transition={{ duration: 1.2 + i * 0.3, repeat: Infinity, ease: 'linear' }}
               />
-            )}
-          </g>
-        ))}
+              {/* Source terminus dot */}
+              <circle cx={XL} cy={r.y} r="4.5" fill="var(--surface)" stroke={r.color} strokeWidth="1.5" />
+              <circle cx={XL} cy={r.y} r="2" fill={r.color} opacity="0.7" />
+              {/* Dest terminus dot with pulse on hover */}
+              <motion.circle cx={XR} cy={r.y} r="4.5"
+                fill="var(--surface)" stroke={r.color} strokeWidth="1.5"
+                animate={hovered ? { scale: [1, 1.4, 1] } : {}}
+                style={{ transformOrigin: `${XR}px ${r.y}px` }}
+                transition={{ duration: 1.1, repeat: Infinity, delay: i * 0.28 }}
+              />
+              <circle cx={XR} cy={r.y} r="2" fill={r.color} opacity="0.7" />
+              {/* City labels */}
+              <text x={XL - 2} y={r.y - 8} textAnchor="end" fontFamily="monospace" fontSize="5.8" fill={r.color} opacity="0.8">{r.from}</text>
+              <text x={XR + 3} y={r.y - 8} fontFamily="monospace" fontSize="5.8" fill={r.color} opacity="0.8">{r.to}</text>
+            </g>
+          ))}
 
-        {/* AI + Weather footer badge */}
-        <motion.g
-          animate={hovered ? { opacity: [0.65, 1, 0.65] } : { opacity: 0.65 }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <rect x="28" y="293" width="222" height="52" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
-          <text x="139" y="309" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.85">🌦️ Grok AI · Weather Risk Assessment</text>
-          <text x="139" y="322" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">node-cron · Hourly active-trip reassessment</text>
-          <text x="139" y="333" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.6">RBAC · 4 Roles · 40+ REST Endpoints</text>
-          <text x="139" y="343" textAnchor="middle" fontFamily="monospace" fontSize="5.8" fill="var(--text)" opacity="0.3">Prisma · Zustand · TanStack Query · PDFKit</text>
-        </motion.g>
-      </svg>
+          {/* ── ANIMATED TRUCKS ── */}
+          {trucks.map(t => (
+            <g key={t.key} opacity={t.opacity}>
+              {/* Glow halo */}
+              <ellipse cx={t.x} cy={t.y} rx={t.size * 1.6} ry={t.size * 0.8}
+                fill={t.color} opacity={0.18} />
+              {/* Truck body */}
+              <rect
+                x={t.x - t.size} y={t.y - t.size * 0.45}
+                width={t.size * 2} height={t.size * 0.9}
+                rx={t.size * 0.25} fill={t.color}
+              />
+              {/* Cab */}
+              <rect
+                x={t.x + t.size * 0.35} y={t.y - t.size * 0.45}
+                width={t.size * 0.65} height={t.size * 0.65}
+                rx={t.size * 0.2} fill={t.color} opacity={0.6}
+              />
+              {/* Headlights */}
+              <circle cx={t.x + t.size * 0.95} cy={t.y} r={t.size * 0.14} fill="#fff" opacity={0.7} />
+            </g>
+          ))}
+
+          {/* ── KPI CARDS ── */}
+          {kpis.map((k, i) => (
+            <motion.g key={k.label}
+              animate={hovered ? { y: [0, -4, 0] } : {}}
+              transition={{ duration: 1.6, delay: i * 0.14, repeat: hovered ? Infinity : 0 }}
+            >
+              <rect x={k.x} y="208" width={i < 3 ? 64 : 42} height="50" rx="7"
+                fill={`${k.color}10`} stroke={`${k.color}2a`} strokeWidth="1.1" />
+              {/* Accent top bar */}
+              <rect x={k.x} y="208" width={i < 3 ? 64 : 42} height="3" rx="1.5" fill={k.color} opacity="0.55" />
+              <text x={k.x + (i < 3 ? 32 : 21)} y="230" textAnchor="middle"
+                fontFamily="monospace" fontSize={i < 3 ? "14" : "10"} fontWeight="700" fill={k.color} opacity="0.95">
+                {k.val}
+              </text>
+              <text x={k.x + (i < 3 ? 32 : 21)} y="248" textAnchor="middle"
+                fontFamily="monospace" fontSize="5.5" fill="var(--text)" opacity="0.38">
+                {k.label}
+              </text>
+            </motion.g>
+          ))}
+
+          {/* ── TRIP STATE MACHINE ── */}
+          <text x="16" y="275" fontFamily="monospace" fontSize="6" fill={accent} opacity="0.5">TRIP LIFECYCLE · 9 ATOMIC BUSINESS RULES</text>
+          {['DRAFT', 'DISPATCHED', 'COMPLETE'].map((state, i) => (
+            <g key={state}>
+              <motion.rect x={16 + i * 84} y="280" width="72" height="20" rx="5"
+                fill={i === 1 ? `${accent}22` : `${accent}08`}
+                stroke={i === 1 ? `${accent}55` : `${accent}1c`}
+                strokeWidth="1"
+                animate={hovered && i === 1 ? { opacity: [1, 0.6, 1] } : {}}
+                transition={{ duration: 1.1, repeat: Infinity }}
+              />
+              <text x={52 + i * 84} y="293" textAnchor="middle" fontFamily="monospace" fontSize="6"
+                fill={i === 1 ? accent : 'var(--text)'} opacity={i === 1 ? 0.95 : 0.38}>
+                {state}
+              </text>
+              {i < 2 && (
+                <motion.line x1={89 + i * 84} y1={290} x2={100 + i * 84} y2={290}
+                  stroke={`${accent}66`} strokeWidth="1.5"
+                  markerEnd="url(#la3)"
+                  animate={hovered ? { strokeOpacity: [0.3, 1, 0.3] } : { strokeOpacity: 0.3 }}
+                  transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.35 }}
+                />
+              )}
+            </g>
+          ))}
+
+          {/* ── AI / FOOTER ── */}
+          <motion.g
+            animate={hovered ? { opacity: [0.7, 1, 0.7] } : { opacity: 0.7 }}
+            transition={{ duration: 2.2, repeat: Infinity }}
+          >
+            <rect x="16" y="312" width="246" height="38" rx="6"
+              fill={`${accent}0a`} stroke={`${accent}20`} strokeWidth="1" />
+            <text x="139" y="328" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.85">
+              🌦️ Grok AI · Weather Risk · node-cron Monitoring
+            </text>
+            <text x="139" y="341" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.32">
+              RBAC · 4 Roles · 40+ Endpoints · Prisma · PDFKit
+            </text>
+          </motion.g>
+        </svg>
+      </motion.div>
     </div>
   )
 }
