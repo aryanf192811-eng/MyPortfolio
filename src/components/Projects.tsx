@@ -570,32 +570,24 @@ export default function Projects() {
           </div>
         </motion.div>
 
-        {activeTab === 'major' ? (
-          <motion.div
-            key="major"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {PROJECTS.map((project, i) => (
-              <ProjectCard key={project.title} project={project} index={i} />
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="mini"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}
-          >
-            {MINI_PROJECTS.map((project, i) => (
-              <MiniProjectCard key={project.title} project={project} index={i} />
-            ))}
-          </motion.div>
-        )}
+        {/* Both tabs stay mounted (not a mount/unmount ternary) so the mini-projects'
+            content is present in the prerendered/crawled HTML, not just after a client click. */}
+        <div style={{ display: activeTab === 'major' ? 'block' : 'none' }}>
+          {PROJECTS.map((project, i) => (
+            <ProjectCard key={project.title} project={project} index={i} />
+          ))}
+        </div>
+        <div
+          style={{
+            display: activeTab === 'mini' ? 'grid' : 'none',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {MINI_PROJECTS.map((project, i) => (
+            <MiniProjectCard key={project.title} project={project} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   )

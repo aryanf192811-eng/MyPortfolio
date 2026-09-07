@@ -378,6 +378,7 @@ export function NeetNotesVisual() {
             <text x="68" y={ch.y + 17} fontFamily="monospace" fontSize="7.5" fill="var(--text)" opacity="0.6">{ch.label}</text>
             <rect x="184" y={ch.y + 9} width="48" height="7" rx="3.5" fill={`${accent}18`} />
             <motion.rect x="184" y={ch.y + 9} height="7" rx="3.5" fill={accent} opacity="0.75"
+              initial={{ width: 4 }}
               animate={{ width: hovered ? (completions[i] / 100) * 48 : 4 }}
               transition={{ duration: 0.7, delay: i * 0.12 }} />
           </motion.g>
@@ -524,6 +525,7 @@ export function HRMSVisual() {
               fill={`${accent}14`} stroke={`${accent}28`} strokeWidth="0.8" />
             <motion.rect x={20 + i * 40} width="26" rx="4"
               fill={accent} opacity={0.2}
+              initial={{ height: h * 0.5, y: 230 - h * 0.5 }}
               animate={{ height: hovered ? h : h * 0.5, y: hovered ? 230 - h : 230 - h * 0.5, opacity: hovered ? 0.6 : 0.2 }}
               transition={{ duration: 0.65, delay: i * 0.08 }} />
             <text x={33 + i * 40} y="244" textAnchor="middle" fontFamily="monospace" fontSize="6" fill="var(--text)" opacity="0.35">{months[i]}</text>
@@ -590,6 +592,7 @@ export function GateTrackVisual() {
               <text x="248" y={60 + i * 40} textAnchor="end" fontFamily="monospace" fontSize="7" fill={s.color} opacity="0.9">{s.pct}%</text>
               <rect x="30" y={65 + i * 40} width={barW} height="9" rx="4.5" fill={`${s.color}18`} />
               <motion.rect x="30" y={65 + i * 40} height="9" rx="4.5" fill={s.color} opacity="0.72"
+                initial={{ width: filled * 0.5 }}
                 animate={{ width: hovered ? filled : filled * 0.5 }}
                 transition={{ duration: 0.7, delay: i * 0.1 }} />
             </g>
@@ -960,6 +963,7 @@ export function LEVOVisual() {
           <text x="26" y="28" fontFamily="monospace" fontSize="8.5" fill={accent} opacity="0.92">🚛 LEVO · MISSION CONTROL</text>
           {/* Live pulse dot */}
           <motion.circle cx="246" cy="24.5" r="4" fill="#22c55e"
+            initial={{ r: 4, opacity: 1 }}
             animate={{ opacity: [1, 0.15, 1], r: [4, 5.5, 4] }}
             transition={{ duration: 1.3, repeat: Infinity }}
           />
