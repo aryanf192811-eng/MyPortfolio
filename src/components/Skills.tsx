@@ -44,11 +44,11 @@ const STACK_GROUPS = [
   },
 ]
 
-// Recruiter-facing stats — drawn from across the project set, not any single project
+// Recruiter-facing stats — aggregated across the project set, not any single project
 const STATS = [
   { value: '8', label: 'Shipped Projects' },
-  { value: '40+', label: 'API Endpoints (LEVO)' },
-  { value: '30+', label: 'DB Tables (Latent)' },
+  { value: '245+', label: 'API Endpoints' },
+  { value: '77+', label: 'DB Tables' },
   { value: '3', label: 'Hackathon Finals' },
 ]
 

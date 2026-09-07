@@ -84,12 +84,9 @@ a, button, [role="button"] { cursor: none; }
   min-height: 90px;
 }
 .skill-card:hover {
-  background: var(--card-hover-bg);
-  border-color: var(--card-hover-bg);
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
 }
-.skill-icon { color: var(--text); transition: color 0.22s ease; }
+.skill-icon { transition: color 0.22s ease; }
 .skill-name {
   color: var(--text);
   font-family: 'Sora', sans-serif;
@@ -99,8 +96,6 @@ a, button, [role="button"] { cursor: none; }
   line-height: 1.3;
   transition: color 0.22s ease;
 }
-.skill-card:hover .skill-icon,
-.skill-card:hover .skill-name { color: var(--card-hover-fg); }
 
 /* ─── Tag Pills ──────────────────────────────────────────────────── */
 .tech-tag {
