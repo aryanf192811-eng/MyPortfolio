@@ -129,11 +129,9 @@ export default function AarakshaFlagship() {
         ))}
       </div>
 
-      {/* Screenshot gallery */}
-      <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '1rem', marginBottom: '2rem', position: 'relative', zIndex: 1,
-      }}>
+      {/* Screenshot gallery — fixed 3-column grid so 6 shots always form an even 3x2, never an
+          awkward 4+2 split from auto-fit's unpredictable wrapping */}
+      <div className="aaraksha-screenshots-grid" style={{ marginBottom: '2rem', position: 'relative', zIndex: 1 }}>
         {SCREENSHOTS.map(s => (
           <div key={s.src} style={{
             borderRadius: '12px', overflow: 'hidden', border: '1.5px solid var(--border)',

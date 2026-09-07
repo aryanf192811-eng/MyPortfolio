@@ -154,6 +154,14 @@ a, button, [role="button"] { cursor: none; }
 }
 @media (max-width: 760px) { .major-grid { grid-template-columns: 1fr; } }
 
+.aaraksha-screenshots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 860px) { .aaraksha-screenshots-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .aaraksha-screenshots-grid { grid-template-columns: 1fr; } }
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
