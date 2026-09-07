@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Ganpati Kumar — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: A4; margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    width: 210mm;
+    min-height: 297mm;
+    font-size: 9.3px;
+    line-height: 1.5;
+  }
+  .page { padding: 0 15mm 6mm; }
+
+  /* Header */
+  .header {
+    background: #0a0e1a;
+    color: #fff;
+    padding: 7mm 15mm 5mm;
+    margin: 0 -15mm 4mm;
+  }
+  .header h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .header h1 span { color: #93c5fd; }
+  .header .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-top: 4px;
+  }
+  .header .contact {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: #cbd5e1;
+    margin-top: 7px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  h2.section {
+    font-family: 'Sora', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1d4ed8;
+    border-bottom: 1.4px solid #1d4ed8;
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+    margin-top: 6px;
+  }
+  h2.section:first-of-type { margin-top: 0; }
+
+  .summary { font-size: 9.4px; line-height: 1.55; color: #333; }
+
+  /* Skills grid */
+  .skills-row { display: flex; gap: 6px; margin-bottom: 3px; }
+  .skills-row .label {
+    font-weight: 600; width: 92px; flex-shrink: 0; color: #111;
+  }
+  .skills-row .value { color: #333; }
+
+  /* Projects */
+  .project { margin-bottom: 4px; }
+  .project-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  }
+  .project-title { font-weight: 700; font-size: 10px; color: #111; }
+  .project-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: #1d4ed8;
+  }
+  .project-tagline { font-style: italic; color: #555; font-size: 8.8px; margin-bottom: 2px; }
+  .project ul { list-style: none; margin-top: 2px; }
+  .project li {
+    padding-left: 11px; position: relative; color: #333; margin-bottom: 1.5px;
+  }
+  .project li::before { content: '▸'; position: absolute; left: 0; color: #1d4ed8; font-size: 8px; }
+  .project .stack {
+    font-family: 'JetBrains Mono', monospace; font-size: 7.6px; color: #1d4ed8; margin-top: 2px;
+  }
+
+  /* Experience */
+  .exp-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .exp-title { font-weight: 700; font-size: 10px; }
+  .exp-sub { font-size: 8.8px; color: #555; margin-bottom: 3px; }
+  .exp-date { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #666; white-space: nowrap; }
+
+  /* Two-column bottom section */
+  .cols { display: flex; gap: 16px; margin-top: 2px; }
+  .col { flex: 1; }
+
+  .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .edu-title { font-weight: 700; font-size: 9.6px; }
+  .edu-sub { font-size: 8.6px; color: #555; }
+  .edu-date { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #666; }
+
+  .list-item { margin-bottom: 3px; }
+  .list-item .t { font-weight: 600; font-size: 8.8px; color: #111; }
+  .list-item .d { font-size: 8.3px; color: #555; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Ganpati <span>Kumar</span></h1>
+    <div class="tagline">Backend Engineering · Database Engineering · REST API Design · Workflow Automation</div>
+    <div class="contact">
+      <span>aryanf192811@gmail.com</span>
+      <span>github.com/aryanf192811-eng</span>
+      <span>ganpatikumar.me</span>
+      <span>linkedin.com/in/ganpati-kumar-sde</span>
+      <span>Vadodara, India</span>
+    </div>
+  </div>
+
+  <h2 class="section">Summary</h2>
+  <p class="summary">
+    B.Tech CSE engineer (Parul University, 2025–2029) who ships production backend systems at real scale.
+    Flagship project Aaraksha — a Smart India Hackathon 2026 submission spanning 4 portals, 145 API endpoints,
+    33 PostgreSQL tables, and a from-scratch-trained machine learning model. Three-time hackathon finalist
+    across Odoo and Parul University competitions. Core focus: relational schema design, event-driven
+    architecture, real-time systems, and REST API contracts.
+  </p>
+
+  <h2 class="section">Technical Skills</h2>
+  <div class="skills-row"><span class="label">Languages</span><span class="value">C, C++, Python, JavaScript, TypeScript, SQL</span></div>
+  <div class="skills-row"><span class="label">Backend</span><span class="value">Node.js, Express.js, FastAPI, Socket.IO, Prisma, REST API Design, JWT Auth, RBAC</span></div>
+  <div class="skills-row"><span class="label">Frontend</span><span class="value">React 19, TypeScript, Vite, Tailwind CSS, Zustand, TanStack Query, Framer Motion</span></div>
+  <div class="skills-row"><span class="label">Databases</span><span class="value">PostgreSQL, SQLite, Supabase, SQLAlchemy, Raw SQL, Schema Design</span></div>
+  <div class="skills-row"><span class="label">AI &amp; Systems</span><span class="value">Machine Learning (from-scratch models), Gemini AI, TensorFlow.js, OSRM, Twilio</span></div>
+  <div class="skills-row"><span class="label">DevOps &amp; Cloud</span><span class="value">Git, GitHub Actions, Vercel, AWS, Linux (RHCSA), Firebase</span></div>
+
+  <h2 class="section">Selected Projects</h2>
+
+  <div class="project">
+    <div class="project-head">
+      <span class="project-title">Aaraksha</span>
+      <span class="project-badge">Smart India Hackathon 2026 · Flagship</span>
+    </div>
+    <div class="project-tagline">AI-Native Travel Planning, Verified Local Tourism &amp; Offline-Resilient Safety Platform</div>
+    <ul>
+      <li>4 independently deployable portals (Tourist, Government, Guardian, Rescuer) sharing one real-time data model — 145 REST endpoints across 33 PostgreSQL tables, zero ORM</li>
+      <li>Built a from-scratch logistic regression model (75.6% test accuracy, 17 explainable features) for predictive tourist risk scoring, alongside offline SOS over raw SMS and a SHA-256 hash-chained digital ID</li>
+    </ul>
+    <div class="stack">Node.js · Express · PostgreSQL · Socket.IO · React 19 · TypeScript · MapLibre GL JS · OSRM · TensorFlow.js · Twilio · Gemini AI</div>
+  </div>
+
+  <div class="project">
+    <div class="project-head">
+      <span class="project-title">LEVO</span>
+      <span class="project-badge">Production-Grade Fleet &amp; Logistics</span>
+    </div>
+    <div class="project-tagline">Smart Transport Operations Platform</div>
+    <ul>
+      <li>9-rule atomic dispatch engine (Prisma transactions) preventing race conditions across 11 PostgreSQL models and 6 enums; RBAC enforced across 4 roles on every route</li>
+      <li>Grok AI + OpenWeather integration with hourly risk reassessment via node-cron; 40+ REST endpoints across 9 Express routers</li>
+    </ul>
+    <div class="stack">Node.js · Express · TypeScript · Prisma · PostgreSQL · React 18 · Zustand · TanStack Query</div>
+  </div>
+
+  <div class="project">
+    <div class="project-head">
+      <span class="project-title">PeoplePay360</span>
+      <span class="project-badge">Odoo Hackathon 2026 · Top 50 of 857 Teams</span>
+    </div>
+    <div class="project-tagline">Explainable HR &amp; Payroll Engine</div>
+    <ul>
+      <li>Raw PERN stack (zero ORM) — a Postgres exclusion constraint guarantees no two overlapping active employee contracts at the database level, not application-level hope</li>
+      <li>Payslip Diff and a What-If Simulator dry-run the real payroll engine with unconditional rollback; read-only Gemini AI assistant scoped to dashboard data only</li>
+    </ul>
+    <div class="stack">Node.js · Express · PostgreSQL · React 18 · TanStack Query · Zustand · JWT · Gemini AI</div>
+  </div>
+
+  <div class="project">
+    <div class="project-head">
+      <span class="project-title">CodeVerter</span>
+      <span class="project-badge">100% Local · Zero Cloud</span>
+    </div>
+    <div class="project-tagline">Local-First AI Code Converter — 26 Languages</div>
+    <ul>
+      <li>Self-contained C++17 HTTP server converting code across 26 languages via a locally-running LLM (Ollama) — no cloud API, no API keys, no telemetry by default</li>
+      <li>"Run &amp; Compare" actually executes both source and converted code locally and diffs real output, plus streamed complexity analysis with severity-colored Big-O badges</li>
+    </ul>
+    <div class="stack">C++17 · cpp-httplib · Ollama · React · TypeScript · Vite · CMake</div>
+  </div>
+
+  <h2 class="section">Experience</h2>
+  <div class="exp-head">
+    <span class="exp-title">Full-Stack Web Consultant</span>
+    <span class="exp-date">Mar 2026 – May 2026 · Freelance</span>
+  </div>
+  <div class="exp-sub">SoundRich Hearing Clinic · Delhi NCR (Remote)</div>
+  <ul>
+    <li>Audited existing clinic website — identified 8 structural issues including duplicate navigation and zero JSON-LD structured data across 10+ pages; delivered a prioritized remediation roadmap with effort estimates</li>
+    <li>Engineered and deployed a production landing page on Vercel; executed a zero-downtime DNS migration from WordPress, owning the engagement end to end</li>
+  </ul>
+
+  <div class="cols">
+    <div class="col">
+      <h2 class="section">Education</h2>
+      <div class="edu-row">
+        <span class="edu-title">B.Tech — Computer Science &amp; Engineering</span>
+        <span class="edu-date">2025 – 2029</span>
+      </div>
+      <div class="edu-sub">Parul University, Vadodara, Gujarat · CGPA: 7.80 / 10</div>
+
+      <h2 class="section">Certifications</h2>
+      <div class="list-item"><div class="t">JavaScript Specialist</div><div class="d">Certiport · Pearson VUE — Aug 2026</div></div>
+      <div class="list-item"><div class="t">Red Hat Certified System Administrator (RHCSA)</div><div class="d">Red Hat — Aug 2026</div></div>
+      <div class="list-item"><div class="t">AWS Academy Graduate – Cloud Foundations</div><div class="d">AWS — Apr 2026</div></div>
+      <div class="list-item"><div class="t">HTML &amp; CSS Specialist</div><div class="d">Certiport · Pearson VUE — Mar 2026</div></div>
+    </div>
+    <div class="col">
+      <h2 class="section">Honors &amp; Awards</h2>
+      <div class="list-item"><div class="t">Odoo Hackathon 2026 — Top 50 Zonal Finalist</div><div class="d">857 teams, from 20,000+ registrations · Built PeoplePay360</div></div>
+      <div class="list-item"><div class="t">Odoo × Parul University Hackathon 2026 — Finalist</div><div class="d">Top 100 of 1,300 teams</div></div>
+      <div class="list-item"><div class="t">Parul University Environment Hackathon 2026 — Finalist</div><div class="d">Round 3, Top 17 teams</div></div>
+
+      <h2 class="section">Interests</h2>
+      <div class="list-item"><div class="d">Smart India Hackathon · System Design · Distributed Systems · Competitive Programming · Applied Machine Learning</div></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
