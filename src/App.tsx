@@ -11,6 +11,7 @@ import Footer from './components/Footer'
 import CursorEffect from './components/CursorEffect'
 import ScrollToTop from './components/ScrollToTop'
 import CommandPalette from './components/CommandPalette'
+import ResumeViewerModal from './components/ResumeViewerModal'
 
 function DynamicTitle() {
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function App() {
       </main>
       <Footer />
       <ScrollToTop />
+      <ResumeViewerModal />
       <Analytics />
     </ThemeProvider>
   )

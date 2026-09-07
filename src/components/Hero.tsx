@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
 import { Github, Mail, Linkedin, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
-import { RESUME_URL, RESUME_FILENAME } from '../lib/emailConfig'
+import { OPEN_RESUME_EVENT } from './ResumeViewerModal'
 import HeroCanvas from './HeroCanvas'
 
 // ─── Greeting messages for laptop screen ─────────────────────────────
@@ -342,21 +342,20 @@ export default function Hero() {
               View My Work
             </a>
 
-            <a
-              href={RESUME_URL}
-              download={RESUME_FILENAME}
+            <button
+              onClick={() => window.dispatchEvent(new Event(OPEN_RESUME_EVENT))}
               style={{
                 fontFamily: 'Sora, sans-serif', fontSize: '0.875rem', fontWeight: 600,
-                color: 'var(--text)', background: 'transparent',
-                border: '1.5px solid var(--border-2)', textDecoration: 'none',
+                color: 'var(--text)', background: 'transparent', cursor: 'pointer',
+                border: '1.5px solid var(--border-2)',
                 padding: '11px 22px', borderRadius: '50px',
                 transition: 'all 0.18s', display: 'inline-flex', alignItems: 'center', gap: '7px',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = 'var(--text)'; el.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = 'var(--border-2)'; el.style.transform = 'translateY(0)' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = 'var(--text)'; el.style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = 'var(--border-2)'; el.style.transform = 'translateY(0)' }}
             >
-              <Download size={14} /> Download CV
-            </a>
+              <Download size={14} /> View Resume
+            </button>
           </motion.div>
 
           {/* Social icons */}

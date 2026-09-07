@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, ArrowRight, Hash, Github, Mail, Linkedin, Download, X } from 'lucide-react'
-import { RESUME_URL } from '../lib/emailConfig'
+import { OPEN_RESUME_EVENT } from './ResumeViewerModal'
 
 interface Command {
   id: string
@@ -73,11 +73,11 @@ const COMMANDS: Command[] = [
     keywords: 'connect profile network',
   },
   {
-    id: 'act-cv', group: 'Actions', label: 'Download CV',
-    description: 'Open resume in new tab',
+    id: 'act-cv', group: 'Actions', label: 'View Resume',
+    description: 'Preview and download resume',
     icon: <Download size={14} />,
-    action: () => window.open(RESUME_URL, '_blank'),
-    keywords: 'resume pdf download hire',
+    action: () => window.dispatchEvent(new Event(OPEN_RESUME_EVENT)),
+    keywords: 'resume pdf download hire cv',
   },
 ]
 

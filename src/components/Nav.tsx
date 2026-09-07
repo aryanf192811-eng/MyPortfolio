@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sun, Moon, Download } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
-import { RESUME_URL, RESUME_FILENAME } from '../lib/emailConfig'
+import { OPEN_RESUME_EVENT } from './ResumeViewerModal'
 import NavLogo from './NavLogo'
 
 const NAV_LINKS = [
@@ -163,22 +163,20 @@ export default function Nav() {
                 </a>
               ))}
 
-              {/* Resume download — only in mobile menu */}
-              <a
-                href={RESUME_URL}
-                download={RESUME_FILENAME}
-                onClick={closeMenu}
+              {/* Resume viewer — only in mobile menu */}
+              <button
+                onClick={() => { closeMenu(); window.dispatchEvent(new Event(OPEN_RESUME_EVENT)) }}
                 style={{
                   fontFamily: 'Sora, sans-serif', fontSize: '0.9rem', fontWeight: 600,
-                  color: 'var(--text)', background: 'var(--surface)',
+                  color: 'var(--text)', background: 'var(--surface)', cursor: 'pointer',
                   border: '1.5px solid var(--border)', borderRadius: '50px',
-                  padding: '10px 20px', textDecoration: 'none',
+                  padding: '10px 20px',
                   display: 'inline-flex', alignItems: 'center', gap: '7px',
                   alignSelf: 'flex-start',
                 }}
               >
-                <Download size={14} /> Download CV
-              </a>
+                <Download size={14} /> View Resume
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
