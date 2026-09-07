@@ -201,7 +201,7 @@ a, button, [role="button"] { cursor: none; }
   gap: 1.75rem;
   align-items: center;
 }
-@media (max-width: 768px) { .nav-links-desktop { display: none; } }
+@media (max-width: 960px) { .nav-links-desktop { display: none; } }
 
 .nav-mobile-open {
   position: absolute;
@@ -218,10 +218,10 @@ a, button, [role="button"] { cursor: none; }
   -webkit-backdrop-filter: blur(16px);
 }
 .hamburger { display: none; cursor: pointer; }
-@media (max-width: 768px) { .hamburger { display: flex; align-items: center; } }
+@media (max-width: 960px) { .hamburger { display: flex; align-items: center; } }
 
 .mobile-controls { display: none; gap: 0.5rem; align-items: center; }
-@media (max-width: 768px) { .mobile-controls { display: flex; } }
+@media (max-width: 960px) { .mobile-controls { display: flex; } }
 
 /* ─── Principles Interactive Selector ───────────────────────────── */
 .principles-selector {
