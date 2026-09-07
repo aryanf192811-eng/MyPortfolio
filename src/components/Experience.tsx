@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Database, GitBranch, Server, Layers, Shield, Trophy, Code2, BookOpen, Cloud } from 'lucide-react'
+import { Database, GitBranch, Server, Layers, Shield, Trophy, Code2, BookOpen, Cloud, X } from 'lucide-react'
 
 // ─── Data ─────────────────────────────────────────────────────────────
 const METRICS = [
@@ -21,18 +21,21 @@ const HONORS = [
     label: 'Odoo Hackathon 2026',
     detail: 'Top 50 Zonal Finalist · 857 teams · built PeoplePay360',
     bg: 'rgba(245,158,11,0.08)',
+    certificate: '/certificates/odoo-hackathon-2026.png',
   },
   {
     Icon: Trophy, color: '#3b82f6',
     label: 'Odoo × Parul Hackathon 2026',
     detail: 'Finalist · Top 100 of 1,300 teams',
     bg: 'rgba(59,130,246,0.08)',
+    certificate: '/certificates/odoo-parul-hackathon-2026.png',
   },
   {
     Icon: Trophy, color: '#22c55e',
     label: 'Parul Environment Hackathon 2026',
     detail: 'Finalist · Round 3, Top 17 teams',
     bg: 'rgba(34,197,94,0.08)',
+    certificate: '/certificates/parul-environment-hackathon-2026.png',
   },
 ]
 
@@ -102,10 +105,11 @@ const PRINCIPLES = [
 ]
 
 // ─── Achievement Card ─────────────────────────────────────────────────
-type Achievement = typeof HONORS[0]
-function AchievementCard({ a, delay, inView }: { a: Achievement; delay: number; inView: boolean }) {
+type Achievement = Omit<typeof HONORS[0], 'certificate'> & { certificate?: string }
+function AchievementCard({ a, delay, inView, onOpenCertificate }: { a: Achievement; delay: number; inView: boolean; onOpenCertificate?: (src: string) => void }) {
   const [hovered, setHovered] = useState(false)
   const Icon = a.Icon
+  const hasCert = !!a.certificate
   return (
     <motion.div
       initial={{ opacity: 0, y: 22 }}
@@ -113,9 +117,15 @@ function AchievementCard({ a, delay, inView }: { a: Achievement; delay: number; 
       transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => hasCert && onOpenCertificate?.(a.certificate!)}
+      role={hasCert ? 'button' : undefined}
+      tabIndex={hasCert ? 0 : undefined}
+      onKeyDown={e => { if (hasCert && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onOpenCertificate?.(a.certificate!) } }}
       style={{
         background: hovered ? a.bg : 'var(--surface)',
-        border: `1.5px solid ${hovered ? a.color + '55' : 'var(--border)'}`,
+        borderLeft: `1.5px solid ${hovered ? a.color + '55' : 'var(--border)'}`,
+        borderRight: `1.5px solid ${hovered ? a.color + '55' : 'var(--border)'}`,
+        borderBottom: `1.5px solid ${hovered ? a.color + '55' : 'var(--border)'}`,
         borderTop: `3px solid ${a.color}`,
         borderRadius: '16px',
         padding: '2rem 1.5rem',
@@ -123,7 +133,7 @@ function AchievementCard({ a, delay, inView }: { a: Achievement; delay: number; 
         transform: hovered ? 'translateY(-10px)' : 'translateY(0)',
         boxShadow: hovered ? `0 24px 48px ${a.color}22` : '0 0 0 transparent',
         transition: 'all 0.28s cubic-bezier(0.22,1,0.36,1)',
-        cursor: 'default',
+        cursor: hasCert ? 'pointer' : 'default',
         flex: '1 1 0',
       }}
     >
@@ -152,6 +162,15 @@ function AchievementCard({ a, delay, inView }: { a: Achievement; delay: number; 
       }}>
         {a.detail}
       </p>
+      {hasCert && (
+        <p style={{
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem',
+          color: a.color, marginTop: '0.75rem', opacity: hovered ? 1 : 0.75,
+          letterSpacing: '0.04em',
+        }}>
+          🔍 View Certificate
+        </p>
+      )}
     </motion.div>
   )
 }
@@ -304,6 +323,14 @@ function PrinciplesPanel({ inView }: { inView: boolean }) {
 export default function Experience() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const [openCert, setOpenCert] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!openCert) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenCert(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [openCert])
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
@@ -443,7 +470,7 @@ export default function Experience() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
             {HONORS.map((a, i) => (
-              <AchievementCard key={a.label} a={a} delay={0.3 + i * 0.08} inView={inView} />
+              <AchievementCard key={a.label} a={a} delay={0.3 + i * 0.08} inView={inView} onOpenCertificate={setOpenCert} />
             ))}
           </div>
         </motion.div>
@@ -470,6 +497,57 @@ export default function Experience() {
           </motion.p>
           <PrinciplesPanel inView={inView} />
         </div>
+
+        {/* Certificate lightbox — always mounted, one per honor, visibility toggled */}
+        {HONORS.map(h => (
+          <div
+            key={h.certificate}
+            role="dialog"
+            aria-modal="true"
+            aria-hidden={openCert !== h.certificate}
+            aria-label={`${h.label} certificate`}
+            onClick={() => setOpenCert(null)}
+            style={{
+              display: openCert === h.certificate ? 'flex' : 'none',
+              position: 'fixed', inset: 0, zIndex: 300,
+              alignItems: 'center', justifyContent: 'center',
+              padding: '2rem',
+              background: 'rgba(0,0,0,0.75)',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{
+                position: 'relative', maxWidth: '900px', maxHeight: '88vh',
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              }}
+            >
+              <img
+                src={h.certificate}
+                alt={`${h.label} certificate of participation`}
+                style={{
+                  maxWidth: '100%', maxHeight: '88vh', width: 'auto', height: 'auto',
+                  borderRadius: '10px', boxShadow: '0 24px 64px rgba(0,0,0,0.5)', display: 'block',
+                  objectFit: 'contain',
+                }}
+              />
+              <button
+                onClick={() => setOpenCert(null)}
+                aria-label="Close"
+                style={{
+                  position: 'absolute', top: '12px', right: '12px',
+                  width: '36px', height: '36px', borderRadius: '50%',
+                  background: 'rgba(20,20,20,0.75)', border: '1.5px solid rgba(255,255,255,0.25)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: '#fff', backdropFilter: 'blur(4px)',
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
 
       </div>
     </section>
