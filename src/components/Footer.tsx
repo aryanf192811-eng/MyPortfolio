@@ -11,7 +11,7 @@ export default function Footer() {
 
         {/* Center */}
         <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: 'var(--text-faint)', textAlign: 'center' }}>
-          Designed &amp; built by Ganpati · {new Date().getFullYear()}
+          Designed &amp; built by Ganpati Kumar · {new Date().getFullYear()}
         </p>
 
         {/* Socials */}
