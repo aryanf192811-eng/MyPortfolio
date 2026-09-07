@@ -147,12 +147,17 @@ a, button, [role="button"] { cursor: none; }
 
 .skills-core-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.875rem;
 }
-@media (max-width: 960px) { .skills-core-grid { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 640px) { .skills-core-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 400px) { .skills-core-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .skills-core-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.major-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+}
+@media (max-width: 760px) { .major-grid { grid-template-columns: 1fr; } }
 
 .stats-grid {
   display: grid;

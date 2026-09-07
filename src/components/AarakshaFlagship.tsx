@@ -1,38 +1,36 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ExternalLink, Github } from 'lucide-react'
+import { Lock } from 'lucide-react'
 
 const ACCENT = '#e11d48'
 
 const BADGES = [
   { label: '4 Portals', color: '#3b82f6' },
-  { label: '145 API Endpoints', color: '#f97316' },
-  { label: '33 DB Tables', color: '#f97316' },
   { label: 'SIH 2026 · Student Innovation', color: '#8b5cf6' },
-  { label: 'Offline SOS · 2G Capable', color: ACCENT },
-  { label: 'Hash-Chained Digital ID', color: '#0ea5e9' },
+  { label: 'Offline-First Safety', color: ACCENT },
+  { label: 'Verified Local Tourism', color: '#0ea5e9' },
 ]
 
 const PILLARS = [
   {
     icon: '🧭',
     title: 'AI Travel Assistant',
-    desc: 'Plans, costs, and safety-scores a real Northeast India itinerary from a deterministic scorer — Gemini only narrates numbers that already exist, never invents them.',
+    desc: 'Plans and costs a real Northeast India itinerary end to end — built on a strict honesty rule: the AI narrates results, it never invents the numbers.',
   },
   {
     icon: '🏨',
     title: 'Verified Local Tourism',
-    desc: '35 government-verified hotels, homestays, guides, and artisan cooperatives across all 8 Northeast states, surfaced directly inside the trip being planned.',
+    desc: 'A government-verified directory of real local hotels, homestays, guides, and artisan cooperatives across Northeast India, surfaced directly inside the trip being planned.',
   },
   {
     icon: '🚨',
     title: 'Offline-Resilient Safety',
-    desc: 'SOS over raw SMS with zero data connection, a Dead Man’s Switch that fires for you if you go silent, and a unified rescuer network with real road routing.',
+    desc: 'Emergency alerts that keep working with zero data connection, plus a unified rescue network coordinating official teams and verified volunteers in real time.',
   },
   {
     icon: '🤖',
     title: 'A Real Trained Model',
-    desc: 'A from-scratch logistic regression — no scikit-learn, no TensorFlow — 75.6% test accuracy, printed loss curve, per-prediction explainability.',
+    desc: 'A genuine machine-learning model for predictive risk — built and trained from scratch, not just an LLM prompt — sitting alongside honest, explainable scoring.',
   },
 ]
 
@@ -185,29 +183,18 @@ export default function AarakshaFlagship() {
         fontFamily: 'JetBrains Mono, monospace', fontSize: '0.72rem', color: 'var(--text-faint)',
         marginBottom: '1.5rem', lineHeight: 1.8, position: 'relative', zIndex: 1,
       }}>
-        Node.js · Express · PostgreSQL (raw SQL, zero ORM) · Socket.IO · React 19 · TypeScript ·
-        Vite · Zustand · TanStack Query · Dexie.js · react-leaflet · MapLibre GL JS · OSRM ·
-        TensorFlow.js · Twilio · Google Gemini
+        Node.js · Express · PostgreSQL · Socket.IO · React 19 · TypeScript · Vite ·
+        react-leaflet · MapLibre GL JS · Twilio · Google Gemini
       </p>
 
-      {/* Links */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', position: 'relative', zIndex: 1 }}>
-        <a
-          href="https://github.com/aryanf192811-eng/Aaraksha"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: '7px',
-            fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700,
-            color: '#fff', background: ACCENT, borderRadius: '50px',
-            padding: '9px 20px', textDecoration: 'none', border: `1.5px solid ${ACCENT}`,
-            transition: 'transform 0.18s, box-shadow 0.18s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 12px 28px ${ACCENT}44` }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
-        >
-          <Github size={16} /> View Repository <ExternalLink size={13} style={{ opacity: 0.8 }} />
-        </a>
+      {/* Status note — repo kept private while SIH 2026 judging is in progress */}
+      <div style={{
+        display: 'inline-flex', alignItems: 'center', gap: '7px', position: 'relative', zIndex: 1,
+        fontFamily: 'Sora, sans-serif', fontSize: '0.8rem', fontWeight: 600,
+        color: 'var(--text-muted)', background: 'var(--surface-2)',
+        border: '1.5px solid var(--border)', borderRadius: '50px', padding: '8px 18px',
+      }}>
+        <Lock size={14} /> Source kept private while SIH 2026 judging is in progress
       </div>
     </motion.div>
   )

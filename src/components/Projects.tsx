@@ -104,25 +104,6 @@ const PROJECTS: Project[] = [
     accent: '#14b8a6',
     letter: 'CV',
   },
-  {
-    title: 'Traveloop',
-    tagline: 'Trip Lifecycle Management — AI + PDF Pipeline',
-    description:
-      'Full-stack trip planning system connecting the entire lifecycle: itinerary, budget tracking, AI packing lists, and PDF invoice generation. 11-table PostgreSQL schema with 25 seeded cities and 57+ activity mappings. Built as a hackathon finalist in 36 hours.',
-    impact: [
-      '30+ endpoints across 9 Express route modules — consistent {success, data, meta} API envelope',
-      'Gemini AI packing lists with offline fallback — core trip management works without any API key',
-      'Server-side PDF invoice streaming via PDFKit; no client-side library weight',
-      '🥇 Final Round — Odoo × Parul University Hackathon 2026',
-    ],
-    stack: ['React 19', 'Node.js', 'Express', 'PostgreSQL', 'Gemini AI', 'PDFKit', 'Recharts', 'JWT', 'Multer'],
-    links: [
-      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/Pizza-Traveloop', icon: <Github size={14} /> },
-    ],
-    accent: '#f59e0b',
-    letter: 'TL',
-    badge: 'Hackathon Finalist',
-  },
 ]
 
 interface MiniProject {
@@ -136,6 +117,18 @@ interface MiniProject {
 }
 
 const MINI_PROJECTS: MiniProject[] = [
+  {
+    title: 'Traveloop',
+    tagline: 'Trip Lifecycle Management · Odoo × Parul Hackathon 2026 Finalist',
+    description:
+      'Full-stack trip planning system connecting the entire lifecycle: itinerary, budget tracking, AI packing lists, and PDF invoice generation. 11-table PostgreSQL schema with 25 seeded cities. Built as a hackathon finalist in 36 hours.',
+    stack: ['React 19', 'Node.js', 'Express', 'PostgreSQL', 'Gemini AI', 'PDFKit'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/Pizza-Traveloop' },
+    ],
+    accent: '#f59e0b',
+    visual: <TraveloopVisual />,
+  },
   {
     title: 'Recall',
     tagline: 'Civic Journalism Platform · Permanent Public Incident Archive',
@@ -258,7 +251,6 @@ const VISUAL_MAP: Record<string, React.ReactNode> = {
   'LEVO':         <LEVOVisual />,
   'PeoplePay360': <PeoplePay360Visual />,
   'CodeVerter':   <CodeVerterVisual />,
-  'Traveloop':    <TraveloopVisual />,
 }
 
 function ProjectVisual({ project }: { project: Project }) {
@@ -704,7 +696,7 @@ export default function Projects() {
             content is present in the prerendered/crawled HTML, not just after a client click. */}
         <div style={{ display: activeTab === 'major' ? 'block' : 'none' }}>
           <AarakshaFlagship />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.75rem' }}>
+          <div className="major-grid">
             {PROJECTS.map((project, i) => (
               <ProjectCard key={project.title} project={project} index={i} onOpen={setOpenProject} />
             ))}
