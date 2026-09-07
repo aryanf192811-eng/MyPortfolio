@@ -44,11 +44,14 @@ const STACK_GROUPS = [
   },
 ]
 
-// Recruiter-facing stats — aggregated across the project set, not any single project
+// Recruiter-facing stats — summed across all 7 API/DB-driven projects (Aaraksha, LEVO,
+// PeoplePay360, B-Cart, Traveloop, Latent, ExamForge), counted directly from each repo's
+// real route definitions and migrations, not README prose. CodeVerter excluded (local tool,
+// no REST API/DB). Real totals: 511 endpoints, 142 tables — rounded down to stay conservative.
 const STATS = [
   { value: '8', label: 'Shipped Projects' },
-  { value: '245+', label: 'API Endpoints' },
-  { value: '77+', label: 'DB Tables' },
+  { value: '500+', label: 'API Endpoints' },
+  { value: '140+', label: 'DB Tables' },
   { value: '3', label: 'Hackathon Finals' },
 ]
 
