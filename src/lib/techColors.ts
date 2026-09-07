@@ -47,6 +47,16 @@ export const TECH_COLORS: Record<string, string> = {
   'MathJax':         '#7f858b',
   'PWA':             '#5a0fc8',
   'Service Worker':  '#5a0fc8',
+  'Socket.IO':       '#4a4a4a',
+  'AWS':             '#ff9900',
+  'Zod':             '#3e67b1',
+  'Grok AI':         '#8b5cf6',
+  'Machine Learning':'#ec4899',
+  'TensorFlow.js':   '#ff6f00',
+  'OSRM':            '#64748b',
+  'Twilio':          '#f22f46',
+  'Ollama':          '#5c5c5c',
+  'CMake':           '#064f8c',
 }
 
 export function getTechColor(name: string): string {

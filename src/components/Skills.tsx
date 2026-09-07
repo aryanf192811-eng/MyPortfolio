@@ -22,7 +22,7 @@ const CORE_SKILLS = [
 const STACK_GROUPS = [
   {
     label: 'Backend',
-    tags: ['Node.js', 'Express', 'FastAPI', 'Pydantic', 'JWT', 'REST APIs'],
+    tags: ['Node.js', 'Express', 'FastAPI', 'Pydantic', 'JWT', 'REST APIs', 'Socket.IO', 'Prisma'],
   },
   {
     label: 'Database',
@@ -30,7 +30,7 @@ const STACK_GROUPS = [
   },
   {
     label: 'Frontend',
-    tags: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'Framer Motion', 'Zustand', 'KaTeX'],
+    tags: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS 4', 'Framer Motion', 'Zustand', 'TanStack Query', 'Zod', 'KaTeX'],
   },
   {
     label: 'Languages',
@@ -38,16 +38,20 @@ const STACK_GROUPS = [
   },
   {
     label: 'Infrastructure',
-    tags: ['Git', 'GitHub Actions', 'Vercel', 'Firebase', 'uvicorn'],
+    tags: ['Git', 'GitHub Actions', 'Vercel', 'Firebase', 'uvicorn', 'AWS'],
+  },
+  {
+    label: 'AI & Real-Time',
+    tags: ['Gemini AI', 'Grok AI', 'Machine Learning', 'TensorFlow.js', 'OSRM', 'Twilio'],
   },
 ]
 
 // Recruiter-facing stats
 const STATS = [
-  { value: '22', label: 'Table ERP Schema' },
-  { value: '30+', label: 'API Endpoints' },
-  { value: '3', label: 'Shipped Projects' },
-  { value: '1', label: 'Freelance Client' },
+  { value: '33', label: 'DB Tables' },
+  { value: '145+', label: 'API Endpoints' },
+  { value: '8', label: 'Shipped Projects' },
+  { value: '3', label: 'Hackathon Finals' },
 ]
 
 const containerV = { hidden: {}, visible: { transition: { staggerChildren: 0.055 } } }
@@ -224,7 +228,7 @@ export default function Skills() {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap' }}>
-            {[['Batch', '2025 – 2029'], ['CGPA', '7.85']].map(([k, v]) => (
+            {[['Batch', '2025 – 2029'], ['CGPA', '7.80']].map(([k, v]) => (
               <div key={k}>
                 <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.62rem', color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>{k}</p>
                 <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.95rem', fontWeight: 700, color: 'var(--text)' }}>{v}</p>

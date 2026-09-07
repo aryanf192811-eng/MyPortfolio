@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Database, GitBranch, Server, Layers, Shield, Trophy, Code2, BookOpen } from 'lucide-react'
+import { Database, GitBranch, Server, Layers, Shield, Trophy, Code2, BookOpen, Cloud } from 'lucide-react'
 
 // ─── Data ─────────────────────────────────────────────────────────────
 const METRICS = [
@@ -15,23 +15,50 @@ const BULLETS = [
   'Managed complete client communication and delivery pipeline independently',
 ]
 
-const ACHIEVEMENTS = [
+const HONORS = [
   {
-    Icon: Trophy,   color: '#f59e0b',
-    label: 'Hackathon Finalist',
-    detail: 'Odoo × Parul University 2026',
+    Icon: Trophy, color: '#f59e0b',
+    label: 'Odoo Hackathon 2026',
+    detail: 'Top 50 Zonal Finalist · 857 teams · built PeoplePay360',
     bg: 'rgba(245,158,11,0.08)',
   },
   {
-    Icon: Code2,    color: '#22c55e',
-    label: 'Paid Freelance',
-    detail: 'SoundRich Hearing — Semester 2',
+    Icon: Trophy, color: '#3b82f6',
+    label: 'Odoo × Parul Hackathon 2026',
+    detail: 'Finalist · Top 100 of 1,300 teams',
+    bg: 'rgba(59,130,246,0.08)',
+  },
+  {
+    Icon: Trophy, color: '#22c55e',
+    label: 'Parul Environment Hackathon 2026',
+    detail: 'Finalist · Round 3, Top 17 teams',
     bg: 'rgba(34,197,94,0.08)',
+  },
+]
+
+const CERTIFICATIONS = [
+  {
+    Icon: Code2,    color: '#f7df1e',
+    label: 'JavaScript Specialist',
+    detail: 'Certiport · Pearson VUE — Aug 2026',
+    bg: 'rgba(247,223,30,0.08)',
+  },
+  {
+    Icon: Server,   color: '#ee0000',
+    label: 'RHCSA',
+    detail: 'Red Hat Certified System Administrator — Aug 2026',
+    bg: 'rgba(238,0,0,0.08)',
+  },
+  {
+    Icon: Cloud,    color: '#ff9900',
+    label: 'AWS Cloud Foundations',
+    detail: 'AWS Academy Graduate — Apr 2026',
+    bg: 'rgba(255,153,0,0.08)',
   },
   {
     Icon: BookOpen, color: '#a78bfa',
-    label: 'Certifications',
-    detail: 'HTML · CSS · JS · System Design',
+    label: 'HTML & CSS Specialist',
+    detail: 'Certiport · Pearson VUE — Mar 2026',
     bg: 'rgba(167,139,250,0.08)',
   },
 ]
@@ -75,7 +102,8 @@ const PRINCIPLES = [
 ]
 
 // ─── Achievement Card ─────────────────────────────────────────────────
-function AchievementCard({ a, delay, inView }: { a: typeof ACHIEVEMENTS[0]; delay: number; inView: boolean }) {
+type Achievement = typeof HONORS[0]
+function AchievementCard({ a, delay, inView }: { a: Achievement; delay: number; inView: boolean }) {
   const [hovered, setHovered] = useState(false)
   const Icon = a.Icon
   return (
@@ -408,14 +436,26 @@ export default function Experience() {
           </div>
         </motion.div>
 
-        {/* ── Achievements — 3 featured cards ── */}
-        <motion.div {...fadeUp(0.22)} style={{ marginBottom: '3.25rem' }}>
+        {/* ── Honors & Awards — 3 hackathon-finalist certificates ── */}
+        <motion.div {...fadeUp(0.22)} style={{ marginBottom: '2.25rem' }}>
           <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.1rem' }}>
-            Highlights &amp; Awards
+            Honors &amp; Awards
           </p>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            {ACHIEVEMENTS.map((a, i) => (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            {HONORS.map((a, i) => (
               <AchievementCard key={a.label} a={a} delay={0.3 + i * 0.08} inView={inView} />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Certifications — 4 verified credentials ── */}
+        <motion.div {...fadeUp(0.28)} style={{ marginBottom: '3.25rem' }}>
+          <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', color: 'var(--text-faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.1rem' }}>
+            Certifications
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+            {CERTIFICATIONS.map((a, i) => (
+              <AchievementCard key={a.label} a={a} delay={0.34 + i * 0.06} inView={inView} />
             ))}
           </div>
         </motion.div>
