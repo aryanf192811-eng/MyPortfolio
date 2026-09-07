@@ -24,8 +24,8 @@
   .header {
     background: #0a0e1a;
     color: #fff;
-    padding: 7mm 15mm 5mm;
-    margin: 0 -15mm 4mm;
+    padding: 6mm 15mm 4mm;
+    margin: 0 -15mm 3mm;
   }
   .header h1 {
     font-family: 'Sora', sans-serif;
@@ -61,8 +61,8 @@
     color: #1d4ed8;
     border-bottom: 1.4px solid #1d4ed8;
     padding-bottom: 2px;
-    margin-bottom: 4px;
-    margin-top: 6px;
+    margin-bottom: 3px;
+    margin-top: 5px;
   }
   h2.section:first-of-type { margin-top: 0; }
 
@@ -89,7 +89,7 @@
   .project li {
     padding-left: 11px; position: relative; color: #333; margin-bottom: 1.5px;
   }
-  .project li::before { content: '▸'; position: absolute; left: 0; color: #1d4ed8; font-size: 8px; }
+  .project li::before { content: '\2022'; position: absolute; left: 0; color: #1d4ed8; font-size: 9px; }
   .project .stack {
     font-family: 'JetBrains Mono', monospace; font-size: 7.6px; color: #1d4ed8; margin-top: 2px;
   }
@@ -100,18 +100,15 @@
   .exp-sub { font-size: 8.8px; color: #555; margin-bottom: 3px; }
   .exp-date { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #666; white-space: nowrap; }
 
-  /* Two-column bottom section */
-  .cols { display: flex; gap: 16px; margin-top: 2px; }
-  .col { flex: 1; }
-
+  /* Single-column flow throughout (ATS-safe: no multi-column text order ambiguity) */
   .edu-row { display: flex; justify-content: space-between; align-items: baseline; }
   .edu-title { font-weight: 700; font-size: 9.6px; }
   .edu-sub { font-size: 8.6px; color: #555; }
   .edu-date { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #666; }
 
-  .list-item { margin-bottom: 3px; }
-  .list-item .t { font-weight: 600; font-size: 8.8px; color: #111; }
-  .list-item .d { font-size: 8.3px; color: #555; }
+  .list-row { display: flex; gap: 6px; margin-bottom: 1.5px; font-size: 8.5px; }
+  .list-row .t { font-weight: 600; color: #111; flex-shrink: 0; }
+  .list-row .d { color: #555; }
 </style>
 </head>
 <body>
@@ -132,33 +129,34 @@
   <h2 class="section">Summary</h2>
   <p class="summary">
     B.Tech CSE engineer (Parul University, 2025–2029) who ships production backend systems at real scale.
-    Flagship project Aaraksha — a Smart India Hackathon 2026 submission spanning 4 portals, 145 API endpoints,
-    33 PostgreSQL tables, and a from-scratch-trained machine learning model. Three-time hackathon finalist
-    across Odoo and Parul University competitions. Core focus: relational schema design, event-driven
-    architecture, real-time systems, and REST API contracts.
+    Currently building Aaraksha, a 4-portal AI travel-safety platform, as a Smart India Hackathon 2026
+    finalist-track submission. Three-time hackathon finalist across Odoo and Parul University competitions.
+    Core focus: data structures &amp; algorithms, relational schema design, event-driven architecture,
+    real-time systems, and REST API contracts.
   </p>
 
   <h2 class="section">Technical Skills</h2>
+  <div class="skills-row"><span class="label">Core CS</span><span class="value">Data Structures &amp; Algorithms, OOP, DBMS, Operating Systems, Computer Networks, System Design</span></div>
   <div class="skills-row"><span class="label">Languages</span><span class="value">C, C++, Python, JavaScript, TypeScript, SQL</span></div>
   <div class="skills-row"><span class="label">Backend</span><span class="value">Node.js, Express.js, FastAPI, Socket.IO, Prisma, REST API Design, JWT Auth, RBAC</span></div>
   <div class="skills-row"><span class="label">Frontend</span><span class="value">React 19, TypeScript, Vite, Tailwind CSS, Zustand, TanStack Query, Framer Motion</span></div>
   <div class="skills-row"><span class="label">Databases</span><span class="value">PostgreSQL, SQLite, Supabase, SQLAlchemy, Raw SQL, Schema Design</span></div>
-  <div class="skills-row"><span class="label">AI &amp; Systems</span><span class="value">Machine Learning (from-scratch models), Gemini AI, TensorFlow.js, OSRM, Twilio</span></div>
+  <div class="skills-row"><span class="label">AI &amp; Systems</span><span class="value">Machine Learning, Gemini AI, TensorFlow.js, OSRM, Twilio</span></div>
   <div class="skills-row"><span class="label">DevOps &amp; Cloud</span><span class="value">Git, GitHub Actions, Vercel, AWS, Linux (RHCSA), Firebase</span></div>
 
-  <h2 class="section">Selected Projects</h2>
+  <h2 class="section">Projects</h2>
 
   <div class="project">
     <div class="project-head">
       <span class="project-title">Aaraksha</span>
-      <span class="project-badge">Smart India Hackathon 2026 · Flagship</span>
+      <span class="project-badge">Smart India Hackathon 2026 · Flagship (in progress)</span>
     </div>
-    <div class="project-tagline">AI-Native Travel Planning, Verified Local Tourism &amp; Offline-Resilient Safety Platform</div>
+    <div class="project-tagline">AI-Native Travel Planning &amp; Offline-Resilient Safety Platform for Northeast India</div>
     <ul>
-      <li>4 independently deployable portals (Tourist, Government, Guardian, Rescuer) sharing one real-time data model — 145 REST endpoints across 33 PostgreSQL tables, zero ORM</li>
-      <li>Built a from-scratch logistic regression model (75.6% test accuracy, 17 explainable features) for predictive tourist risk scoring, alongside offline SOS over raw SMS and a SHA-256 hash-chained digital ID</li>
+      <li>4 independently deployable portals (Tourist, Government, Guardian, Rescuer) sharing one real-time data model, built around a rule-based safety scoring system</li>
+      <li>Machine learning component for predictive risk scoring alongside offline-first emergency alerting and a verifiable digital trip record</li>
     </ul>
-    <div class="stack">Node.js · Express · PostgreSQL · Socket.IO · React 19 · TypeScript · MapLibre GL JS · OSRM · TensorFlow.js · Twilio · Gemini AI</div>
+    <div class="stack">Node.js · Express · PostgreSQL · Socket.IO · React 19 · TypeScript · MapLibre GL JS · Twilio · Gemini AI</div>
   </div>
 
   <div class="project">
@@ -211,31 +209,26 @@
     <li>Engineered and deployed a production landing page on Vercel; executed a zero-downtime DNS migration from WordPress, owning the engagement end to end</li>
   </ul>
 
-  <div class="cols">
-    <div class="col">
-      <h2 class="section">Education</h2>
-      <div class="edu-row">
-        <span class="edu-title">B.Tech — Computer Science &amp; Engineering</span>
-        <span class="edu-date">2025 – 2029</span>
-      </div>
-      <div class="edu-sub">Parul University, Vadodara, Gujarat · CGPA: 7.80 / 10</div>
-
-      <h2 class="section">Certifications</h2>
-      <div class="list-item"><div class="t">JavaScript Specialist</div><div class="d">Certiport · Pearson VUE — Aug 2026</div></div>
-      <div class="list-item"><div class="t">Red Hat Certified System Administrator (RHCSA)</div><div class="d">Red Hat — Aug 2026</div></div>
-      <div class="list-item"><div class="t">AWS Academy Graduate – Cloud Foundations</div><div class="d">AWS — Apr 2026</div></div>
-      <div class="list-item"><div class="t">HTML &amp; CSS Specialist</div><div class="d">Certiport · Pearson VUE — Mar 2026</div></div>
-    </div>
-    <div class="col">
-      <h2 class="section">Honors &amp; Awards</h2>
-      <div class="list-item"><div class="t">Odoo Hackathon 2026 — Top 50 Zonal Finalist</div><div class="d">857 teams, from 20,000+ registrations · Built PeoplePay360</div></div>
-      <div class="list-item"><div class="t">Odoo × Parul University Hackathon 2026 — Finalist</div><div class="d">Top 100 of 1,300 teams</div></div>
-      <div class="list-item"><div class="t">Parul University Environment Hackathon 2026 — Finalist</div><div class="d">Round 3, Top 17 teams</div></div>
-
-      <h2 class="section">Interests</h2>
-      <div class="list-item"><div class="d">Smart India Hackathon · System Design · Distributed Systems · Competitive Programming · Applied Machine Learning</div></div>
-    </div>
+  <h2 class="section">Education</h2>
+  <div class="edu-row">
+    <span class="edu-title">B.Tech — Computer Science &amp; Engineering</span>
+    <span class="edu-date">2025 – 2029</span>
   </div>
+  <div class="edu-sub">Parul University, Vadodara, Gujarat · CGPA: 7.80 / 10</div>
+
+  <h2 class="section">Honors &amp; Awards</h2>
+  <div class="list-row"><span class="t">Odoo Hackathon 2026 — Top 50 Zonal Finalist</span><span class="d">857 teams, from 20,000+ registrations · built PeoplePay360</span></div>
+  <div class="list-row"><span class="t">Odoo × Parul University Hackathon 2026 — Finalist</span><span class="d">Top 100 of 1,300 teams</span></div>
+  <div class="list-row"><span class="t">Parul University Environment Hackathon 2026 — Finalist</span><span class="d">Round 3, Top 17 teams</span></div>
+
+  <h2 class="section">Certifications</h2>
+  <div class="list-row"><span class="t">JavaScript Specialist</span><span class="d">Certiport · Pearson VUE, Aug 2026</span></div>
+  <div class="list-row"><span class="t">Red Hat Certified System Administrator (RHCSA)</span><span class="d">Red Hat, Aug 2026</span></div>
+  <div class="list-row"><span class="t">AWS Academy Graduate – Cloud Foundations</span><span class="d">AWS, Apr 2026</span></div>
+  <div class="list-row"><span class="t">HTML &amp; CSS Specialist</span><span class="d">Certiport · Pearson VUE, Mar 2026</span></div>
+
+  <h2 class="section">Interests</h2>
+  <div class="list-row"><span class="d">Smart India Hackathon · System Design · Distributed Systems · Competitive Programming · Applied Machine Learning</span></div>
 
 </div>
 </body>
