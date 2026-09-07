@@ -1221,3 +1221,150 @@ export function RecallVisual() {
     </div>
   )
 }
+
+// ─── CodeVerter: Local-First AI Code Converter ───────────────────────────
+export function CodeVerterVisual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#14b8a6'
+  const langs = ['Py', 'JS', 'Go', 'Rs', 'Ja', 'C++']
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="cvGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#cvGrid)" />
+
+        {/* Terminal window frame */}
+        <rect x="20" y="24" width="238" height="180" rx="8" fill="#0f172a" stroke={`${accent}33`} strokeWidth="1.2" />
+        <rect x="20" y="24" width="238" height="20" rx="8" fill="#1e293b" />
+        <circle cx="32" cy="34" r="2.5" fill="#ff5f56" />
+        <circle cx="41" cy="34" r="2.5" fill="#ffbd2e" />
+        <circle cx="50" cy="34" r="2.5" fill="#27c93f" />
+        <text x="139" y="38" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.8">codeverter — local</text>
+
+        {/* Streaming code lines: source (left) -> target (right) */}
+        {[0, 1, 2, 3, 4].map(i => (
+          <motion.rect key={`src${i}`}
+            x="32" y={56 + i * 16} height="4" rx="2" fill={`${accent}55`}
+            initial={{ width: 20 + (i % 3) * 15 }}
+            animate={{ width: hovered ? 20 + (i % 3) * 15 : 8 }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+          />
+        ))}
+        <line x1="139" y1="52" x2="139" y2="196" stroke={`${accent}22`} strokeWidth="1" />
+        {[0, 1, 2, 3, 4].map(i => (
+          <motion.rect key={`tgt${i}`}
+            x="148" y={56 + i * 16} height="4" rx="2" fill={accent}
+            initial={{ width: 8 }}
+            animate={{ width: hovered ? 24 + (i % 4) * 12 : 8 }}
+            transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+          />
+        ))}
+
+        {/* Conversion arrow */}
+        <motion.text x="139" y="130" textAnchor="middle" fontSize="14" fill={accent}
+          animate={hovered ? { opacity: [0.4, 1, 0.4] } : { opacity: 0.6 }}
+          transition={{ duration: 1.2, repeat: Infinity }}
+        >⇄</motion.text>
+
+        {/* Language dots row */}
+        {langs.map((l, i) => (
+          <g key={l}>
+            <circle cx={38 + i * 38} cy="184" r="9" fill={`${accent}18`} stroke={`${accent}44`} strokeWidth="1" />
+            <text x={38 + i * 38} y="187" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent}>{l}</text>
+          </g>
+        ))}
+
+        {/* Badges */}
+        <rect x="20" y="222" width="115" height="26" rx="13" fill={`${accent}14`} stroke={`${accent}38`} strokeWidth="1" />
+        <text x="77" y="239" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill={accent} opacity="0.9">26 Languages</text>
+        <rect x="143" y="222" width="115" height="26" rx="13" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.35)" strokeWidth="1" />
+        <motion.circle cx="157" cy="235" r="3" fill="#22c55e"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: [1, 0.3, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        <text x="205" y="239" textAnchor="middle" fontFamily="monospace" fontSize="7.5" fill="#22c55e" opacity="0.9">100% Local</text>
+
+        {/* Footer */}
+        <rect x="20" y="262" width="238" height="40" rx="6" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="139" y="278" textAnchor="middle" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.85">Ollama · No API keys · No telemetry</text>
+        <text x="139" y="291" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.4">Run &amp; Compare · Complexity analysis</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── PeoplePay360: Odoo Hackathon 2026 — HR & Payroll Engine ─────────────
+export function PeoplePay360Visual() {
+  const [hovered, setHovered] = useState(false)
+  const accent = '#714b67' // Odoo brand purple
+  const roles = ['Admin', 'HR Mgr', 'Payroll', 'Employee']
+  const bars = [62, 78, 55, 90, 70]
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', cursor: 'default' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <svg viewBox="0 0 278 360" style={{ width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="p3Grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0H0V20" fill="none" stroke={`${accent}10`} strokeWidth="0.5" />
+          </pattern>
+        </defs>
+        <rect width="278" height="360" fill="url(#p3Grid)" />
+
+        {/* Header + finalist badge */}
+        <text x="139" y="30" textAnchor="middle" fontFamily="monospace" fontSize="9" fill={accent} opacity="0.9">💰 PeoplePay360</text>
+        <rect x="90" y="38" width="98" height="18" rx="9" fill={`${accent}18`} stroke={`${accent}44`} strokeWidth="1" />
+        <text x="139" y="50" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill={accent}>Top 50 of 857 teams</text>
+
+        {/* Payroll dashboard bar chart */}
+        {bars.map((h, i) => (
+          <g key={i}>
+            <rect x={28 + i * 44} y={160 - h} width="30" height={h} rx="4" fill={`${accent}16`} stroke={`${accent}30`} strokeWidth="0.8" />
+            <motion.rect x={28 + i * 44} width="30" rx="4" fill={accent} opacity="0.7"
+              initial={{ height: h * 0.4, y: 160 - h * 0.4 }}
+              animate={{ height: hovered ? h : h * 0.4, y: hovered ? 160 - h : 160 - h * 0.4 }}
+              transition={{ duration: 0.6, delay: i * 0.08 }}
+            />
+          </g>
+        ))}
+        <line x1="20" y1="162" x2="258" y2="162" stroke={`${accent}30`} strokeWidth="1" />
+
+        {/* RBAC role chips */}
+        <text x="20" y="188" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.5">5-role RBAC</text>
+        {roles.map((r, i) => (
+          <g key={r}>
+            <rect x={20 + i * 62} y="196" width="56" height="20" rx="10" fill={`${accent}12`} stroke={`${accent}30`} strokeWidth="1" />
+            <text x={48 + i * 62} y="209" textAnchor="middle" fontFamily="monospace" fontSize="6" fill={accent}>{r}</text>
+          </g>
+        ))}
+
+        {/* Payslip Diff callout */}
+        <rect x="20" y="228" width="238" height="46" rx="8" fill={`${accent}0a`} stroke={`${accent}22`} strokeWidth="1" />
+        <text x="32" y="246" fontFamily="monospace" fontSize="7" fill={accent} opacity="0.9">📋 Payslip Diff</text>
+        <text x="32" y="258" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.45">&quot;Why did my salary change?&quot;</text>
+        <motion.circle cx="240" cy="251" r="4" fill="#22c55e"
+          initial={{ scale: 1 }}
+          animate={hovered ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+          transition={{ duration: 1.2, repeat: Infinity }}
+        />
+
+        {/* Footer */}
+        <text x="139" y="300" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill="var(--text)" opacity="0.35">Postgres exclusion constraint · no overlapping contracts</text>
+        <text x="139" y="312" textAnchor="middle" fontFamily="monospace" fontSize="6.5" fill={accent} opacity="0.6">Node.js · Express · React · Gemini AI</text>
+      </svg>
+    </div>
+  )
+}

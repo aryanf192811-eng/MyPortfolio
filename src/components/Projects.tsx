@@ -1,12 +1,14 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, Github, X } from 'lucide-react'
 import { getTechColor } from '../lib/techColors'
 import {
   BCartVisual, ExamForgeVisual, TraveloopVisual, LatentVisual,
   NeetNotesVisual, SoundrichVisual, HRMSVisual, GateTrackVisual,
   FullStackVisual, CPPVisual, LEVOVisual, RecallVisual,
+  CodeVerterVisual, PeoplePay360Visual,
 } from './ProjectVisuals'
+import AarakshaFlagship from './AarakshaFlagship'
 
 interface ProjectLink {
   label: string
@@ -66,41 +68,41 @@ const PROJECTS: Project[] = [
     letter: 'LV',
   },
   {
-    title: 'B-Cart',
-    tagline: 'Manufacturing ERP — Order-to-Stock Workflow Engine',
+    title: 'PeoplePay360',
+    tagline: 'Odoo Hackathon 2026 Finalist — Explainable HR & Payroll Engine',
     description:
-      'ERP-style business workflow system that tracks the complete order lifecycle from Sales Order through Inventory Reservation, Manufacturing Order, Work Orders, and into an immutable Stock Ledger. Built schema-first with a 22-table relational model.',
+      'HR & Payroll platform built for Odoo Hackathon 2026 — advanced from 20,000+ registrations to the onsite finale at Odoo India HQ, ranking Top 50 of 857 finalist teams. The Employee record is the hub everything hangs off: period-scoped contracts never edited in place, a two-step Payrun wizard, and a live dashboard aggregating real attendance, leave, and payslip data.',
     impact: [
-      '22-table PostgreSQL schema across 8 domains — 4 database views, normalized relational model',
-      'Event-driven stock ledger: every movement is immutable and the full history is reconstructable',
-      'JWT Access + Refresh token pair + RBAC enforced at the controller layer on every request',
-      '30+ REST endpoints — Moving Average Costing aligned with real manufacturing accounting',
+      'Raw PERN stack (Postgres + Express + React + Node), zero ORM — a Postgres exclusion constraint guarantees no two overlapping active contracts per employee, not app-level hope',
+      'Payslip Diff ("why did my salary change?") and a What-If Simulator that dry-runs the real payroll engine and unconditionally rolls back',
+      'Statistical Attendance/Leave Insights using a real population mean + stddev, not a hardcoded threshold, plus a full Audit Timeline over every contract/payrun change',
+      'Read-only Gemini-backed AI assistant scoped strictly to the same aggregate JSON the dashboard already shows — never a black box making decisions',
     ],
-    stack: ['Node.js', 'Express', 'PostgreSQL', 'React 19', 'Vite', 'JWT', 'RBAC', 'Raw SQL'],
+    stack: ['Node.js', 'Express', 'PostgreSQL', 'React 18', 'TanStack Query', 'Zustand', 'JWT', 'Gemini AI'],
     links: [
-      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/B-cart', icon: <Github size={14} /> },
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/pay360', icon: <Github size={14} /> },
     ],
-    accent: '#3b82f6',
-    letter: 'BC',
+    accent: '#714b67',
+    letter: 'P3',
+    badge: 'Hackathon Finalist',
   },
   {
-    title: 'ExamForge',
-    tagline: 'Enterprise GATE Preparation Platform — Hybrid Database Architecture',
+    title: 'CodeVerter',
+    tagline: 'Local-First AI Code Converter — 26 Languages, Zero Cloud',
     description:
-      'Monorepo GATE prep platform solving a dual access-pattern problem: read-heavy offline question access (SQLite) and write-heavy real-time cross-device sync (Supabase). KaTeX renders engineering formulas; strict TypeScript prevents silent runtime errors in complex quiz state.',
+      'Converts code between 26 programming languages using a 100% locally-running LLM (Ollama) — no cloud API, no API keys, no telemetry. Started as an AWS Lambda function with a hardcoded API key committed to source; rebuilt from the ground up so nothing leaves the machine by default.',
     impact: [
-      'Hybrid SQLite + Supabase architecture — each DB optimised for its specific workload',
-      'SQLite bundles thousands of GATE questions read-only; sub-millisecond, zero network overhead',
-      'Supabase real-time subscriptions sync quiz progress and streaks across all devices live',
-      'FastAPI backend with Pydantic schemas, Bearer JWT auth, and GitHub Actions CI/CD pipeline',
+      'Self-contained C++17 HTTP server (cpp-httplib) vendoring its only two dependencies as single headers — no package manager, no OpenSSL required',
+      'Token-by-token streaming output over SSE, plus a second local LLM call rating time/space complexity with severity-colored Big-O badges',
+      '"Run & Compare" actually executes both the source and converted code locally and diffs the real output — real evidence of correctness, not just plausible-looking code',
+      'Optional, off-by-default Groq cloud fallback triggers only if Ollama is unreachable, with a visible banner whenever a conversion leaves the machine',
     ],
-    stack: ['FastAPI', 'Pydantic', 'SQLite', 'Supabase', 'React 19', 'TypeScript', 'KaTeX', 'Firebase', 'Vite'],
+    stack: ['C++', 'Ollama', 'React', 'TypeScript', 'Vite', 'CMake'],
     links: [
-      { label: 'Frontend', href: 'https://github.com/aryanf192811-eng/examforgee', icon: <Github size={14} /> },
-      { label: 'Backend', href: 'https://github.com/aryanf192811-eng/examforge-backend', icon: <Github size={14} /> },
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/codeverter', icon: <Github size={14} /> },
     ],
-    accent: '#22c55e',
-    letter: 'EF',
+    accent: '#14b8a6',
+    letter: 'CV',
   },
   {
     title: 'Traveloop',
@@ -224,14 +226,39 @@ const MINI_PROJECTS: MiniProject[] = [
     accent: '#00599C',
     visual: <CPPVisual />,
   },
+  {
+    title: 'B-Cart',
+    tagline: 'Manufacturing ERP · Order-to-Stock Workflow Engine',
+    description:
+      'ERP-style workflow system tracking the complete order lifecycle — Sales Order through Inventory Reservation, Manufacturing Order, Work Orders, into an immutable Stock Ledger. Schema-first with a 22-table relational model across 8 business domains and Moving Average Costing.',
+    stack: ['Node.js', 'Express', 'PostgreSQL', 'React 19', 'JWT', 'RBAC'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/aryanf192811-eng/B-cart' },
+    ],
+    accent: '#3b82f6',
+    visual: <BCartVisual />,
+  },
+  {
+    title: 'ExamForge',
+    tagline: 'GATE Preparation Platform · Hybrid Database Architecture',
+    description:
+      'Monorepo GATE prep platform solving a dual access-pattern problem: read-heavy offline question access (SQLite) and write-heavy real-time cross-device sync (Supabase). KaTeX renders engineering formulas; FastAPI backend with strict Pydantic validation.',
+    stack: ['FastAPI', 'Pydantic', 'SQLite', 'Supabase', 'React 19', 'KaTeX'],
+    links: [
+      { label: 'Frontend', href: 'https://github.com/aryanf192811-eng/examforgee' },
+      { label: 'Backend', href: 'https://github.com/aryanf192811-eng/examforge-backend' },
+    ],
+    accent: '#22c55e',
+    visual: <ExamForgeVisual />,
+  },
 ]
 
 const VISUAL_MAP: Record<string, React.ReactNode> = {
-  'Latent':    <LatentVisual />,
-  'LEVO':      <LEVOVisual />,
-  'B-Cart':    <BCartVisual />,
-  'ExamForge': <ExamForgeVisual />,
-  'Traveloop': <TraveloopVisual />,
+  'Latent':       <LatentVisual />,
+  'LEVO':         <LEVOVisual />,
+  'PeoplePay360': <PeoplePay360Visual />,
+  'CodeVerter':   <CodeVerterVisual />,
+  'Traveloop':    <TraveloopVisual />,
 }
 
 function ProjectVisual({ project }: { project: Project }) {
@@ -288,43 +315,187 @@ function ProjectVisual({ project }: { project: Project }) {
   )
 }
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectLinks({ project }: { project: Project }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
+      {project.links.map(link =>
+        link.disabled ? (
+          <span key={link.label} style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 500,
+            color: 'var(--text-faint)', border: '1.5px solid var(--border)', borderRadius: '50px',
+            padding: '6px 16px', cursor: 'not-allowed', opacity: 0.55,
+          }}>
+            {link.icon}{link.label}
+          </span>
+        ) : (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 600,
+              color: 'var(--text)', background: 'var(--surface)',
+              border: '1.5px solid var(--border-2)', borderRadius: '50px',
+              padding: '6px 16px', textDecoration: 'none',
+              transition: 'border-color 0.18s, background 0.18s',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLAnchorElement
+              el.style.borderColor = project.accent
+              el.style.background = `${project.accent}12`
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLAnchorElement
+              el.style.borderColor = 'var(--border-2)'
+              el.style.background = 'var(--surface)'
+            }}
+          >
+            {link.icon} {link.label} <ExternalLink size={11} style={{ opacity: 0.6 }} />
+          </a>
+        )
+      )}
+    </div>
+  )
+}
+
+// Compact grid card — click opens the full case-study modal below.
+function ProjectCard({ project, index, onOpen }: { project: Project; index: number; onOpen: (title: string) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
-  const isEven = index % 2 === 0
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="project-row"
+      transition={{ duration: 0.55, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen(project.title)}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(project.title) } }}
+      style={{
+        background: 'var(--surface)',
+        border: `1.5px solid ${project.accent}28`,
+        borderRadius: '18px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.2s',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = `${project.accent}66`
+        e.currentTarget.style.boxShadow = `0 16px 40px ${project.accent}1c`
+        e.currentTarget.style.transform = 'translateY(-4px)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = `${project.accent}28`
+        e.currentTarget.style.boxShadow = 'none'
+        e.currentTarget.style.transform = 'translateY(0)'
+      }}
     >
-      {/* Text */}
-      <div style={{ order: isEven ? 0 : 1 }}>
-        <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.66rem', color: project.accent, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.6rem', opacity: 0.9 }}>
+      <ProjectVisual project={project} />
+      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', flexGrow: 1 }}>
+        <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.62rem', color: project.accent, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.9 }}>
           {`Project 0${index + 1}`}
         </p>
-        <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: 'clamp(1.4rem, 2.8vw, 1.85rem)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.35rem', color: 'var(--text)' }}>
+        <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text)', margin: 0 }}>
           {project.title}
         </h3>
-        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '0.85rem', lineHeight: 1.5 }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic', margin: 0, lineHeight: 1.5, flexGrow: 1 }}>
           {project.tagline}
         </p>
-        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.72, marginBottom: '1.1rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.25rem' }}>
+          {project.stack.slice(0, 4).map(t => {
+            const color = getTechColor(t)
+            return (
+              <span key={t} style={{
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.63rem', fontWeight: 500,
+                color, background: `${color}14`, border: `1px solid ${color}30`,
+                borderRadius: '5px', padding: '2px 8px', whiteSpace: 'nowrap',
+              }}>
+                {t}
+              </span>
+            )
+          })}
+        </div>
+        <span style={{
+          fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 700,
+          color: project.accent, marginTop: '0.5rem',
+        }}>
+          View case study →
+        </span>
+      </div>
+    </motion.div>
+  )
+}
+
+// Full case-study detail — always rendered for every project (SEO: full text stays in the
+// prerendered/crawled HTML), visibility toggled via CSS rather than mount/unmount.
+function ProjectModal({ project, isOpen, onClose }: { project: Project; isOpen: boolean; onClose: () => void }) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={!isOpen}
+      aria-label={`${project.title} case study`}
+      onClick={onClose}
+      style={{
+        display: isOpen ? 'flex' : 'none',
+        position: 'fixed', inset: 0, zIndex: 300,
+        alignItems: 'center', justifyContent: 'center',
+        padding: '1.5rem',
+        background: 'rgba(0,0,0,0.6)',
+        backdropFilter: 'blur(4px)',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: 'var(--surface)', border: '1.5px solid var(--border-2)',
+          borderRadius: '20px', maxWidth: '760px', width: '100%', maxHeight: '85vh',
+          overflowY: 'auto', padding: 'clamp(1.5rem, 4vw, 2.5rem)', position: 'relative',
+        }}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: 'absolute', top: '1.25rem', right: '1.25rem',
+            width: '34px', height: '34px', borderRadius: '50%',
+            background: 'var(--surface-2)', border: '1.5px solid var(--border-2)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: 'var(--text-muted)',
+          }}
+        >
+          <X size={16} />
+        </button>
+
+        <div style={{ maxWidth: '480px', marginBottom: '1.5rem' }}>
+          <ProjectVisual project={project} />
+        </div>
+
+        <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: 'clamp(1.5rem, 4vw, 1.9rem)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.35rem', color: 'var(--text)' }}>
+          {project.title}
+        </h3>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: project.accent, fontStyle: 'italic', marginBottom: '1rem', lineHeight: 1.5 }}>
+          {project.tagline}
+        </p>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.72, marginBottom: '1.1rem' }}>
           {project.description}
         </p>
         <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', marginBottom: '1.4rem', listStyle: 'none' }}>
           {project.impact.map(d => (
-            <li key={d} style={{ display: 'flex', gap: '0.55rem', alignItems: 'flex-start', fontFamily: 'Inter, sans-serif', fontSize: '0.845rem', color: 'var(--text-faint)', lineHeight: 1.6 }}>
+            <li key={d} style={{ display: 'flex', gap: '0.55rem', alignItems: 'flex-start', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--text-faint)', lineHeight: 1.6 }}>
               <span style={{ color: project.accent, flexShrink: 0, marginTop: '4px', fontSize: '0.65rem' }}>▸</span>
               {d}
             </li>
           ))}
         </ul>
-        {/* Colored tech tags */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.5rem' }}>
           {project.stack.map(t => {
             const color = getTechColor(t)
             return (
@@ -338,58 +509,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             )
           })}
         </div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem' }}>
-          {project.links.map(link =>
-            link.disabled ? (
-              <span key={link.label} style={{
-                display: 'inline-flex', alignItems: 'center', gap: '6px',
-                fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 500,
-                color: 'var(--text-faint)', border: '1.5px solid var(--border)', borderRadius: '50px',
-                padding: '6px 16px', cursor: 'not-allowed', opacity: 0.55,
-              }}>
-                {link.icon}{link.label}
-              </span>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 600,
-                  color: 'var(--text)', background: 'var(--surface)',
-                  border: '1.5px solid var(--border-2)', borderRadius: '50px',
-                  padding: '6px 16px', textDecoration: 'none',
-                  transition: 'border-color 0.18s, background 0.18s',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.borderColor = project.accent
-                  el.style.background = `${project.accent}12`
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.borderColor = 'var(--border-2)'
-                  el.style.background = 'var(--surface)'
-                }}
-              >
-                {link.icon} {link.label} <ExternalLink size={11} style={{ opacity: 0.6 }} />
-              </a>
-            )
-          )}
-        </div>
+        <ProjectLinks project={project} />
       </div>
-
-      {/* Visual */}
-      <div
-        className={!isEven ? 'project-visual-reversed' : ''}
-        style={{ order: isEven ? 1 : 0 }}
-      >
-        <ProjectVisual project={project} />
-      </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -521,6 +643,14 @@ export default function Projects() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const [activeTab, setActiveTab] = useState<'major' | 'mini'>('major')
+  const [openProject, setOpenProject] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!openProject) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenProject(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [openProject])
 
   return (
     <section id="projects" style={{ borderBottom: '1px solid var(--border)' }}>
@@ -573,9 +703,12 @@ export default function Projects() {
         {/* Both tabs stay mounted (not a mount/unmount ternary) so the mini-projects'
             content is present in the prerendered/crawled HTML, not just after a client click. */}
         <div style={{ display: activeTab === 'major' ? 'block' : 'none' }}>
-          {PROJECTS.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i} />
-          ))}
+          <AarakshaFlagship />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.75rem' }}>
+            {PROJECTS.map((project, i) => (
+              <ProjectCard key={project.title} project={project} index={i} onOpen={setOpenProject} />
+            ))}
+          </div>
         </div>
         <div
           style={{
@@ -588,6 +721,16 @@ export default function Projects() {
             <MiniProjectCard key={project.title} project={project} index={i} />
           ))}
         </div>
+
+        {/* Case-study modals — one per project, always mounted, visibility-toggled */}
+        {PROJECTS.map(project => (
+          <ProjectModal
+            key={project.title}
+            project={project}
+            isOpen={openProject === project.title}
+            onClose={() => setOpenProject(null)}
+          />
+        ))}
       </div>
     </section>
   )
